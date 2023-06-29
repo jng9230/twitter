@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Account = () => {
+const Settings = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const Account = () => {
   )
 }
 
-export default Account
+export default Settings

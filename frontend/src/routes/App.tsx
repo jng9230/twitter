@@ -1,22 +1,21 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Settings from './Settings'
+import Login from './Login';
+import Profile from './Profile';
+import TweetChain from './TweetChain';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/' element={<Profile />} />
+        <Route path='/:profileID' element={<Profile />} />
+        <Route path='/settings' element={<Settings />} />
+        <Route path='/:profileID/status/:tweetID' element={<TweetChain />} />
+      </Routes>
+    </Router>
   );
 }
 
