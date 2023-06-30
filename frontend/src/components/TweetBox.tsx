@@ -1,6 +1,6 @@
 import React from 'react'
 import { BiMessageRounded, BiTransferAlt, BiHeart } from 'react-icons/bi'
-import { tweet } from '../utils/APITypes'
+import { Tweet } from '../utils/APITypes'
 import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
 // function randomDate(start: Date, end: Date) {
@@ -19,24 +19,24 @@ import { formatNumber } from '../utils/formatNumber'
 //   console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 // }
 
-const Tweet = ({
+const TweetBox = ({
   tweet
 }: {
-  tweet: tweet
+  tweet: Tweet
 }) => {
   console.log(tweet);
   return (
     <div className="flex justify-between p-2">
       <div>
-        <img src={tweet.profileImg} alt="" className="w-8"/>
+        <img src={tweet.user.profileImg} alt="" className="w-8 rounded-full"/>
       </div>
       <div className="w-4/5">
         <div className="flex space-x-2">
           <div className="font-boldmax-w-3/5 truncate">
-              {tweet.username} 
+            {tweet.user.displayName} 
           </div>
           <div className="text-twitter-gray max-w-1/5 truncate">
-            @{tweet.uniqueName}
+            @{tweet.user.uniqueName}
           </div>
           <div className="text-twitter-gray w-1/5 truncate">
             {dateDiffPretty(new Date(), tweet.time)}
@@ -48,7 +48,7 @@ const Tweet = ({
         <div className="w-full py-2 flex justify-between">
           <div className="flex items-center">
             <BiMessageRounded className="inline mr-1" />
-            {formatNumber(tweet.replies)}
+            {formatNumber(tweet.replies.length)}
           </div>
           <div className="flex items-center">
             <BiTransferAlt className="inline mr-1" />
@@ -64,4 +64,4 @@ const Tweet = ({
   )
 }
 
-export default Tweet
+export default TweetBox

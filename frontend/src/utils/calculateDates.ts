@@ -6,7 +6,7 @@ export const dateDiffPretty = (d1: Date, d2: Date) => {
         return parseInt(res.years()) + "y"
     } else if ( res.months() >= 1 ){
         return parseInt(res.months()) + "mo"
-    } else if ( res.weeks() >= 1){
+    } else if ( res.weeks() >= 1 ){
         return parseInt(res.weeks()) + "w"
     }  else if ( res.days() >= 1 ){
         return parseInt(res.days()) + "d"
@@ -17,5 +17,4 @@ export const dateDiffPretty = (d1: Date, d2: Date) => {
     } else {
         return "now"
     }
-
 }
