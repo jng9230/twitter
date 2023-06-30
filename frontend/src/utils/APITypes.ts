@@ -34,14 +34,10 @@ export type User = {
     userID: string,
     displayName: string,
     uniqueName: string,
-    profileImg: string
+    profileImg: string,
 }
 
 export type UserNetwork = {
     followers: User[],
     following: User[]
-}
-
-export type TweetNetwork = {
-
 }

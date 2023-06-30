@@ -3,6 +3,8 @@ import Header from '../components/Header'
 import Timeline from '../components/Timeline'
 import Dock from '../components/Dock'
 import { Tweet, User } from '../utils/APITypes'
+import { useParams } from 'react-router-dom'
+import Sidebar from '../components/Sidebar'
 const Profile = () => {
   const user1: User = {
     userID: "",
@@ -33,10 +35,19 @@ const Profile = () => {
   const handleAddTweet = (tweet: Tweet) => {
     setAllTweets([tweet,...allTweets])
   }
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User>(user1)
+  const profileID = useParams().profileID;
+  const [showSidebar, setShowSidebar] = useState(false);
+  const handleShowSidebar = () => {
+    setShowSidebar(true);
+  }
+  const handleHideSidebar = () => {
+    setShowSidebar(false);
+  }
   return (
     <>
-      <Header/>
+      <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>
+      <Sidebar user={user} showSideBar={showSidebar} handleHideSidebar={handleHideSidebar}/>
       <Timeline allTweets={allTweets}/>
       <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user1}/>
     </>
