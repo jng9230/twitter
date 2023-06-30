@@ -1,12 +1,24 @@
 import React from 'react'
 import { BiMessageRounded, BiTransferAlt, BiHeart } from 'react-icons/bi'
 import { tweet } from '../utils/APITypes'
-// var numeral = require('numeral')
-// // console.log(numeral(1231323123).format("0.0a"))
-// const formatNumber = (x:number) => {
-//   return numeral(x).format("0a")
-// }
+import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
+// function randomDate(start: Date, end: Date) {
+//   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+// }
+// for (let i = 0; i < 1000; i ++){
+//   const d1 = new Date("2022-01-30T02:15:00.000Z")
+//   const old = new Date("2022-01-30T02:00:00.000Z")
+//   const d2 = randomDate(old, d1)
+//   console.log(d1.toString());
+//   console.log(d2.toString());
+//   // console.log(calcDate("1-1-2022", "1-30-2022"))
+//   // console.log(calcDateTrimmed("1-29-2022", "1-30-2022"))
+//   const w = dateDiffPretty(d1, d2)
+//   console.log(w)
+//   console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+// }
+
 const Tweet = ({
   tweet
 }: {
@@ -19,16 +31,15 @@ const Tweet = ({
         <img src={tweet.profileImg} alt="" className="w-8"/>
       </div>
       <div className="w-4/5">
-        <div className="flex">
-          <div className="font-bold w-3/5 truncate">
+        <div className="flex space-x-2">
+          <div className="font-boldmax-w-3/5 truncate">
               {tweet.username} 
           </div>
-          <div className="text-twitter-gray w-1/5 truncate">
+          <div className="text-twitter-gray max-w-1/5 truncate">
             @{tweet.uniqueName}
           </div>
-          <div className="w-1/5 truncate">
-            8m ago
-            {/* {tweet.time.toString()} */}
+          <div className="text-twitter-gray w-1/5 truncate">
+            {dateDiffPretty(new Date(), tweet.time)}
           </div>
         </div>
         <div>
