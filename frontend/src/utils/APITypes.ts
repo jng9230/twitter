@@ -32,8 +32,8 @@ export type Tweet = {
 
 export type User = {
     userID: string,
-    displayName: string,
-    uniqueName: string,
+    username: string,
+    handle: string,
     profileImg: string,
 }
 

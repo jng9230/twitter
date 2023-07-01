@@ -16,10 +16,10 @@ const ProfileBlock = ({
         <div className="relative top-10">
           <div>
             <div>
-              {user.displayName}
+              {user.username}
             </div>
             <div className="text-twitter-gray">
-              @{user.uniqueName}
+              @{user.handle}
             </div>
           </div>
           <div>

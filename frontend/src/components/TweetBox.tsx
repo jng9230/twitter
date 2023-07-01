@@ -33,10 +33,10 @@ const TweetBox = ({
       <div className="w-4/5">
         <div className="flex space-x-2">
           <div className="font-boldmax-w-3/5 truncate">
-            {tweet.user.displayName} 
+            {tweet.user.username} 
           </div>
           <div className="text-twitter-gray max-w-1/5 truncate">
-            @{tweet.user.uniqueName}
+            @{tweet.user.handle}
           </div>
           <div className="text-twitter-gray w-1/5 truncate">
             {dateDiffPretty(new Date(), tweet.time)}

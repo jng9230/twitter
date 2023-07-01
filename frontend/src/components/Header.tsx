@@ -11,7 +11,7 @@ const Header = ({
   handleShowSidebar
 }:{
   user: User,
-  numTweets: number,
+  numTweets?: number,
   profileID?: string,
   handleShowSidebar: () => void
 }) => {
@@ -23,7 +23,7 @@ const Header = ({
   return (
     <>
       {
-        profileID === user.uniqueName ?
+        profileID === user.handle ?
         <>
           <header className={headerStyles}>
             <Link to="/" className="absolute left-3">
@@ -31,7 +31,7 @@ const Header = ({
             </Link>
             <div>
               <div>
-                {user.displayName} 
+                {user.username} 
               </div>
               <div className="text-twitter-gray">
                 {numTweets} tweets
