@@ -10,8 +10,8 @@ function App() {
     <Router>
       <Routes>
         <Route path='/login' element={<Login />} />
-        <Route path='/' element={<Profile />} />
-        <Route path='/:profileID' element={<Profile />} />
+        {/* optional paramter of profile ID */}
+        <Route path='/:profileID?' element={<Profile />} /> 
         <Route path='/settings' element={<Settings />} />
         <Route path='/:profileID/status/:tweetID' element={<TweetChain />} />
       </Routes>

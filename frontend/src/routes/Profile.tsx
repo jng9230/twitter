@@ -37,6 +37,7 @@ const Profile = () => {
   }
   const [user, setUser] = useState<User>(user1)
   const profileID = useParams().profileID;
+  console.log(profileID);
   const [showSidebar, setShowSidebar] = useState(false);
   const handleShowSidebar = () => {
     setShowSidebar(true);
@@ -45,12 +46,12 @@ const Profile = () => {
     setShowSidebar(false);
   }
   return (
-    <>
+    <div>
       <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>
       <Sidebar user={user} showSideBar={showSidebar} handleHideSidebar={handleHideSidebar}/>
       <Timeline allTweets={allTweets}/>
       <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user1}/>
-    </>
+    </div>
   )
 }
 
