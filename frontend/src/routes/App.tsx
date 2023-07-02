@@ -6,14 +6,9 @@ import Profile from './Profile';
 import TweetChain from './TweetChain';
 import { User } from '../utils/APITypes';
 import { useState } from 'react';
+import { user as user1} from "../utils/localTestVars";
 
 function App() {
-  const user1: User = {
-    userID: "",
-    username: "bing bong bing",
-    handle: "realBingBong",
-    profileImg: "https://pbs.twimg.com/profile_images/1644390638912434176/AuiHnex3_400x400.jpg"
-  }
   const [user, setUser] = useState<User>(user1)
 
   const [showSidebar, setShowSidebar] = useState(false);

@@ -19,7 +19,7 @@ const Sidebar = ({
   const closeSidebarThenLink = useCallback((route:string) => {
     handleHideSidebar();
     navigate(route, { replace: true })
-  }, [navigate]);
+  }, [navigate, handleHideSidebar]);
 
   return (
     <>

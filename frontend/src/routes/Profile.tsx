@@ -5,6 +5,7 @@ import Dock from '../components/Dock'
 import { Tweet, User } from '../utils/APITypes'
 import { useParams } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import { initTweets as allTweets1 } from '../utils/localTestVars'
 const Profile = ({
   user,
   showSidebar,
@@ -16,119 +17,11 @@ const Profile = ({
   handleHideSidebar: () => void,
   handleShowSidebar: () => void
 }) => {
-  const [allTweets, setAllTweets] = useState<Tweet[]>([
-    {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 13123,
-      retweets: 123,
-      replies: [],
-      time: new Date(),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }, {
-      user: user,
-      text: "tweet text 123 nerf draven please mort dog peepocry",
-      likes: 12313123,
-      retweets: 123,
-      replies: [],
-      time: new Date(1),
-      tweetID: Math.floor(Math.random() * 100000000000).toString()
-    }
-    
-  ])
+  const [allTweets, setAllTweets] = useState<Tweet[]>(allTweets1)
   const handleAddTweet = (tweet: Tweet) => {
     setAllTweets([tweet,...allTweets])
   }
   const profileID = useParams().profileID;
-  console.log(profileID);
   return (
     <div>
       <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>

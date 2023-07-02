@@ -27,7 +27,8 @@ export type Tweet = {
     retweets: number,
     replies: Tweet[],
     time: Date,
-    tweetID: string
+    tweetID: string,
+    parent?: Tweet
 }
 
 export type User = {

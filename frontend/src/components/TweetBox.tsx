@@ -3,6 +3,8 @@ import { BiMessageRounded, BiTransferAlt, BiHeart } from 'react-icons/bi'
 import { Tweet } from '../utils/APITypes'
 import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
+import { useNavigate } from 'react-router-dom'
+import { useCallback } from 'react'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 // }
@@ -24,9 +26,12 @@ const TweetBox = ({
 }: {
   tweet: Tweet
 }) => {
-  console.log(tweet);
+  const navigate = useNavigate();
+  const handleTweetClick = useCallback(() => {
+    navigate(`/${tweet.user.handle}/status/${tweet.tweetID}`, { replace: true });
+  }, [navigate, tweet.user.handle, tweet.tweetID])
   return (
-    <div className="flex justify-between p-2">
+    <div className="flex justify-between p-2 cursor-pointer" onClick={handleTweetClick}>
       <div>
         <img src={tweet.user.profileImg} alt="" className="w-8 rounded-full"/>
       </div>
