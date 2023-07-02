@@ -15,7 +15,7 @@ const Header = ({
   profileID?: string,
   handleShowSidebar: () => void
 }) => {
-  const headerStyles = "sticky w-screen flex items-center justify-around p-3 bg-white h-auto top-0";
+  const headerStyles = "sticky w-screen flex items-center justify-around p-3 bg-white h-auto top-0 dark:bg-black";
   const userNetwork:UserNetwork = {
     followers: [],
     following: []
@@ -42,7 +42,7 @@ const Header = ({
         </>
         :
         <header className={headerStyles}>
-          <BiUser className="absolute left-3" size={30} onClick={handleShowSidebar}/>
+          <BiUser className="absolute left-3 dark:text-white" size={30} onClick={handleShowSidebar}/>
           <Link to="/"> 
               <BiSolidPear className="text-twitter-blue" size={30}/>
           </Link>
