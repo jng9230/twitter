@@ -1,4 +1,4 @@
-import { User } from "./APITypes"
+import { Tweet, User } from "./APITypes"
 export const user: User = {
     userID: "",
     username: "bing bong bing",
@@ -6,22 +6,22 @@ export const user: User = {
     profileImg: "https://pbs.twimg.com/profile_images/1644390638912434176/AuiHnex3_400x400.jpg"
 }
 
-const chain5 = {
+const chain5:Tweet = {
     user: user,
     text: "WORLD",
     likes: 13123,
     retweets: 123,
-    replies: [],
+    replies: new Set<Tweet["tweetID"]>(),
     time: new Date(),
     tweetID: "74000303119"
 }
 
-const chain4 = {
+const chain4:Tweet = {
     user: user,
     text: "O",
     likes: 13123,
     retweets: 123,
-    replies: [chain5, ],
+    replies: new Set([chain5.tweetID]),
     time: new Date(),
     tweetID: "39194232510"
 }
@@ -31,7 +31,7 @@ const chain3 = {
     text: "L",
     likes: 13123,
     retweets: 123,
-    replies: [chain4],
+    replies: new Set([chain4.tweetID]),
     time: new Date(),
     tweetID: "12442145002"
 }
@@ -41,29 +41,29 @@ const chain2 = {
     text: "L",
     likes: 13123,
     retweets: 123,
-    replies: [chain3],
+    replies: new Set([chain3.tweetID]),
     time: new Date(),
     tweetID: "31583696722"
 }
 
-const chain1 = {
+const chain1:Tweet = {
     user: user,
     text: "E",
     likes: 13123,
     retweets: 123,
-    replies: [chain2],
+    replies: new Set([chain2.tweetID]),
     time: new Date(),
-    tweetID: "54057407497"
+    tweetID: "5405740749712"
 }
 
-const chain = {
+const chain:Tweet = {
     user: user,
     text: "H",
     likes: 13123,
     retweets: 123,
-    replies: [chain1],
+    replies: new Set([chain1.tweetID]),
     time: new Date(),
-    tweetID: "54057407497"
+    tweetID: "54057407496"
 }
 
 export const initTweets = [
@@ -78,7 +78,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 13123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(),
         tweetID: "Math.floor(Math.random() * 100000000000).toString()"
     }, {
@@ -86,7 +86,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -94,7 +94,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -102,7 +102,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -110,7 +110,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -118,7 +118,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -126,7 +126,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -134,7 +134,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -142,7 +142,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -150,7 +150,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -158,7 +158,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -166,7 +166,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
@@ -174,7 +174,7 @@ export const initTweets = [
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 12313123,
         retweets: 123,
-        replies: [],
+        replies: new Set<Tweet["tweetID"]>(),
         time: new Date(1),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
     }

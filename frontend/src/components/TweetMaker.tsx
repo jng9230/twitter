@@ -25,7 +25,7 @@ const TweetMaker = ({
         text: text,
         likes: 0,
         retweets: 0,
-        replies: [],
+        replies: new Set<string>(),
         time: new Date(),
         tweetID: Math.floor(Math.random() * 100000000000).toString()
       }

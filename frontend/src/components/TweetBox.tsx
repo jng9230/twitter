@@ -22,50 +22,96 @@ import { useCallback } from 'react'
 // }
 
 const TweetBox = ({
-  tweet
+  tweet,
+  isFocused
 }: {
-  tweet: Tweet
+  tweet: Tweet,
+  isFocused?: boolean
 }) => {
   const navigate = useNavigate();
   const handleTweetClick = useCallback(() => {
     navigate(`/${tweet.user.handle}/status/${tweet.tweetID}`, { replace: true });
   }, [navigate, tweet.user.handle, tweet.tweetID])
   return (
-    <div className="flex justify-between p-2 cursor-pointer" onClick={handleTweetClick}>
-      <div>
-        <img src={tweet.user.profileImg} alt="" className="w-8 rounded-full"/>
+    <>
+    {
+      isFocused ? 
+        <div className="p-2">
+          <div className="flex">
+            <img src={tweet.user.profileImg} alt="" className="h-11 w-auto rounded-full mr-2" />
+            <div className="">
+              <div className="font-bold truncate">
+                {tweet.user.username}
+              </div>
+              <div className="text-twitter-gray truncate">
+                @{tweet.user.handle}
+              </div>
+            </div>
+          </div>
+          <div className="my-3">
+            {tweet.text}
+          </div>
+          <div className="w-full">
+            <div className="text-twitter-gray">
+              {new Date(tweet.time).toLocaleString()}
+            </div>
+            <div className="w-full py-2 flex justify-between">
+              <div className="flex items-center">
+                {/* <BiMessageRounded className="inline mr-1" /> */}
+                {formatNumber(tweet.replies.size)} 
+                  <span className="text-twitter-gray ml-1"> Replies</span>
+              </div>
+              <div className="flex items-center">
+                {/* <BiTransferAlt className="inline mr-1" /> */}
+                {formatNumber(tweet.retweets)}
+                <span className="text-twitter-gray ml-1"> Quotes</span>
+              </div>
+              <div className="flex items-center">
+                <BiHeart className="inline mr-1" />
+                {formatNumber(tweet.likes)}
+                <span className="text-twitter-gray ml-1"> Likes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      :
+      <div className="flex justify-between p-2 cursor-pointer relative" onClick={handleTweetClick}>
+        <div className="mr-3">
+          <img src={tweet.user.profileImg} alt="" className="w-11 rounded-full relative top-2"/>
+        </div>
+        <div className="w-full">
+          <div className="flex space-x-2">
+            <div className="font-bold max-w-3/5 truncate">
+              {tweet.user.username} 
+            </div>
+            <div className="text-twitter-gray max-w-1/5 truncate">
+              @{tweet.user.handle}
+            </div>
+            <div className="text-twitter-gray w-1/5 truncate">
+              {dateDiffPretty(new Date(), tweet.time)}
+            </div>
+          </div>
+          <div>
+            {tweet.text}
+          </div>
+          <div className="w-full py-2 flex justify-between text-twitter-gray">
+            <div className="flex items-center">
+              <BiMessageRounded className="inline mr-1" />
+              {formatNumber(tweet.replies.size)}
+            </div>
+            <div className="flex items-center">
+              <BiTransferAlt className="inline mr-1" />
+              {formatNumber(tweet.retweets)}
+            </div>
+            <div className="flex items-center">
+              <BiHeart className="inline mr-1"/>
+              {formatNumber(tweet.likes)}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="w-4/5">
-        <div className="flex space-x-2">
-          <div className="font-boldmax-w-3/5 truncate">
-            {tweet.user.username} 
-          </div>
-          <div className="text-twitter-gray max-w-1/5 truncate">
-            @{tweet.user.handle}
-          </div>
-          <div className="text-twitter-gray w-1/5 truncate">
-            {dateDiffPretty(new Date(), tweet.time)}
-          </div>
-        </div>
-        <div>
-          {tweet.text}
-        </div>
-        <div className="w-full py-2 flex justify-between">
-          <div className="flex items-center">
-            <BiMessageRounded className="inline mr-1" />
-            {formatNumber(tweet.replies.length)}
-          </div>
-          <div className="flex items-center">
-            <BiTransferAlt className="inline mr-1" />
-            {formatNumber(tweet.retweets)}
-          </div>
-          <div className="flex items-center">
-            <BiHeart className="inline mr-1"/>
-            {formatNumber(tweet.likes)}
-          </div>
-        </div>
-      </div>
-    </div>
+    }
+    </>
   )
 }
 

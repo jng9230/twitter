@@ -7,7 +7,6 @@ import TweetChain from './TweetChain';
 import { User } from '../utils/APITypes';
 import { useState } from 'react';
 import { user as user1} from "../utils/localTestVars";
-
 function App() {
   const [user, setUser] = useState<User>(user1)
 
