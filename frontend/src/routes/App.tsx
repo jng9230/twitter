@@ -26,7 +26,7 @@ function App() {
         <Route path='/:profileID?' element={<Profile user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar}/>} 
         /> 
         <Route path='/settings' element={<Settings user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar} />} />
-        <Route path='/:profileID/status/:tweetID' element={<TweetChain />} />
+        <Route path='/:profileID/status/:tweetID' element={<TweetChain user={user}/>} />
       </Routes>
     </Router>
   );

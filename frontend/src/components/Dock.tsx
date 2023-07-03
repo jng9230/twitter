@@ -11,7 +11,7 @@ const Dock = ({
 }:{
   user: User
   allTweets: Tweet[],
-  handleAddTweet: (t:Tweet) => void
+  handleAddTweet?: (t:Tweet) => void
 }) => {
   const [showTweetMaker, setShowTweetMaker] = useState(false);
   return (
@@ -21,21 +21,24 @@ const Dock = ({
             <BiHome size={30}/>
           </Link>
           <BiSearch size={30}/>
-          <button type="button" onClick={() => setShowTweetMaker(true)}
-            className="
-              absolute 
-              -top-16 
-              right-5 
-              rounded-full 
-              bg-twitter-blue 
-              p-3 
-              text-white
-            ">
-            <BiPencil size={30}/>
-          </button>
+          {
+            showTweetMaker && 
+            <button type="button" onClick={() => setShowTweetMaker(true)}
+              className="
+                absolute 
+                -top-16 
+                right-5 
+                rounded-full 
+                bg-twitter-blue 
+                p-3 
+                text-white
+              ">
+              <BiPencil size={30}/>
+            </button>
+          }
       </div>
       {
-        showTweetMaker && 
+        showTweetMaker && handleAddTweet && 
           <TweetMaker 
             closeTweetMaker={() => setShowTweetMaker(false)} 
             user={user}

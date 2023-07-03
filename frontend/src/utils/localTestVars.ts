@@ -13,7 +13,8 @@ const chain5:Tweet = {
     retweets: 123,
     replies: new Set<Tweet["tweetID"]>(),
     time: new Date(),
-    tweetID: "74000303119"
+    tweetID: "74000303119",
+    parent: "39194232510"
 }
 
 const chain4:Tweet = {
@@ -23,7 +24,8 @@ const chain4:Tweet = {
     retweets: 123,
     replies: new Set([chain5.tweetID]),
     time: new Date(),
-    tweetID: "39194232510"
+    tweetID: "39194232510",
+    parent: "12442145002"
 }
 
 const chain3 = {
@@ -33,7 +35,8 @@ const chain3 = {
     retweets: 123,
     replies: new Set([chain4.tweetID]),
     time: new Date(),
-    tweetID: "12442145002"
+    tweetID: "12442145002",
+    parent: "31583696722"
 }
 
 const chain2 = {
@@ -43,7 +46,8 @@ const chain2 = {
     retweets: 123,
     replies: new Set([chain3.tweetID]),
     time: new Date(),
-    tweetID: "31583696722"
+    tweetID: "31583696722",
+    parent: "5405740749712"
 }
 
 const chain1:Tweet = {
@@ -53,7 +57,8 @@ const chain1:Tweet = {
     retweets: 123,
     replies: new Set([chain2.tweetID]),
     time: new Date(),
-    tweetID: "5405740749712"
+    tweetID: "5405740749712",
+    parent: "54057407496"
 }
 
 const chain:Tweet = {

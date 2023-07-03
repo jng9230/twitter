@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BiMessageRounded, BiTransferAlt, BiHeart } from 'react-icons/bi'
 import { Tweet } from '../utils/APITypes'
 import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCallback } from 'react'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -23,29 +23,47 @@ import { useCallback } from 'react'
 
 const TweetBox = ({
   tweet,
-  isFocused
+  isFocused,
+  isParent,
+  onTimeline,
+  parentTweet
 }: {
   tweet: Tweet,
-  isFocused?: boolean
+  isFocused?: boolean,
+  isParent?: boolean,
+  onTimeline?: boolean,
+  parentTweet?: Tweet
 }) => {
   const navigate = useNavigate();
-  const handleTweetClick = useCallback(() => {
-    navigate(`/${tweet.user.handle}/status/${tweet.tweetID}`, { replace: true });
-  }, [navigate, tweet.user.handle, tweet.tweetID])
+  const handleTweetClick = useCallback((handle:string, id:string) => {
+    navigate(`/${handle}/status/${id}`, { replace: true });
+  }, [navigate])
+
+  //parent -> add a vertical line on left to indicate connections
+  //focused -> entirely different spacing, full descriptions of icons like likes, replies, etc.
+  // useEffect(() => {
+  //   if (isFocused){
+  //     window.scrollTo(0, 0)
+  //   }
+  // }, [])
   return (
     <>
     {
       isFocused ? 
         <div className="p-2">
           <div className="flex">
-            <img src={tweet.user.profileImg} alt="" className="h-11 w-auto rounded-full mr-2" />
+            <Link to={`/${tweet.user.handle}`}>
+              <img src={tweet.user.profileImg} alt="" className="w-11 h-11 rounded-full relative top-2" />
+            </Link>
             <div className="">
-              <div className="font-bold truncate">
-                {tweet.user.username}
-              </div>
-              <div className="text-twitter-gray truncate">
-                @{tweet.user.handle}
-              </div>
+              <Link to={`/${tweet.user.handle}`}>
+                <div className="font-bold truncate">
+                  {tweet.user.username}
+                </div>
+                <div className="text-twitter-gray truncate">
+                  @{tweet.user.handle}
+                </div>
+              </Link>
             </div>
           </div>
           <div className="my-3">
@@ -57,12 +75,10 @@ const TweetBox = ({
             </div>
             <div className="w-full py-2 flex justify-between">
               <div className="flex items-center">
-                {/* <BiMessageRounded className="inline mr-1" /> */}
                 {formatNumber(tweet.replies.size)} 
                   <span className="text-twitter-gray ml-1"> Replies</span>
               </div>
               <div className="flex items-center">
-                {/* <BiTransferAlt className="inline mr-1" /> */}
                 {formatNumber(tweet.retweets)}
                 <span className="text-twitter-gray ml-1"> Quotes</span>
               </div>
@@ -75,24 +91,64 @@ const TweetBox = ({
           </div>
         </div>
       :
-      <div className="flex justify-between p-2 cursor-pointer relative" onClick={handleTweetClick}>
-        <div className="mr-3">
-          <img src={tweet.user.profileImg} alt="" className="w-11 rounded-full relative top-2"/>
+      <div className="flex justify-between p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet.tweetID)}>
+        <div className="mr-3 relative">
+          <Link to={`/${tweet.user.handle}`}>
+            <img src={tweet.user.profileImg} alt="" className="w-11 h-11 rounded-full relative top-2"/>
+          </Link>
+          {
+            isParent && 
+            <div className="absolute h-full w-[2px] inset-x-1/2 bg-gray-200 -z-10"></div>
+          }
         </div>
-        <div className="w-full">
-          <div className="flex space-x-2">
-            <div className="font-bold max-w-3/5 truncate">
-              {tweet.user.username} 
+        <div className="w-5/6">
+          <Link to={`/${tweet.user.handle}`}>
+            <div className="flex space-x-2">
+              <div className="font-bold max-w-3/5 truncate">
+                {tweet.user.username} 
+              </div>
+              <div className="text-twitter-gray max-w-1/5 truncate">
+                @{tweet.user.handle}
+              </div>
+              <div className="text-twitter-gray w-1/5 truncate">
+                {dateDiffPretty(new Date(), tweet.time)}
+              </div>
             </div>
-            <div className="text-twitter-gray max-w-1/5 truncate">
-              @{tweet.user.handle}
+          </Link>
+          <div className="space-y-2">
+            <div>
+              {tweet.text}
             </div>
-            <div className="text-twitter-gray w-1/5 truncate">
-              {dateDiffPretty(new Date(), tweet.time)}
-            </div>
-          </div>
-          <div>
-            {tweet.text}
+            {
+              onTimeline && parentTweet && 
+                <div className="rounded-lg border-gray-400 flex p-2 cursor-pointer border-[1px]" 
+                  onClick={() => handleTweetClick(parentTweet.user.handle, parentTweet.tweetID)}
+                >
+                <div className="mr-3 relative">
+                  <Link to={`/${parentTweet.user.handle}`}>
+                    <img src={tweet.user.profileImg} alt="" className="w-6 h-6 rounded-full relative top-2" />
+                  </Link>
+                </div>
+                <div className="w-5/6"> 
+                    <Link to={`/${parentTweet.user.handle}`}>
+                      <div className="flex space-x-2">
+                        <div className="font-bold max-w-3/5 truncate">
+                          {tweet.user.username}
+                        </div>
+                        <div className="text-twitter-gray max-w-1/5 truncate">
+                          @{tweet.user.handle}
+                        </div>
+                        <div className="text-twitter-gray w-1/5 truncate">
+                          {dateDiffPretty(new Date(), tweet.time)}
+                        </div>
+                      </div>
+                    </Link>
+                  <div>
+                    {parentTweet.text}
+                  </div>
+                </div>
+              </div>
+            }
           </div>
           <div className="w-full py-2 flex justify-between text-twitter-gray">
             <div className="flex items-center">
