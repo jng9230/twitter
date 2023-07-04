@@ -16,7 +16,7 @@ const Dock = ({
   const [showTweetMaker, setShowTweetMaker] = useState(false);
   return (
     <>
-      <div className="w-screen flex items-center justify-around fixed bottom-0 p-3 bg-white">
+      <div className="w-screen flex items-center justify-around sticky bottom-0 p-3 bg-white">
           <Link to="/">
             <BiHome size={30}/>
           </Link>
