@@ -3,7 +3,7 @@ import { BiMessageRounded, BiTransferAlt, BiHeart } from 'react-icons/bi'
 import { Tweet } from '../utils/APITypes'
 import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, redirect } from 'react-router-dom'
 import { useCallback } from 'react'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -35,9 +35,12 @@ const TweetBox = ({
   parentTweet?: Tweet
 }) => {
   const navigate = useNavigate();
-  const handleTweetClick = useCallback((handle:string, id:string) => {
-    navigate(`/${handle}/status/${id}`, { replace: true });
-  }, [navigate])
+  // const handleTweetClick = useCallback((handle:string, id:string) => {
+  //   navigate(`/${handle}/status/${id}`, { replace: true });
+  // }, [navigate])
+  const handleTweetClick = (handle: string, id: string) => {
+    return navigate(`/${handle}/status/${id}`);
+  }
 
   //parent -> add a vertical line on left to indicate connections
   //focused -> entirely different spacing, full descriptions of icons like likes, replies, etc.
@@ -91,7 +94,7 @@ const TweetBox = ({
           </div>
         </div>
       :
-      <div className="flex justify-between p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet.tweetID)}>
+      <div className="flex justify-between p-2 cursor-pointer relative">
         <div className="mr-3 relative">
           <Link to={`/${tweet.user.handle}`}>
             <img src={tweet.user.profileImg} alt="" className="w-11 h-11 rounded-full relative top-2"/>
@@ -101,7 +104,7 @@ const TweetBox = ({
             <div className="absolute h-full w-[2px] inset-x-1/2 bg-gray-200 -z-10"></div>
           }
         </div>
-        <div className="w-5/6">
+        <div className="w-5/6" onClick={() => handleTweetClick(tweet.user.handle, tweet.tweetID)}>
           <Link to={`/${tweet.user.handle}`}>
             <div className="flex space-x-2">
               <div className="font-bold max-w-3/5 truncate">
@@ -121,13 +124,9 @@ const TweetBox = ({
             </div>
             {
               onTimeline && parentTweet && 
-                <div className="rounded-lg border-gray-400 flex p-2 cursor-pointer border-[1px]" 
-                  onClick={() => handleTweetClick(parentTweet.user.handle, parentTweet.tweetID)}
-                >
+                <div className="rounded-lg border-gray-400 flex p-2 cursor-pointer border-[1px]">
                 <div className="mr-3 relative">
-                  <Link to={`/${parentTweet.user.handle}`}>
                     <img src={tweet.user.profileImg} alt="" className="w-6 h-6 rounded-full relative top-2" />
-                  </Link>
                 </div>
                 <div className="w-5/6"> 
                     <Link to={`/${parentTweet.user.handle}`}>

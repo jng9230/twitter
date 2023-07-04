@@ -89,9 +89,11 @@ const TweetChain = ({
     <header className="flex p-2 sticky top-0 bg-white z-50 w-full">
       <Link to="/" 
         onClick={(e) => {
-          // e.preventDefault();
-          // navigate(-1);
+          e.preventDefault();
+          navigate(-1);
         }}
+        // note: navigate(-1) might not work b/c using Link to reset the URLs for tweets 
+        // might not properly set the URL in browser history .. . 
       >
         <BiLeftArrowAlt size={30}/>
       </Link>
