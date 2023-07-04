@@ -15,13 +15,12 @@ const TweetChain = ({
 
   //get the focusedTweet tweet
   const focusedTweetID = useParams().tweetID
+  // console.log(focusedTweetID)
   // const [focusedTweetID, setFocusedTweetID] = useState(useParams().tweetID)
   // const [focusedTweet, setFocusedTweet] = useState<Tweet>(() => {
   //   return initTweets.filter((d) => d.tweetID === focusedTweetID)[0];
   // })
-  const focusedTweet:Tweet = initTweets.filter((d) => d.tweetID === focusedTweetID)[0];
-  console.log("focused tweet:")
-  console.log(focusedTweet);
+  const focusedTweet = initTweets.filter((d) => d.tweetID === focusedTweetID)[0];
 
   //get the replies for the current tweet
   const [children, setChildren] = useState<Tweet[]>(
@@ -33,6 +32,21 @@ const TweetChain = ({
       })
     }
   )
+  // useEffect(() => {
+  //   setFocusedTweetID(useParams().tweetID)
+  // }, [])
+
+  // useEffect(() => {
+  //   setFocusedTweet(() => {
+  //     return initTweets.filter((d) => d.tweetID === focusedTweetID)[0];
+  //   })
+  //   let replies = Array.from(focusedTweet.replies)
+  //   setChildren(replies.map((d) => {
+  //     return initTweets.filter(d1 => d1.tweetID === d)[0]
+  //   }))
+  // }, [focusedTweetID])
+  // const focusedTweet:Tweet = initTweets.filter((d) => d.tweetID === focusedTweetID)[0];
+
 
   useEffect(() => {
     let replies = Array.from(focusedTweet.replies)
@@ -61,18 +75,15 @@ const TweetChain = ({
 
   //scroll the focused tweet into view
   const ref = useRef<null | HTMLDivElement>(null)
-  // useEffect(() => {
-  //   if (ref.current){
-  //     const y = ref.current.getBoundingClientRect().top + -30
-  //     console.log(ref.current.getBoundingClientRect().top)
-  //     window.scrollTo({ top: y });
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (ref.current){
+      const y = ref.current.getBoundingClientRect().top + -45 + window.scrollY
+      window.scrollTo({top: y})
+    }
+  }, [focusedTweetID])
 
   const navigate = useNavigate()
 
-  console.log("children:")
-  console.log(children)
   return (
     <>
     <header className="flex p-2 sticky top-0 bg-white z-50 w-full">
