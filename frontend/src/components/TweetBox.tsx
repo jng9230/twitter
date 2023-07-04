@@ -36,6 +36,7 @@ const TweetBox = ({
 }) => {
   const navigate = useNavigate();
   const handleTweetClick = useCallback((handle:string, id:string) => {
+    console.log(`GOING TO ${handle} ${id}`)
     navigate(`/${handle}/status/${id}`, { replace: true });
   }, [navigate])
 
