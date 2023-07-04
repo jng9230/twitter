@@ -80,12 +80,20 @@ export const initTweets = [
     chain5,
     {
         user: user,
+        text: "ENORMO GLIZZINGTON III",
+        likes: 13123,
+        retweets: 123,
+        replies: new Set<Tweet["tweetID"]>(),
+        time: new Date("6-23-2023"),
+        tweetID: Math.floor(Math.random() * 100000000000).toString()
+    },{
+        user: user,
         text: "tweet text 123 nerf draven please mort dog peepocry",
         likes: 13123,
         retweets: 123,
         replies: new Set<Tweet["tweetID"]>(),
         time: new Date(),
-        tweetID: "Math.floor(Math.random() * 100000000000).toString()"
+        tweetID: Math.floor(Math.random() * 100000000000).toString()
     }, {
         user: user,
         text: "tweet text 123 nerf draven please mort dog peepocry",
