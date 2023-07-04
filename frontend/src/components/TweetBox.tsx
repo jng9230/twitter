@@ -55,11 +55,11 @@ const TweetBox = ({
       isFocused ? 
         <div className="p-2">
           <div className="flex">
-            <Link to={`/${tweet.user.handle}`}>
+            <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
               <img src={tweet.user.profileImg} alt="" className="w-11 h-11 rounded-full relative top-2" />
             </Link>
             <div className="">
-              <Link to={`/${tweet.user.handle}`}>
+              <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
                 <div className="font-bold truncate">
                   {tweet.user.username}
                 </div>
@@ -94,9 +94,9 @@ const TweetBox = ({
           </div>
         </div>
       :
-      <div className="flex justify-between p-2 cursor-pointer relative">
+        <div className="flex justify-between p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet.tweetID)}>
         <div className="mr-3 relative">
-          <Link to={`/${tweet.user.handle}`}>
+          <Link to={`/${tweet.user.handle}`} className="z-50" onClick={(e) => e.stopPropagation()}>
             <img src={tweet.user.profileImg} alt="" className="w-11 h-11 rounded-full relative top-2"/>
           </Link>
           {
@@ -104,8 +104,8 @@ const TweetBox = ({
             <div className="absolute h-full w-[2px] inset-x-1/2 bg-gray-200 -z-10"></div>
           }
         </div>
-        <div className="w-5/6" onClick={() => handleTweetClick(tweet.user.handle, tweet.tweetID)}>
-          <Link to={`/${tweet.user.handle}`}>
+        <div className="w-5/6">
+          <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
             <div className="flex space-x-2">
               <div className="font-bold max-w-3/5 truncate">
                 {tweet.user.username} 
@@ -129,7 +129,7 @@ const TweetBox = ({
                     <img src={tweet.user.profileImg} alt="" className="w-6 h-6 rounded-full relative top-2" />
                 </div>
                 <div className="w-5/6"> 
-                    <Link to={`/${parentTweet.user.handle}`}>
+                    <Link to={`/${parentTweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
                       <div className="flex space-x-2">
                         <div className="font-bold max-w-3/5 truncate">
                           {tweet.user.username}
