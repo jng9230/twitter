@@ -6,9 +6,7 @@ const cookie_session = require('cookie-session');
 const config = require("./config")
 const user_routes = require("./routes/user-routes")
 const tweet_routes = require("./routes/tweet-routes")
-// const book_routes = require("./routes/book-routes")
-// const user_routes = require("./routes/user-routes")
-// const login_routes = require("./routes/login-routes")
+const profile_routes = require("./routes/profile-routes")
 const cookie_parser = require("cookie-parser");
 const body_parser = require("body-parser");
 
@@ -37,10 +35,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/tweet", tweet_routes);
-app.use("/user", user_routes)
-// app.use("/book", book_routes)
-// app.use("/user", user_routes)
-// app.use("/login", login_routes)
+app.use("/user", user_routes);
+app.use("/profile", profile_routes);
 
 //check for auth on home page load
 // const auth_check = (req, res, next) => {

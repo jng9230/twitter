@@ -3,13 +3,29 @@ const User = require("../models/user");
 const Tweet = require("../models/tweet");
 const config = require("../config")
 const debug = config.DEBUG === "1"; 
+const reverseChronoSort = require("../utils/reverseChronoSort")
 
 //get a tweet
 router.get("/id/:id", async (req, res) => {
-    if (debug) console.log(`GETTING TWEET ${req.params.id}`)
+    if (debug) console.log(`GETTING SPEC. TWEET ${req.params.id}`)
 
     const tweet = await Tweet.findById(req.params.id)
     return res.json(tweet)
+})
+
+//get the replies for a given tweet
+router.get("/children/:id", async (req, res) => {
+    if (debug) console.log(`GETTING CHILDREN OF ${req.params.id}`)
+
+    let children = []
+    const parent = await Tweet.findById(req.params.id)
+    parent.replies.map(async (id) => {
+        const child = Tweet.findById(id)
+        children.push(child)
+    })
+    
+    children = reverseChronoSort(children)
+    return res.json(children) //ASSUME SMALL DATA SIZE
 })
 
 //create a tweet
@@ -56,7 +72,5 @@ router.delete("/", async (req, res) => {
 
     return res.json(del_tweet)
 })
-
-
 
 module.exports = router

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon start.js",
-    "test": "mocha",
+    "test": "jest",
     "build": "ENVIRONMENT=$ENVIRONMENT webpack"
   },
   "author": "",
@@ -23,5 +23,9 @@
     "passport-google-oauth2": "^0.2.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "http": "^0.0.1-security",
+    "jest": "^29.6.1"
   }
 }

@@ -52,8 +52,8 @@ router.get("/google",
     passport.authenticate("google", { scope: ['email', 'profile'] }),
 );
 
-router.get("/guest",
-    passport.authenticate("anonymId"),
+router.get("/local",
+    passport.authenticate("local"),
     function (req, res) {
         if (req.user) {
             res.redirect(CLIENT_HOME_PAGE_URL)

@@ -23,7 +23,10 @@ const tweet_schema = new Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: "Tweet"
     },
-    time: Date,
+    time: {
+        type: Date,
+        default: Date.now
+    },
     parent: mongoose.Schema.Types.ObjectId,
 })
 
