@@ -50,6 +50,9 @@ app.use("/profile", profile_routes);
 //     }
 // };
 
+app.get("/test", (req, res) => {
+    return res.json("hello world")
+})
 
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({ extended: true }));
@@ -61,6 +64,6 @@ app.use(body_parser.urlencoded({ extended: true }));
 // app.get('/', (req, res) => {
 //     res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 // });
-console.log(__dirname)
+// console.log(__dirname)
 
 module.exports = app

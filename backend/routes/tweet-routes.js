@@ -19,18 +19,19 @@ router.get("/children/:id", async (req, res) => {
 
     let children = []
     const parent = await Tweet.findById(req.params.id)
-    parent.replies.map(async (id) => {
-        const child = Tweet.findById(id)
-        children.push(child)
-    })
-    
+    await Promise.all(
+        parent.replies.map(async (id) => {
+            const child = await Tweet.findById(id.toString())
+            children.push(child)
+        })
+    )
     children = reverseChronoSort(children)
     return res.json(children) //ASSUME SMALL DATA SIZE
 })
 
 //create a tweet
 router.post("/create", async (req, res) => {
-    if (debug) console.log(`CREATING TWEET: ${req.body}`)
+    if (debug) {console.log(`CREATING TWEET:`); console.log(req.body)}
     const tweet = new Tweet({
         user: req.body.user,
         text: req.body.text,
@@ -43,7 +44,7 @@ router.post("/create", async (req, res) => {
 
 //reply to a tweet
 router.post("/reply", async (req, res) => {
-    if (debug) console.log(`REPLYING: ${req.body}`)
+    if (debug) { console.log(`REPLYING:`); console.log(req.body) }
 
     const reply = new Tweet({
         user: req.body.user,

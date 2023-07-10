@@ -9,7 +9,7 @@ app.listen(PORT, () => {
 
 mongoose.connect(URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: truea
+    useUnifiedTopology: true
 })
     .then(() => {
         console.log("Connected to MongoDB");

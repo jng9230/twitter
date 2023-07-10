@@ -21,5 +21,4 @@ const config = {
     CLIENT_HOME_PAGE_URL: process.env.CLIENT_HOME_PAGE_URL,
     DEBUG: "1",
 }
-
 module.exports = config

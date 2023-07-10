@@ -4,12 +4,14 @@ const config = require("../config")
 const mongoose = require('mongoose');
 //connect to DB
 const PORT = config.PORT || 5001;
-const URI = config.ATLAS_URI_TEST;
+const URI = config.ATLAS_URI;
 const app = require("../app")
 const User = require("../models/user");
 const Tweet = require("../models/tweet");
 const http = require('http');
-import request from './request';
+const request = require("supertest")
+const base_url = `http://localhost:${config.PORT}`
+const API = request(base_url)
 
 async function dropAllCollections() {
     const collections = Object.keys(mongoose.connection.collections)
@@ -42,200 +44,247 @@ beforeAll((done) => {
         .finally(() => done())
 });
 
-test("users", () => {
-    beforeEach(async () => {
-        await dropAllCollections();
-    });
-
-    test("/test", (done) => {
-        chai.request(app)
-            .get("/test")
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.result.should.be.eql("nice");
-                done()
-            })
-    });
-
-    test("GET /user", (done) => {
-        chai.request(app)
-            .get("/user/")
-            .end((err, res) => {
-                res.body.length.should.be.eql(0);
-                done()
-            })
+describe("users", () => {
+    it("creates a user", async () => {
+        const body = {
+            email: "test@gmail.com",
+            username: "itsa me",
+            handle: "woooo",
+        }
+        const res = await API.post("/user/create").send(body);
+        expect(res.body.email).toEqual("test@gmail.com");
+        expect(res.body.username).toEqual("itsa me");
+        expect(res.body.handle).toEqual("woooo");
+        expect(res.body.following).toEqual([]);
+        expect(res.body.followers).toEqual([]);
     })
 
-    test("POST /user", (done) => {
-        const name = "John Ng";
-        const email = "asdf123@gmail.com";
-        chai.request(app)
-            .post("/user/")
-            .send({ name: name, email: email })
-            .end((err, res) => {
-                res.body.name.should.be.eql(name);
-                res.body.email.should.be.eql(email);
-                done()
-            })
-    });
+    it("gets a user", async () => {
+        const body = {
+            email: "test1@gmail.com",
+            username: "itsa me",
+            handle: "woooo11",
+        }
+        const create_user = await API.post("/user/create").send(body);
+        const get_user = await API.get(`/user/id/${create_user.body._id}`)
+        expect(get_user.body.email).toEqual(body.email)
+        expect(get_user.body.username).toEqual(body.username)
+        expect(get_user.body.handle).toEqual(body.handle)
+        expect(get_user.body.following).toEqual(get_user.body.following);
+        expect(get_user.body.followers).toEqual(get_user.body.followers);
+    })
+
+    it("follows a user", async () => {
+        const body_ee = {
+            email: "test32@gmail.com",
+            username: "itsa me",
+            handle: "test32",
+        }
+        const followee = await API.post("/user/create").send(body_ee);
+        const body_er = {
+            email: "test33@gmail.com",
+            username: "itsa me",
+            handle: "test33",
+        }
+        const follower = await API.post("/user/create").send(body_er);
+        const follow_rq = await API.post("/user/follow").send({
+            followee: followee.body._id,
+            follower: follower.body._id
+        })
+        expect(follow_rq.body.followee._id).toEqual(followee.body._id)
+        expect(follow_rq.body.follower._id).toEqual(follower.body._id)
+
+        //get the users and check that their fields have correctly updated
+        const check_ee = await API.get(`/user/id/${followee.body._id}`)
+        expect(check_ee.body.followers.length).toEqual(1)
+        expect(check_ee.body.following.length).toEqual(0)
+        expect(check_ee.body.followers[0]).toEqual(follower.body._id)
+
+        const check_er = await API.get(`/user/id/${follower.body._id}`)
+        expect(check_er.body.followers.length).toEqual(0)
+        expect(check_er.body.following.length).toEqual(1)
+        expect(check_er.body.following[0]).toEqual(followee.body._id)
+    })
+
+    it("unfollows a user", async () => {
+        //set up the follow
+        const body_ee = {
+            email: "test42@gmail.com",
+            username: "itsa me",
+            handle: "test42",
+        }
+        const followee = await API.post("/user/create").send(body_ee);
+        const body_er = {
+            email: "test43@gmail.com",
+            username: "itsa me",
+            handle: "test43",
+        }
+        const follower = await API.post("/user/create").send(body_er);
+        const follow_rq = await API.post("/user/follow").send({
+            followee: followee.body._id,
+            follower: follower.body._id
+        })
+
+        //unfollow and check
+        const unfollow_rq = await API.post("/user/unfollow").send({
+            followee: followee.body._id,
+            follower: follower.body._id
+        })
+        expect(unfollow_rq.body.followee._id).toEqual(followee.body._id)
+        expect(unfollow_rq.body.follower._id).toEqual(follower.body._id)
+
+        //get the users and check that their fields have correctly updated
+        const check_ee = await API.get(`/user/id/${followee.body._id}`)
+        expect(check_ee.body.followers.length).toEqual(0)
+        expect(check_ee.body.following.length).toEqual(0)
+
+        const check_er = await API.get(`/user/id/${follower.body._id}`)
+        expect(check_er.body.followers.length).toEqual(0)
+        expect(check_er.body.following.length).toEqual(0)
+    })
 })
 
-// describe("books", () => {
-//     let new_user;
-//     before(async () => {
-//         await dropAllCollections()
+describe("tweets", () => {
+    const user_body = {
+        email: "tweet@gmail.com",
+        username: "itsa me",
+        handle: "tweet12",
+    }
+    let user_id;
+    beforeAll( async () => {
+        //make a user to tweet with
+        const res = await API.post("/user/create").send(user_body);
+        user_id = res.body._id
+    })
 
-//         const user = new User({ name: "Test Tester", email: "email2@gmail.com" })
-//         await user.save()
-//         new_user = user
-//     })
+    it("creates a tweet", async() => {
+        const body = {
+            user: user_id,
+            text: "testing testing 123"
+        }
+        const res = await API.post("/tweet/create").send(body)
+        expect(res.body.user).toEqual(user_id)
+        expect(res.body.text).toEqual(body.text)
+    })
 
-//     test("GET /book", async () => {
-//         const book = new Book({ title: "test0", user: new_user._id })
-//         await book.save()
-//         chai.request(app)
-//             .get(`/book/id/${book._id}`)
-//             .end((err, res) => {
-//                 res.body.should.have.property("book");
-//                 res.body.should.have.property("quotes")
-//                 res.body.book._id.should.be.eql(book._id.toString());
-//                 res.body.book.title.should.be.eql(book.title)
-//                 res.body.quotes.length.should.be.eql(0);
-//             })
-//     })
+    it("gets a tweet", async () => {
+        //make a tweet
+        const body = {
+            user: user_id,
+            text: "testing testing 123"
+        }
+        const res = await API.post("/tweet/create").send(body)
 
-//     test("GET /all_for_user", async () => {
-//         const book = new Book({ title: "test1", user: new_user._id })
-//         await book.save()
-//         chai.request(app)
-//             .get(`/book/all_for_user/${new_user._id}`)
-//             .end((err, res) => {
-//                 res.should.have.status(200);
-//                 res.body.length.should.be.above(0);
-//                 // res.body[0].title.should.be.eql(book.title);
-//             })
-//     });
+        //get the tweet
+        const get_tweet = await API.get(`/tweet/id/${res.body._id}`)
+        expect(get_tweet.body.user).toEqual(body.user)
+        expect(get_tweet.body.text).toEqual(body.text)
+    })
+    
+    
+    it("replies to a tweet", async () => {
+        //make a tweet
+        const body = {
+            user: user_id,
+            text: "testing testing 123"
+        }
+        const res = await API.post("/tweet/create").send(body)
 
-//     test("POST /book", (done) => {
-//         const title = "new book 22"
-//         chai.request(app)
-//             .post(`/book`)
-//             .send({
-//                 title: title,
-//                 user_id: new_user._id
-//             })
-//             .end((err, res) => {
-//                 res.body.title.should.be.eql(title);
-//                 res.body.user.should.be.eql(new_user._id.toString());
-//                 done()
-//             })
-//     });
+        //reply to above tweet
+        const reply_body = {
+            user: user_id, 
+            text: "reply reply 123",
+            parent: res.body._id
+        }
+        const reply = await API.post("/tweet/reply").send(reply_body)
+        //check that the reply was made into a tweet
+        expect(reply.body.parent).toEqual(res.body._id)
+        expect(reply.body.user).toEqual(user_id)
+        expect(reply.body.text).toEqual(reply_body.text)
 
-//     test("DELETE /book", async () => {
-//         const book = new Book({ title: "to be delete", user: new_user._id })
-//         await book.save()
-//         chai.request(app)
-//             .delete("/book")
-//             .send({ id: book._id })
-//             .end((err, res) => {
-//                 res.body.should.have.property("book")
-//                 res.body.should.have.property("quotes")
-//                 res.body.book.title.should.be.eql(book.title)
-//                 res.body.book._id.should.be.eql(book._id.toString())
-//                 res.body.quotes.deletedCount.should.be.eql(0)
-//             })
-//     })
-// })
+        //check that that parent tweet has the reply as a child
+        const parent = await API.get(`/tweet/id/${res.body._id}`)
+        expect(parent.body.replies.length).toEqual(1)
+        expect(parent.body.replies[0]).toEqual(reply.body._id)
+    })
+    
+    it("gets the single reply for a tweet", async () => {
+        //make a tweet parent and tweet child
+        const body = {
+            user: user_id,
+            text: "testing testing 123"
+        }
+        const parent = await API.post("/tweet/create").send(body)
+        const reply_body = {
+            user: user_id,
+            text: "reply reply 123",
+            parent: parent.body._id
+        }
+        const reply = await API.post("/tweet/reply").send(reply_body)
 
-// describe("quotes", () => {
-//     let new_user;
-//     let new_book;
-//     before(async () => {
-//         await dropAllCollections()
+        //get the reply for the parent
+        const replies = await API.get(`/tweet/children/${parent.body._id}`)
+        expect(replies.body.length).toEqual(1)
+        expect(replies.body[0]._id).toEqual(reply.body._id)
+    })
 
-//         const user = new User({ name: "adf waawa", email: "fake@gmail.com" })
-//         await user.save()
-//         new_user = user;
+    it("gets the sorted replies for a tweet", async () => {
+        //make a tweet parent and multiple children
+        const body = {
+            user: user_id,
+            text: "testing testing 123"
+        }
+        const parent = await API.post("/tweet/create").send(body)
+        const reply_body = {
+            user: user_id,
+            text: "first",
+            parent: parent.body._id
+        }
+        const reply = await API.post("/tweet/reply").send(reply_body)
+        const reply_body1 = {
+            user: user_id,
+            text: "second",
+            parent: parent.body._id
+        }
+        const reply1 = await API.post("/tweet/reply").send(reply_body1)
+        const reply_body2 = {
+            user: user_id,
+            text: "third",
+            parent: parent.body._id
+        }
+        const reply2 = await API.post("/tweet/reply").send(reply_body2)
 
-//         const book = new Book({ title: "to be added to", user: user._id })
-//         await book.save()
-//         new_book = book;
-//     })
+        //check the replies
+        const replies = await API.get(`/tweet/children/${parent.body._id}`)
+        expect(replies.body.length).toEqual(3)
+        expect(replies.body[0]._id).toEqual(reply.body._id)
+        expect(replies.body[1]._id).toEqual(reply1.body._id)
+        expect(replies.body[2]._id).toEqual(reply2.body._id)
+    })
 
-//     test("POST /quote", (done) => {
-//         const text = "to be or not to be that is the q";
-//         chai.request(app)
-//             .post(`/quote/`)
-//             .send({
-//                 text: text,
-//                 book: new_book._id,
-//                 user_id: new_user._id
-//             })
-//             .end((err, res) => {
-//                 res.body.text.should.be.eql(text);
-//                 res.body.book.should.be.eql(new_book._id.toString());
-//                 res.body.user.should.be.eql(new_user._id.toString());
-//                 done();
-//             })
-//     })
+    it("deletes a tweet", async () => {
 
-//     test("GET /all_for_book", async () => {
-//         const text = "pink frog purple toad";
-//         const new_quote = new Quote({
-//             text: text,
-//             book: new_book._id,
-//             user: new_user._id,
-//         })
+    })
 
-//         await new_quote.save();
+    it("deletes a reply", async () => {
 
-//         chai.request(app)
-//             .get(`/quote/all_for_book/${new_book._id}`)
-//             .end((err, res) => {
-//                 res.body.length.should.be.above(0);
-//                 // res.body[0].text.should.be.eql(text); //race conditions -> can't test properly? 
-//                 // res.body[0]._id.should.be.eql(new_quote._id.toString());
-//             })
-//     })
+    })
+})
 
-//     test("GET /all_for_user", async () => {
-//         const text = "pink frog purple toad 3";
-//         const new_quote = new Quote({
-//             text: text,
-//             book: new_book._id,
-//             user: new_user._id,
-//         })
+describe("profiles/landing pages", () => {
+    it("gets a homepage", async () => {
+        //generate users
+        //follow users
+        //generate tweets
+        //generate a homepage
+    })
 
-//         await new_quote.save();
-
-//         chai.request(app)
-//             .get(`/quote/all_for_user/${new_user._id}`)
-//             .end((err, res) => {
-//                 res.body.length.should.be.above(0);
-//             })
-//     })
-
-//     test("DELETE /quote", async () => {
-//         const text = "blue blue blue asdsa a"
-//         const new_quote = new Quote({
-//             text: text,
-//             book: new_book._id,
-//             user: new_user._id,
-//         })
-//         await new_quote.save()
-
-//         chai.request(app)
-//             .delete("/quote")
-//             .send({ id: new_quote._id })
-//             .end((err, res) => {
-//                 res.body.should.have.property("result")
-//                 res.body.result.text.should.be.eql(text);
-//                 res.body.result._id.should.be.eql(new_quote._id.toString());
-//                 res.body.result.user.should.be.eql(new_quote.user.toString());
-//                 res.body.result.book.should.be.eql(new_quote.book.toString())
-//             })
-//     })
-// })
+    it("gets a profile page", async () => {
+        //generate user
+        //generate tweets
+        //generate a profile page
+    })
+})
 
 
 afterAll(async () => {

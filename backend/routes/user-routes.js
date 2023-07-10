@@ -14,7 +14,8 @@ router.get("/id/:id", async (req, res) => {
 
 //create user
 router.post("/create", async (req, res) => {
-    if (debug) console.log(`MAKING USER: ${req.body}`)
+    if (debug) { console.log(`MAKING USER:`); console.log(req.body) }
+
 
     const user = new User({
         email: req.body.email,
@@ -23,21 +24,24 @@ router.post("/create", async (req, res) => {
         profileImg: req.body.profileImg,
     })
 
-    await user.save()
+    user.save()
     return res.json(user)
 })
 
 //follow
 router.post("/follow", async (req, res) => {
-    if (debug) console.log(`FOLLOWING: ${req.body}`)
+    if (debug) {console.log("FOLLOWING:"); console.log(req.body)}
+    if (!req.body.followee || !req.body.follower){
+        return res.json("NO FOLLOWER/FOLLOWEE PROVIDED").status(400)
+    }
 
-    const followee = await User.update(
+    const followee = await User.findOneAndUpdate(
         { _id: req.body.followee },
         { $push: { followers: req.body.follower } }
     );
-    const follower = await User.update(
+    const follower = await User.findOneAndUpdate(
         { _id: req.body.follower },
-        { $push: { followers: req.body.followee } }
+        { $push: { following: req.body.followee } }
     );
 
     return res.json({
@@ -48,16 +52,19 @@ router.post("/follow", async (req, res) => {
 
 //unfollow
 router.post("/unfollow", async (req, res) => {
-    if (debug) console.log(`UNFOLLOWING: ${req.body}`)
+    if (debug) { console.log("UNFOLLOWING:"); console.log(req.body) }
+    if (!req.body.followee || !req.body.follower) {
+        return res.json("NO FOLLOWER/FOLLOWEE PROVIDED").status(400)
+    }
 
-    const followee = await User.updateOne({ _id: req.followee }, {
+    const followee = await User.findOneAndUpdate({ _id: req.body.followee }, {
         $pullAll: {
-            followers: [{ _id: req.params.follower }],
+            followers: [{ _id: req.body.follower }],
         },
     });
-    const follower = await User.updateOne({ _id: req.follower }, {
+    const follower = await User.findOneAndUpdate({ _id: req.body.follower }, {
         $pullAll: {
-            followers: [{ _id: req.params.followee }],
+            following: [{ _id: req.body.followee }],
         },
     });
 
