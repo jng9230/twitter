@@ -5,10 +5,6 @@ const mongoose = require('mongoose');
 //connect to DB
 const PORT = config.PORT || 5001;
 const URI = config.ATLAS_URI;
-// const app = require("../app")
-// const User = require("../models/user");
-// const Tweet = require("../models/tweet");
-// const http = require('http');
 const request = require("supertest")
 const base_url = `http://localhost:${config.PORT}`
 const API = request(base_url)
@@ -43,6 +39,10 @@ beforeAll((done) => {
         .catch(e => console.log(e))
         .finally(() => done())
 });
+
+beforeEach(async () => {
+    await dropAllCollections()
+})
 
 describe("users", () => {
     it("creates a user", async () => {
@@ -272,7 +272,6 @@ describe("tweets", () => {
 
         //delete it
         const del = await API.delete(`/tweet/id/${res.body._id}`)
-        console.log(del.body)
         expect(del.body.deleted._id).toEqual(res.body._id)
     })
 
@@ -300,29 +299,24 @@ describe("tweets", () => {
 })
 
 describe("profiles/landing pages", () => {
-    const user_body = {
-        email: "tweet@gmail.com",
-        username: "itsa me",
-        handle: "tweet12",
-    }
     let users = []
     const tweets_per_user = 5
-    const num_users = 3
+    const num_users = 4
     beforeAll(async () => {
         //make some users
         let user_bodies = []
         for (let i = 0; i < num_users; i ++){
-            const user_body = {
+            const user_body1 = {
                 email: `${parseInt(Math.random() * 1000)}@gmail.com`,
                 username: "itsa me",
                 handle: `user${parseInt(Math.random() * 1000)}`
             }
-            user_bodies.push(user_body)
+            user_bodies.push(user_body1)
         }
         await Promise.all(
             user_bodies.map(async (d) => {
-                const user = await API.post("/user/create").send(user_body);
-                users.push(user);
+                const user = await API.post("/user/create").send(d);
+                users.push(user.body);
             })
         )
 
@@ -339,28 +333,44 @@ describe("profiles/landing pages", () => {
         )
 
         //have the first user follow all other users
+        const others = users.slice(1, users.length)
         await Promise.all(
-            users.slice(1, users.length-1).map(async d => {
+            others.map(async d => {
                 const follower = users[0]
-                const followee = users[i + 1]
+                const followee = d
                 await API.post("/user/follow").send({
-                    follower: follower,
-                    followee: followee
+                    follower: follower._id,
+                    followee: followee._id
                 })
             })
         )
     })
 
     it("gets a homepage", async () => {
-        const home_tweets = API.get(`/home/${users[0]._id}`)
+        const res = await API.get(`/profile/home/${users[0]._id}`)
+        const home_tweets = res.body;
         //check that the number of tweets match
         expect(home_tweets.length).toEqual( (num_users - 1) * tweets_per_user)
+
         //check that they are ordered wrt date
-        expect(home_tweets[0].time.getTime()).toBeLessThan(home_tweets[home_tweets.length - 1].time.getTime())
+        const first_time = new Date(home_tweets[0].time)
+        const last_time = new Date(home_tweets[home_tweets.length - 1].time)
+        expect(first_time.getTime()).toBeLessThan(last_time.getTime())
     })
 
     it("gets a profile page", async () => {
+        const res = await API.get(`/profile/user/${users[0]._id}`)
+        const tweets = res.body
+
         //make sure all the tweets are for the same profile
+        for (const tweet of tweets){
+            expect(tweet.user).toEqual(users[0]._id)
+        }
+
+        //make sure tweets are in reverse chrono order
+        const first_time = new Date(tweets[0].time)
+        const last_time = new Date(tweets[tweets.length - 1].time)
+        expect(first_time.getTime()).toBeLessThan(last_time.getTime())
     })
 })
 

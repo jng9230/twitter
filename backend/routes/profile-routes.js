@@ -13,12 +13,14 @@ router.get("/home/:id", async (req, res) => {
 
     //get tweets for person that user is following
     let tweets = []
-    user.following.map(async (id) => {
-        const tweets_for_user = await Tweet.find({ user: id })
-            .sort({ time: -1 })
-            // .limit(20)
-        tweets.push(tweets_for_user)
-    })
+    await Promise.all(
+        user.following.map(async (id) => {
+            const tweets_for_user = await Tweet.find({ user: id })
+                .sort({ time: 1 })
+                // .limit(20)
+            tweets.push(...tweets_for_user)
+        })
+    )
 
     tweets = reverseChronoSort(tweets)
     return res.json(tweets)
@@ -29,7 +31,7 @@ router.get("/user/:id", async (req, res) => {
     if (debug) console.log(`GETTING TWEETS FOR USER ${req.params.id}`)
 
     const tweets = await Tweet.find({ user: req.params.id })
-        .sort({ time: -1 })
+        .sort({ time: 1 })
         // .limit(20)
     return res.json(tweets)
 })

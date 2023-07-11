@@ -28,7 +28,7 @@ router.post("/create", async (req, res) => {
     return res.json(user)
 })
 
-//follow
+//follow wrt IDs provided in body (NOT user objects)
 router.post("/follow", async (req, res) => {
     if (debug) {console.log("FOLLOWING:"); console.log(req.body)}
     if (!req.body.followee || !req.body.follower){
