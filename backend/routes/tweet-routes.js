@@ -61,17 +61,20 @@ router.post("/reply", async (req, res) => {
 })
 
 //delete a tweet
-router.delete("/", async (req, res) => {
-    if (debug) console.log(`DELETING TWEET: ${req.body}`)
+router.delete("/id/:id", async (req, res) => {
+    if (debug) { console.log(`DELETING TWEET:}`); console.log(req.params.id) }
 
-    const del_tweet = await Tweet.findById(req.body.child)
-    const udpdate_parents = await Tweet.updateOne({ _id: req.body.parent }, {
+    const del_tweet = await Tweet.findById(req.params.id)
+    const updated_parent = await Tweet.findOneAndUpdate({ _id: del_tweet.parent }, {
         $pullAll: {
-            replies: [{ _id: req.body.child }],
+            replies: [{ _id: req.params.id }],
         },
     });
 
-    return res.json(del_tweet)
+    return res.json({
+        deleted : del_tweet,
+        updated_parent : updated_parent
+    })
 })
 
 module.exports = router

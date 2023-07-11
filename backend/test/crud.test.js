@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 //connect to DB
 const PORT = config.PORT || 5001;
 const URI = config.ATLAS_URI;
-const app = require("../app")
-const User = require("../models/user");
-const Tweet = require("../models/tweet");
-const http = require('http');
+// const app = require("../app")
+// const User = require("../models/user");
+// const Tweet = require("../models/tweet");
+// const http = require('http');
 const request = require("supertest")
 const base_url = `http://localhost:${config.PORT}`
 const API = request(base_url)
@@ -263,26 +263,104 @@ describe("tweets", () => {
     })
 
     it("deletes a tweet", async () => {
+        //make a tweet
+        const body = {
+            user: user_id,
+            text: "testing testing 123"
+        }
+        const res = await API.post("/tweet/create").send(body)
 
+        //delete it
+        const del = await API.delete(`/tweet/id/${res.body._id}`)
+        console.log(del.body)
+        expect(del.body.deleted._id).toEqual(res.body._id)
     })
 
     it("deletes a reply", async () => {
+        //make a tweet and reply to it
+        const body = {
+            user: user_id,
+            text: "testing testing 123"
+        }
+        const parent = await API.post("/tweet/create").send(body)
+        const body1 = {
+            user: user_id,
+            text: "reply reply 123",
+            parent: parent.body._id.toString()
+        }
+        const reply = await API.post("/tweet/reply").send(body1)
+        const del = await API.delete(`/tweet/id/${reply.body._id}`)
+        expect(del.body.deleted._id).toEqual(reply.body._id)
+        expect(del.body.updated_parent._id).toEqual(parent.body._id)
 
+        //check that parent's replies were updated
+        const parent_after = await API.get(`/tweet/id/${parent.body._id}`)
+        expect(parent_after.body.replies.length).toEqual(0)
     })
 })
 
 describe("profiles/landing pages", () => {
+    const user_body = {
+        email: "tweet@gmail.com",
+        username: "itsa me",
+        handle: "tweet12",
+    }
+    let users = []
+    const tweets_per_user = 5
+    const num_users = 3
+    beforeAll(async () => {
+        //make some users
+        let user_bodies = []
+        for (let i = 0; i < num_users; i ++){
+            const user_body = {
+                email: `${parseInt(Math.random() * 1000)}@gmail.com`,
+                username: "itsa me",
+                handle: `user${parseInt(Math.random() * 1000)}`
+            }
+            user_bodies.push(user_body)
+        }
+        await Promise.all(
+            user_bodies.map(async (d) => {
+                const user = await API.post("/user/create").send(user_body);
+                users.push(user);
+            })
+        )
+
+        //tweet from each user
+        await Promise.all(
+            users.map( async (d) => {
+                for (let j = 0; j < tweets_per_user; j ++){
+                    await API.post("/tweet/create").send({
+                        user: d._id,
+                        text: `${d._id} says: testing testing 123`
+                    })
+                }
+            })
+        )
+
+        //have the first user follow all other users
+        await Promise.all(
+            users.slice(1, users.length-1).map(async d => {
+                const follower = users[0]
+                const followee = users[i + 1]
+                await API.post("/user/follow").send({
+                    follower: follower,
+                    followee: followee
+                })
+            })
+        )
+    })
+
     it("gets a homepage", async () => {
-        //generate users
-        //follow users
-        //generate tweets
-        //generate a homepage
+        const home_tweets = API.get(`/home/${users[0]._id}`)
+        //check that the number of tweets match
+        expect(home_tweets.length).toEqual( (num_users - 1) * tweets_per_user)
+        //check that they are ordered wrt date
+        expect(home_tweets[0].time.getTime()).toBeLessThan(home_tweets[home_tweets.length - 1].time.getTime())
     })
 
     it("gets a profile page", async () => {
-        //generate user
-        //generate tweets
-        //generate a profile page
+        //make sure all the tweets are for the same profile
     })
 })
 

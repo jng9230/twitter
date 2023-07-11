@@ -15,7 +15,7 @@ router.get("/home/:id", async (req, res) => {
     let tweets = []
     user.following.map(async (id) => {
         const tweets_for_user = await Tweet.find({ user: id })
-            .sort({ time: 1 })
+            .sort({ time: -1 })
             // .limit(20)
         tweets.push(tweets_for_user)
     })
