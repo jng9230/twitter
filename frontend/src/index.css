@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .btn-std {
+    @apply p-1
+    px-3
+    cursor-pointer
+    rounded-full
+    items-center
+    hover:bg-opacity-90
+  }
+
+  .border-std{
+    @apply
+    border-2
+    rounded-md
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
