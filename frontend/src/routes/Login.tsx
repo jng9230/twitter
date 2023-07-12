@@ -1,15 +1,21 @@
+import { useState } from "react";
 import { config } from "../utils/config";
+import { create } from "domain";
+import CreateAccountModal from "../components/modals/CreateAccountModal";
 
 const API_BASE = config.API_BASE;
 const Login = () => {
   const handleGoogleLogin = () => {
     window.open(API_BASE + "/auth/google", "_self");
   }
+
+  const [createAccountModal, setCreateAccountModal] = useState(false);
   const showCreateAccountModal = () => {
-    
+    setCreateAccountModal(true);
   }
 
   return (
+    <>
     <div className="bg-black w-screen h-screen text-white flex items-center justify-between">
       <div className="bg-twitter-blue w-1/2 h-screen">
       </div>
@@ -36,6 +42,10 @@ const Login = () => {
           </div>
       </div>
     </div>
+    {
+      createAccountModal && <CreateAccountModal closeModal={() => setCreateAccountModal(false)}/>
+    }
+    </>
   )
 }
 

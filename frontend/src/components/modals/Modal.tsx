@@ -1,4 +1,4 @@
-import { CloseButton } from "./CloseButton"
+import { CloseButton } from "../CloseButton"
 
 function Modal({
     onClick,

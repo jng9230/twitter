@@ -42,3 +42,9 @@ export type UserNetwork = {
     followers: User[],
     following: User[]
 }
+
+export type ValidationErrs = {
+    arguments?: number,
+    message: string,
+    validation: string
+}
