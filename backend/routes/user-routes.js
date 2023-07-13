@@ -12,7 +12,7 @@ router.get("/id/:id", async (req, res) => {
     return res.json(user)
 })
 
-//create user
+//create user **FOR CREATING USERS IN TESTS**
 router.post("/create", async (req, res) => {
     if (debug) { console.log(`MAKING USER:`); console.log(req.body) }
 
@@ -26,6 +26,36 @@ router.post("/create", async (req, res) => {
 
     user.save()
     return res.json(user)
+})
+
+//register user
+router.post("/register", async (req, res) => {
+    if (debug) { console.log("REGISTERING"); console.log(req.body) }
+
+    // const user = new User({
+    //     email: req.body.email,
+    //     username: req.body.username,
+    //     handle: req.body.handle,
+    // })
+
+    User.register( new User({
+        email: req.body.email,
+        username: req.body.username,
+        handle: req.body.handle,
+    }),
+        req.body.password,
+        function (err, user){
+            if (err) { res.json({ success: false, message: err }) } 
+
+            req.login(user, (err) => {
+                if (err) { res.json({ success: false, message: err }) } 
+                
+                res.json({
+                    success: true,
+                    message: user
+                })
+            })
+    })
 })
 
 //follow wrt IDs provided in body (NOT user objects)

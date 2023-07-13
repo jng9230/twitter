@@ -4,11 +4,13 @@ const cors = require('cors');
 const passport = require('passport');
 const cookie_session = require('cookie-session');
 const config = require("./config")
+const cookie_parser = require("cookie-parser");
+const body_parser = require("body-parser");
+
 const user_routes = require("./routes/user-routes")
 const tweet_routes = require("./routes/tweet-routes")
 const profile_routes = require("./routes/profile-routes")
-const cookie_parser = require("cookie-parser");
-const body_parser = require("body-parser");
+const auth_routes = require("./routes/auth-routes")
 
 const COOKIE_KEY = config.COOKIE_KEY;
 
@@ -25,7 +27,7 @@ app.use(
 //GOOGLE AUTH
 app.use(
     cookie_session({
-        name: "google-auth-session",
+        name: "jn-twitter-session",
         keys: [COOKIE_KEY],
         maxAge: 1000 * 60 * 60 * 24 * 7 //time is in ms
     })
@@ -37,6 +39,7 @@ app.use(passport.session());
 app.use("/tweet", tweet_routes);
 app.use("/user", user_routes);
 app.use("/profile", profile_routes);
+app.use("/auth", auth_routes);
 
 //check for auth on home page load
 // const auth_check = (req, res, next) => {

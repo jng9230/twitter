@@ -1,12 +1,12 @@
 // require("dotenv").config({ path: "./config.env" });
-const config = require("./config")
+const config = require("../config")
 const GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = config.GOOGLE_CLIENT_SECRET
 const PORT = config.PORT || 5000;
 const GOOGLE_REDIRECT_URL = config.GOOGLE_REDIRECT_URL;
 
 const passport = require("passport");
-const User = require("./models/user");
+const User = require("../models/user");
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 passport.serializeUser((user, done) => {

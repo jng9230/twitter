@@ -3,6 +3,7 @@ import { Modal } from "./Modal"
 import { checkEmail, checkPassword, checkUsername } from "../../utils/checkPassword"
 import { useState } from "react"
 import { ValidationErrs } from "../../utils/APITypes"
+import { checkEmailUnique, createAccount } from "../../utils/APICalls"
 const CreateAccountModal = ({
     closeModal
 }:{
@@ -35,27 +36,31 @@ const CreateAccountModal = ({
         const form = e.target as HTMLFormElement; 
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
+        const email = formJson.email as string;
+        const password = formJson.password as string;
+        const username = formJson.username as string;
         //check password is valid 
-        const passChecks = checkPassword(formJson.password as string);
+        const passChecks = checkPassword(password);
         setPassErrs(passChecks)
 
-        //check email is valid
-        setIsEmail(checkEmail(formJson.email as string));
-
-        //check that email hasn't been used
-
+        //check email is valid and unique
+        const emailValid = checkEmail(email)
+        checkEmailUnique(email)
+            .then(d => {
+                setIsEmail(emailValid && d)
+            })
+            .catch(e => console.error("Error", e))
+        
         //check username
-        const usernameChecks = checkUsername(formJson.username as string)
-        console.log(usernameChecks)
+        const usernameChecks = checkUsername(username)
         setNameErrs(usernameChecks)
 
-        //create account in backend
+        //create account in backend if no issues
         if ( !isEmail || passChecks.length || usernameChecks.length ){
             return;
         }
 
-        console.log("MAKE THE ACCOUNT MAN")
+        createAccount(email, password, username)
     }
 
     return (
@@ -90,7 +95,7 @@ const CreateAccountModal = ({
                                         {fixedString}
                                     </div>
                                 })
-}
+                                }
                             </div>
                             : <></>
                         }

@@ -38,6 +38,10 @@ export type User = {
     profileImg: string,
 }
 
+export type UserReturnType = User & {
+    _id: string
+}
+
 export type UserNetwork = {
     followers: User[],
     following: User[]

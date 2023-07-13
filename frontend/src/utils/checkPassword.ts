@@ -1,4 +1,3 @@
-import PasswordValidator from "password-validator";
 import { ValidationErrs } from "./APITypes";
 let passwordValidator = require('password-validator');
 let validator = require('validator')
