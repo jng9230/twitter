@@ -6,6 +6,8 @@ import { ValidationErrs } from "../../utils/APITypes"
 import { checkEmailUnique, createAccount, loginToAccount } from "../../utils/APICalls"
 import { User } from "../../utils/APITypes"
 import { useNavigate } from "react-router-dom"
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+
 const LoginModal = ({
     closeModal,
     setUser
@@ -67,6 +69,8 @@ const LoginModal = ({
             })
     }
 
+    const [showPass, setShowPass] = useState(false);
+
     return (
         <Modal onClick={closeModal}>
             <div className="flex justify-center">
@@ -85,7 +89,17 @@ const LoginModal = ({
                         }
                         <div className={inputWrapperStyles}>
                             <label htmlFor="password"> Password </label>
-                            <input type="password" name="password" id="password" className={inputStyles} />
+                            <input type={showPass ? "text" : "password"} name="password" id="password" className={inputStyles} />
+                            {
+                                showPass ?
+                                <button type="button" onClick={() => setShowPass(false)}>
+                                    <AiOutlineEyeInvisible/>
+                                </button>
+                                :
+                                <button type="button" onClick={() => setShowPass(true)}>
+                                    <AiOutlineEye/>
+                                </button>
+                            }
                         </div>
                         {
                             failedLogin ? 

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { config } from "../utils/config";
-import { create } from "domain";
 import CreateAccountModal from "../components/modals/CreateAccountModal";
 import LoginModal from "../components/modals/LoginModal";
 import { User } from "../utils/APITypes";
