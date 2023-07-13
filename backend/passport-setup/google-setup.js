@@ -33,7 +33,11 @@ passport.use(new GoogleStrategy(passportConfig,
     async function (request, accessToken, refreshToken, profile, done) {
         User.findOrCreate(
             { email: profile._json.email },
-            { name: profile.displayName, email: profile._json.email },
+            { 
+                email: profile._json.email,
+                username: profile.displayName, 
+                handle: profile.displayName + parseInt((Math.random() * 1000).toString())
+            },
             function (err, user) {
                 return done(err, user);
             }

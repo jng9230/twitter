@@ -79,7 +79,7 @@ router.post("/register", async (req, res) => {
     User.register(new User({
         email: req.body.email,
         username: req.body.username,
-        handle: req.body.handle,
+        handle: req.body.username + parseInt((Math.random() * 1000).toString())
     }),
     req.body.password,
     function (err, user) {

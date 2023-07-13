@@ -22,8 +22,7 @@ export const createAccount = async (
         body: JSON.stringify({
             "email": email,
             "username": username,
-            "password": password,
-            "handle": username + parseInt((Math.random() * 1000).toString())
+            "password": password
         })
     })
         .then(res => res.json())
