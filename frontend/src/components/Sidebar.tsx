@@ -1,7 +1,10 @@
 import React, { useRef, useCallback } from 'react'
 import { User } from '../utils/APITypes'
 import { Link, useNavigate } from 'react-router-dom'
-import { BiUser, BiCog, BiX } from 'react-icons/bi'
+import { BiUser, BiCog, BiX, BiLogOut } from 'react-icons/bi'
+import { config } from "../utils/config"
+const API_BASE = config.API_BASE;
+
 const Sidebar = ({
   showSidebar,
   user,
@@ -20,6 +23,10 @@ const Sidebar = ({
     handleHideSidebar();
     navigate(route, { replace: true })
   }, [navigate, handleHideSidebar]);
+
+  const handleLogout = () => {
+    window.open(API_BASE + "/auth/logout", "_self");
+  }
 
   return (
     <>
@@ -45,6 +52,10 @@ const Sidebar = ({
               <BiCog size={30}/>
               Settings
             </button>
+              <button type="button" onClick={handleLogout}>
+                <BiLogOut size={30} />
+                Logout
+              </button>
             <BiX onClick={handleHideSidebar} className="lg:hidden"/>
           </div>
           {/* extra div to close sidebar if user presses outside of it */}

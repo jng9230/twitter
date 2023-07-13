@@ -22,6 +22,7 @@ const Profile = ({
     setAllTweets([tweet,...allTweets])
   }
   const profileID = useParams().profileID;
+
   return (
     <div>
       <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>

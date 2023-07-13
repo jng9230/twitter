@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Settings from './Settings'
 import Login from './Login';
 import Profile from './Profile';
@@ -10,14 +10,18 @@ import { user as user1} from "../utils/localTestVars";
 import { getUserFromID, getAuthedUser } from '../utils/APICalls';
 function App() {
   const [user, setUser] = useState<User>(user1)
-  // const [userID, setUserID] = useState<string>("")
+  //the useEffect below should never allow user1 to be set (reroutes to login)
+  const navigate = useNavigate();
   useEffect(() => {
     getAuthedUser()
       .then(d => {
         setUser(d)
       })
-      .catch(e => {
+      .catch((e : Error) => {
         console.error(e)
+        if (e.name === "AuthError"){
+          navigate("/login", { replace : true })
+        }
       })
   }, [])
 
@@ -30,7 +34,7 @@ function App() {
   }
 
   return (
-    <Router>
+    // <Router>
       <Routes>
         <Route path='/login' element={<Login setUser={setUser}/>} />
         {/* optional paramter of profile ID */}
@@ -38,7 +42,7 @@ function App() {
         <Route path='/settings' element={<Settings user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar} />} />
         <Route path='/:profileID/status/:tweetID' element={<TweetChain user={user}/>} />
       </Routes>
-    </Router>
+    // </Router>
   );
 }
 

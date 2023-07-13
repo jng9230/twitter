@@ -77,11 +77,13 @@ export const getAuthedUser = async () => {
         // })
         .then(res => {
             if (res.status === 200) return res.json()
-            throw new Error("failed to authenticate user");
+            throw ({
+                name: "AuthError",
+                message: "failed to authenticate user"
+            });
         })
         .then(data => {
             return data.user as API.User
         })
     return res
 }
-
