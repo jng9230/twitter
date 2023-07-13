@@ -4,7 +4,7 @@ const config = require("../config")
 const mongoose = require('mongoose');
 //connect to DB
 const PORT = config.PORT || 5001;
-const URI = config.ATLAS_URI;
+const URI = config.ATLAS_URI_TEST;
 const request = require("supertest")
 const base_url = `http://localhost:${config.PORT}`
 const API = request(base_url)
