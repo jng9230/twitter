@@ -32,12 +32,6 @@ router.post("/create", async (req, res) => {
 router.post("/register", async (req, res) => {
     if (debug) { console.log("REGISTERING"); console.log(req.body) }
 
-    // const user = new User({
-    //     email: req.body.email,
-    //     username: req.body.username,
-    //     handle: req.body.handle,
-    // })
-
     User.register( new User({
         email: req.body.email,
         username: req.body.username,
@@ -45,14 +39,14 @@ router.post("/register", async (req, res) => {
     }),
         req.body.password,
         function (err, user){
-            if (err) { res.json({ success: false, message: err }) } 
+            if (err) { return res.json({ success: false, message: err }) } 
 
             req.login(user, (err) => {
-                if (err) { res.json({ success: false, message: err }) } 
+                if (err) { return res.json({ success: false, message: err }) } 
                 
-                res.json({
+                return res.json({
                     success: true,
-                    message: user
+                    message: "successfully registered user"
                 })
             })
     })

@@ -52,3 +52,8 @@ export type ValidationErrs = {
     message: string,
     validation: string
 }
+
+export type APISuccessReturn = {
+    success: boolean,
+    message: User
+}

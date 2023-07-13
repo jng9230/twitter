@@ -13,12 +13,11 @@ passwordSchema
     .has().symbols(1)
 
 export const checkPassword = (password: string) => {
-    const res = passwordSchema.validate(password, { details: true }) as ValidationErrs[]
-    return res
+    return passwordSchema.validate(password, { details: true }) as ValidationErrs[]
 }
 
 export const checkEmail = (email:string) => {
-    return validator.isEmail(email)
+    return validator.isEmail(email) as boolean
 }
 
 const usernameSchema = new passwordValidator()
@@ -29,6 +28,5 @@ usernameSchema
     .has().not().symbols()
 
 export const checkUsername = (username:string) => {
-    const res = usernameSchema.validate(username, { details: true }) as ValidationErrs[]
-    return res
+    return usernameSchema.validate(username, { details: true }) as ValidationErrs[]
 }

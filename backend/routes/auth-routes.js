@@ -90,23 +90,34 @@ router.post("/register", async (req, res) => {
 
             return res.json({
                 success: true,
-                message: user
+                message: {
+                    userID: user._id,
+                    username: user.username,
+                    handle: user.handle,
+                    profileImg: user.profileImg || ""
+                }
             })
         })
     })
 })
 
 //login locally 
-router.post("/local-login", function (req, res) {
+router.post("/login-local", function (req, res) {
+    if (debug){ console.log("LOCAL LOGIN"); console.log(req.body) }
     passport.authenticate("local", function (err, user, info) {
-        if (err) { res.json({ success: false, message: err }) }
+        if (err) { console.log(err); return res.json({ success: false, message: err.message }) }
 
         req.login(user, (err) => {
-            if (err) { res.json({ success: false, message: err }) }
+            if (err) { console.log(err); return res.json({ success: false, message: err.message }) }
 
-            res.json({
+            return res.json({
                 success: true,
-                message: user
+                message: {
+                    userID: user._id,
+                    username: user.username,
+                    handle: user.handle,
+                    profileImg: user.profileImg || ""
+                }
             })
         })
     })(req, res); 

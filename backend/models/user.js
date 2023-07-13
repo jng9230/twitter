@@ -32,7 +32,7 @@ const user_schema = new Schema({
     },
 })
 
-user_schema.plugin(passport_local_mongoose);
+user_schema.plugin(passport_local_mongoose, { usernameField: "email" });
 
 const User = mongoose.model("User", user_schema);
 

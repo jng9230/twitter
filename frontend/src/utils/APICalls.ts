@@ -29,7 +29,59 @@ export const createAccount = async (
         .then(res => res.json())
         .then(data => {
             console.log(data);
-            return data as API.UserReturnType
+            return data as API.APISuccessReturn
         })
     return res
 }
+
+export const loginToAccount = async (
+    email: string,
+    password: string
+) => {
+    const res = fetch("/auth/login-local", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "username": email,
+            "password": password,
+        })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return data as API.APISuccessReturn
+        })
+    return res
+}
+
+export const getUserFromID = async (
+    userID: string
+) => {
+    const res = fetch(`/user/id/${userID}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return data as API.User
+        })
+    return res
+}
+
+export const getAuthedUser = async () => {
+    const res = fetch("/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+    })
+        // const res = fetch("/get_details/?token="+token, {
+        // })
+        .then(res => {
+            if (res.status === 200) return res.json()
+            throw new Error("failed to authenticate user");
+        })
+        .then(data => {
+            return data.user as API.User
+        })
+    return res
+}
+

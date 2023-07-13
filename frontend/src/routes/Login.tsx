@@ -2,9 +2,15 @@ import { useState } from "react";
 import { config } from "../utils/config";
 import { create } from "domain";
 import CreateAccountModal from "../components/modals/CreateAccountModal";
+import LoginModal from "../components/modals/LoginModal";
+import { User } from "../utils/APITypes";
 
 const API_BASE = config.API_BASE;
-const Login = () => {
+const Login = ({
+  setUser
+}: {
+  setUser : React.Dispatch<React.SetStateAction<User>>
+}) => {
   const handleGoogleLogin = () => {
     window.open(API_BASE + "/auth/google", "_self");
   }
@@ -12,6 +18,11 @@ const Login = () => {
   const [createAccountModal, setCreateAccountModal] = useState(false);
   const showCreateAccountModal = () => {
     setCreateAccountModal(true);
+  }
+
+  const [loginModal, setLoginModal] = useState(false);
+  const showLoginModal = () => {
+    setLoginModal(true);
   }
 
   return (
@@ -37,13 +48,20 @@ const Login = () => {
             </div>
             <div className="w-full">
               <h3 className="text-white mb-2"> Already have an account? </h3>
-              <button className="btn-std bg-black text-twitter-blue border-2 w-full"> Sign In</button>
+              <button className="btn-std bg-black text-twitter-blue border-2 w-full" 
+                onClick={showLoginModal}
+              > 
+                Sign In
+              </button>
             </div>
           </div>
       </div>
     </div>
     {
-      createAccountModal && <CreateAccountModal closeModal={() => setCreateAccountModal(false)}/>
+      createAccountModal && <CreateAccountModal closeModal={() => setCreateAccountModal(false)} setUser={setUser}/>
+    }
+    {
+      loginModal && <LoginModal closeModal={() => setLoginModal(false)}  setUser={setUser}/>
     }
     </>
   )

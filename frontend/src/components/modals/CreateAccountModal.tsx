@@ -4,10 +4,14 @@ import { checkEmail, checkPassword, checkUsername } from "../../utils/checkPassw
 import { useState } from "react"
 import { ValidationErrs } from "../../utils/APITypes"
 import { checkEmailUnique, createAccount } from "../../utils/APICalls"
+import { User } from "../../utils/APITypes"
+import { useNavigate } from "react-router-dom"
 const CreateAccountModal = ({
-    closeModal
-}:{
+    closeModal,
+    setUser
+}: {
     closeModal: () => void,
+    setUser: React.Dispatch<React.SetStateAction<User>>
 }) => {
     const inputStyles = `
         focus:outline-none 
@@ -31,6 +35,8 @@ const CreateAccountModal = ({
     const [passErrs, setPassErrs] = useState<ValidationErrs[]>([])
     const [nameErrs, setNameErrs] = useState<ValidationErrs[]>([])
     const [isEmail, setIsEmail] = useState(true)
+    const [failedCreation, setFailedCreation] = useState(false)
+    const navigate = useNavigate();
     const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement; 
@@ -61,13 +67,22 @@ const CreateAccountModal = ({
         }
 
         createAccount(email, password, username)
+            .then(d => {
+                if (d.success) {
+                    // setUserID(d.message)
+                    setUser(d.message)
+                    navigate("/", { replace: true })
+                } else {
+                    setFailedCreation(true)
+                }
+            })
     }
 
     return (
         <Modal onClick={closeModal}>
             <div className="flex justify-center">
                 <div className="w-1/2 py-6">
-                    <form action="/createAccount" className="flex text-center flex-col space-y-3" onSubmit={handleSignUpSubmit}>
+                    <form action="" className="flex text-center flex-col space-y-3" onSubmit={handleSignUpSubmit}>
                         <div className={inputWrapperStyles}>
                             <label htmlFor="email"> Email </label>
                             <input type="text" name="email" id="email" className={inputStyles}/>
