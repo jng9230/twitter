@@ -42,9 +42,9 @@ const Settings = ({
   }, [isDefaultLighting])
 
   return (
-    // <div className="dark:bg-black">
     <>
-      <Header user={user} handleShowSidebar={handleShowSidebar}/>
+    <div className="w-screen h-screen grid grid-cols-4 gap-3 dark:bg-black">
+      {/* <Header user={user} handleShowSidebar={handleShowSidebar}/> */}
       <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} />
       <div className="bg-white dark:bg-black">
         <div className="space-y-3 p-3 h-screen">
@@ -59,7 +59,7 @@ const Settings = ({
           </div>
         </div>
       </div>
-    {/* </div> */}
+    </div>
     </>
   )
 }

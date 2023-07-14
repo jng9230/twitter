@@ -8,7 +8,6 @@ import Sidebar from '../components/Sidebar'
 import { initTweets as allTweets1 } from '../utils/localTestVars'
 import ReccomendationBox from '../components/ReccomendationBox'
 import Searchbar from '../components/Searchbar'
-import { Recoverable } from 'repl'
 const Profile = ({
   user,
   showSidebar,
@@ -34,11 +33,11 @@ const Profile = ({
             <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar}/>
         </div>
         <div className="col-span-2">
-          {/* <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/> */}
+          <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>
             <Timeline allTweets={allTweets}/>
           {/* <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user}/> */}
         </div>
-        <div className="w-full h-screen">
+        <div className="w-full">
             <Searchbar/>
             <ReccomendationBox/>
         </div>

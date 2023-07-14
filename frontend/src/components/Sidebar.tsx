@@ -29,7 +29,7 @@ const Sidebar = ({
     window.open(API_BASE + "/auth/logout", "_self");
   }
 
-  const defaultProfileImg = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+  const defaultProfileImg = config.DEFAULT_PROFILE_IMG
   
   const sidebarOptionStyles = `
     flex
@@ -58,7 +58,7 @@ const Sidebar = ({
 
   return (
     <>
-      <div className="sticky w-auto h-screen bg-white top-0 left-0 p-3 text-base space-y-6">
+      <div className="sticky w-auto h-screen bg-white top-0 left-0 p-3 space-y-6">
         <div className={sidebarOptionStyles} key="logo">
           <button type="button" onClick={() => closeSidebarThenLink(`/`)}>
             <BiSolidPear size={30} className=""/>
@@ -75,7 +75,7 @@ const Sidebar = ({
               )
             })
         }
-        
+
         <div className={sidebarOptionStyles} key={"logout"}>
           <button type="button" onClick={handleLogout}>
             <BiLogOut size={30}/>

@@ -13,16 +13,32 @@ const Searchbar = () => {
         //populate with clickable results
     }
     return (
-        <div className="w-full sticky top-0">
-            <div className="">
-                <form action="" onSubmit={handleSubmit}></form>
-                <label htmlFor="searchText"></label>
-                <input type="text" name="searchText" id="searchText"/>
-                <button type="submit">
-                    search
-                </button>
+        <>
+            <div className="w-full sticky top-0 z-50">
+                <div className="w-full bg-white">
+                    <form action="" onSubmit={handleSubmit}></form>
+                    <label htmlFor="searchText"></label>
+                    <input type="text" name="searchText" id="searchText"/>
+                    <button type="submit">
+                        search
+                    </button>
+                </div>
             </div>
-        </div>
+            <div className="sticky top-0">
+                <div className="w-full h-96 border-2 border-black bg-gray-400">
+                    BIG BOI
+                </div>
+                <div className="w-full h-96 border-2 border-black bg-gray-400">
+                    BIG BOI
+                </div>
+                <div className="w-full h-96 border-2 border-black bg-gray-400">
+                    BIG BOI
+                </div>
+                <div className="w-full h-96 border-2 border-black bg-gray-400">
+                    BIG BOI
+                </div>
+            </div>
+        </>
     )
 }
 
