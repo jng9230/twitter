@@ -7,7 +7,8 @@ const Timeline = ({
   allTweets: Tweet[]
 }) => {
   return (
-    <div className="h-screen overflow-scroll divide-y">
+    // <div className="h-screen overflow-scroll divide-y">
+    <>
       {
         allTweets.map(d => {
           let parent;
@@ -17,7 +18,8 @@ const Timeline = ({
           return <TweetBox tweet={d} key={d.tweetID} onTimeline={true} parentTweet={parent}/>
         })
       }
-    </div>
+    </>
+    // </div>
   )
 }
 

@@ -1,7 +1,8 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useRef, useCallback, useState } from 'react'
 import { User } from '../utils/APITypes'
 import { Link, useNavigate } from 'react-router-dom'
-import { BiUser, BiCog, BiX, BiLogOut } from 'react-icons/bi'
+import { BiUser, BiCog, BiX, BiLogOut, BiHome, BiSolidPear } from 'react-icons/bi'
+import { IconType } from 'react-icons'
 import { config } from "../utils/config"
 const API_BASE = config.API_BASE;
 
@@ -9,17 +10,17 @@ const Sidebar = ({
   showSidebar,
   user,
   handleHideSidebar
-}:{
+}: {
   showSidebar: boolean,
   user: User,
   handleHideSidebar: () => void
 }) => {
   //get window width for responsive purposes
-  const windowWidth = useRef(window.innerWidth)
+  // const windowWidth = useRef(window.innerWidth)
 
   //manually navigate so that we do something before changing route
   const navigate = useNavigate();
-  const closeSidebarThenLink = useCallback((route:string) => {
+  const closeSidebarThenLink = useCallback((route: string) => {
     handleHideSidebar();
     navigate(route, { replace: true })
   }, [navigate, handleHideSidebar]);
@@ -28,42 +29,86 @@ const Sidebar = ({
     window.open(API_BASE + "/auth/logout", "_self");
   }
 
+  const defaultProfileImg = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+  
+  const sidebarOptionStyles = `
+    flex
+    items-center
+    gap-3
+  `
+  const sidebarOptions:{ link:string, icon: IconType, text?: string }[] = [
+    {
+      text: "Home",
+      link: "/",
+      icon: BiHome,
+    },
+    {
+      text: "Profile",
+      link: `/${user.handle}`,
+      icon: BiUser 
+    },
+    {
+      text: "Settings",
+      link: "/settings",
+      icon: BiCog
+    }
+  ]
+
+  const [tweetModal, setTweetModal] = useState(false);
+
   return (
     <>
-      {
-        (windowWidth.current >= 1024 || showSidebar ) && 
-        <div className="fixed w-screen h-screen bg-gray top-0 left-0 bg-black/[.60] z-50">
-          <div className="fixed w-auto h-screen bg-white top-0 left-0 p-2">
-            <h1>Account info</h1>
-            <div>
-              <img src={user.profileImg} alt="" className="rounded-full h-auto w-20"/>
-                <span className="mr-1">
-                  {user.username}
-                </span>
-                <span className="text-twitter-gray">
-                  @{user.handle}
-                </span>
-            </div>
-            <button type="button" onClick={() => closeSidebarThenLink(`/${user.handle}`)}> 
-              <BiUser size={30}/> 
-              Profile
-            </button>
-            <button type="button" onClick={() => closeSidebarThenLink(`/settings`)}> 
-              <BiCog size={30}/>
-              Settings
-            </button>
-              <button type="button" onClick={handleLogout}>
-                <BiLogOut size={30} />
-                Logout
-              </button>
-            <BiX onClick={handleHideSidebar} className="lg:hidden"/>
-          </div>
-          {/* extra div to close sidebar if user presses outside of it */}
-          <div className="w-auto h-full" onClick={handleHideSidebar}>
-          </div>
+      <div className="sticky w-auto h-screen bg-white top-0 left-0 p-3 text-base space-y-6">
+        <div className={sidebarOptionStyles} key="logo">
+          <button type="button" onClick={() => closeSidebarThenLink(`/`)}>
+            <BiSolidPear size={30} className=""/>
+          </button>
         </div>
 
-      }
+        {
+            sidebarOptions.map(d => {
+              return (
+                <Link to={d.link} className={sidebarOptionStyles} key={d.text}>
+                    {<d.icon size={30} />}
+                    {d.text}
+                </Link>
+              )
+            })
+        }
+        
+        <div className={sidebarOptionStyles} key={"logout"}>
+          <button type="button" onClick={handleLogout}>
+            <BiLogOut size={30}/>
+          </button>
+            Logout
+        </div>
+
+        <button type="button" 
+          className="
+            rounded-full
+            w-3/4
+            py-2
+            text-white
+            bg-twitter-blue
+          "
+          onClick={() => {setTweetModal(true)}}
+        > 
+          Tweet 
+        </button>
+        
+        {/* <BiX onClick={handleHideSidebar} className="lg:hidden" /> */}
+        <div className="flex items-center gap-3">
+          <img src={user.profileImg ? user.profileImg : defaultProfileImg} alt="" className="rounded-full h-10 w-auto" />
+          <div>
+            <div className="mr-1">
+              {user.username}
+            </div>
+            <div className="text-twitter-gray">
+              @{user.handle}
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

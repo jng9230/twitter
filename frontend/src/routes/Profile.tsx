@@ -6,6 +6,9 @@ import { Tweet, User } from '../utils/APITypes'
 import { useParams } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import { initTweets as allTweets1 } from '../utils/localTestVars'
+import ReccomendationBox from '../components/ReccomendationBox'
+import Searchbar from '../components/Searchbar'
+import { Recoverable } from 'repl'
 const Profile = ({
   user,
   showSidebar,
@@ -24,11 +27,22 @@ const Profile = ({
   const profileID = useParams().profileID;
 
   return (
-    <div>
-      <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>
-      <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar}/>
-      <Timeline allTweets={allTweets}/>
-      <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user}/>
+    <div className="w-screen h-screen">
+      {/* <div className="max-w-screen-2xl flex basis-auto mx-auto gap-3"> */}
+      <div className="max-w-screen-2xl grid grid-cols-4 gap-3 mx-auto">
+        <div className="">
+            <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar}/>
+        </div>
+        <div className="col-span-2">
+          {/* <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/> */}
+            <Timeline allTweets={allTweets}/>
+          {/* <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user}/> */}
+        </div>
+        <div className="w-full h-screen">
+            <Searchbar/>
+            <ReccomendationBox/>
+        </div>
+      </div>
     </div>
   )
 }

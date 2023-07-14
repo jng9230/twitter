@@ -1,5 +1,5 @@
 import React from 'react'
-import { BiHome,BiSearch, BiPencil } from 'react-icons/bi'
+import { BiHome, BiSearch, BiPencil } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import TweetMaker from './TweetMaker'
