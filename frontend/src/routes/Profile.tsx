@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Timeline from '../components/Timeline'
 import Dock from '../components/Dock'
@@ -8,6 +8,7 @@ import Sidebar from '../components/Sidebar'
 import { initTweets as allTweets1 } from '../utils/localTestVars'
 import ReccomendationBox from '../components/ReccomendationBox'
 import Searchbar from '../components/Searchbar'
+import { getProfile, getTimeline } from '../utils/APICalls'
 const Profile = ({
   user,
   showSidebar,
@@ -19,11 +20,26 @@ const Profile = ({
   handleHideSidebar: () => void,
   handleShowSidebar: () => void
 }) => {
-  const [allTweets, setAllTweets] = useState<Tweet[]>(allTweets1)
+  const [allTweets, setAllTweets] = useState<Tweet[]>([])
+  const profileID = useParams().profileID;
+  console.log(`profileID: ${profileID}`)
+  console.log(`userID: ${user.userID}`)
+  //get the tweets for profile or user (prio. the profile)
+  useEffect(() => {
+    // if (profileID) {
+    //   console.log("getting profile")
+    //   getProfile(profileID)
+    //     .then(d => setAllTweets(d))
+    // } else {
+    //   console.log("getting timeline")
+    // }
+    getTimeline(user.userID)
+      .then(d => console.log(d))
+  }, [user, profileID])
+
   const handleAddTweet = (tweet: Tweet) => {
     setAllTweets([tweet,...allTweets])
   }
-  const profileID = useParams().profileID;
 
   return (
     <div className="w-screen h-screen">

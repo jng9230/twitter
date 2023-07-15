@@ -38,7 +38,7 @@ app.use(passport.session());
 
 app.use("/tweet", tweet_routes);
 app.use("/user", user_routes);
-app.use("/profile", profile_routes);
+app.use("/timeline", profile_routes);
 app.use("/auth", auth_routes);
 
 //check for auth on home page load

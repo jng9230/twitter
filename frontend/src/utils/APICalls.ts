@@ -82,7 +82,38 @@ export const getAuthedUser = async () => {
             });
         })
         .then(data => {
-            return data.user as API.User
+            return data.user as API.UserReturnType
+        })
+    return res
+}
+
+export const getTimeline = async (
+    userID: string
+) => {
+    console.log(`userID from apiCalls: ${userID}`)
+    if (!userID){ console.log("fucking off"); return []}
+    
+    // const res = fetch("/auth/login/success")
+    const res = fetch(`/timeline/home/${userID}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return data
+        })
+    return res
+}
+
+export const getProfile = async (
+    userID: string
+) => {
+    console.log(userID)
+    const res = fetch(`/timeline/user/${userID}`, {
+        method: "GET",
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return data as API.Tweet[]
         })
     return res
 }

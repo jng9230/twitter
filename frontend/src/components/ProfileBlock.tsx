@@ -1,4 +1,3 @@
-import React from 'react'
 import { User, UserNetwork } from '../utils/APITypes'
 import { config } from '../utils/config'
 

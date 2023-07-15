@@ -15,7 +15,12 @@ function App() {
   useEffect(() => {
     getAuthedUser()
       .then(d => {
-        setUser(d)
+        setUser({
+          userID: d._id,
+          username: d.username,
+          handle: d.handle,
+          profileImg: d.profileImg || ""
+        })
       })
       .catch((e : Error) => {
         console.error(e)
