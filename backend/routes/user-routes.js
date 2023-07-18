@@ -61,7 +61,10 @@ router.post("/follow", async (req, res) => {
 
     const followee = await User.findOneAndUpdate(
         { _id: req.body.followee },
-        { $push: { followers: req.body.follower } }
+        { 
+            $push: { followers: req.body.follower },
+            $inc: { num_followers: 1 }
+        }
     );
     const follower = await User.findOneAndUpdate(
         { _id: req.body.follower },
@@ -84,7 +87,7 @@ router.post("/unfollow", async (req, res) => {
     const followee = await User.findOneAndUpdate({ _id: req.body.followee }, {
         $pullAll: {
             followers: [{ _id: req.body.follower }],
-        },
+        }
     });
     const follower = await User.findOneAndUpdate({ _id: req.body.follower }, {
         $pullAll: {
@@ -98,6 +101,18 @@ router.post("/unfollow", async (req, res) => {
     })
 })
 
+
+
+//generate most popular people for user to follow
+router.get("/reccs/:id", async (req, res) => {
+    if (debug) console.log(`GETTING RECCS FOR ${req.params.id}`)
+    //reccs shouldn't include user themselves and people that are already followed
+    const user = await User.findOne({ _id: req.params.id});
+    const temp = await User.find({ _id: {$nin : [req.params.id, ...user.following]}})
+        .sort({ num_followers: -1 })
+        .limit(5)
+    return res.json(temp)
+})
 
 //edit username
 

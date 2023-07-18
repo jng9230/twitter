@@ -31,6 +31,9 @@ const user_schema = new Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: "User"
     },
+    num_followers: {
+        type: Number
+    },
 })
 
 user_schema.plugin(find_or_create);

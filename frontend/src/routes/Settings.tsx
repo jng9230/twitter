@@ -43,19 +43,21 @@ const Settings = ({
 
   return (
     <>
-    <div className="w-screen h-screen grid grid-cols-4 gap-3 dark:bg-black">
-      {/* <Header user={user} handleShowSidebar={handleShowSidebar}/> */}
-      <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} showTweetModal={() => {}} at="settings"/>
-      <div className="bg-white dark:bg-black">
-        <div className="space-y-3 p-3 h-screen">
-          <h1 className="dark:text-white"> Background </h1>
-          <div className="p-3 border-black border-2 rounded-md bg-white dark:border-white">
-            <input type="radio" id="lightMode" name="lightMode" checked={isDefaultLighting} onChange={e => onOptionChange(e)} value="default"/>
-            <label htmlFor="lightMode"> Default </label>
-          </div>
-          <div className="p-3 border-black border-2 rounded-md bg-black text-white dark:border-white">
-            <input type="radio" id="darkMode" name="darkMode" checked={!isDefaultLighting} onChange={e => onOptionChange(e)} value="dark"/>
-            <label htmlFor="darkMode"> Lights Out </label>
+    <div className="w-screen h-screen">
+      <div className="grid grid-cols-4 gap-3 dark:bg-black max-w-screen-xl mx-auto">
+        {/* <Header user={user} handleShowSidebar={handleShowSidebar}/> */}
+        <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} showTweetModal={() => {}} at="settings"/>
+        <div className="bg-white dark:bg-black">
+          <div className="space-y-3 p-3 h-screen">
+            <h1 className="dark:text-white"> Background </h1>
+            <div className="p-3 border-black border-2 rounded-md bg-white dark:border-white">
+              <input type="radio" id="lightMode" name="lightMode" checked={isDefaultLighting} onChange={e => onOptionChange(e)} value="default"/>
+              <label htmlFor="lightMode"> Default </label>
+            </div>
+            <div className="p-3 border-black border-2 rounded-md bg-black text-white dark:border-white">
+              <input type="radio" id="darkMode" name="darkMode" checked={!isDefaultLighting} onChange={e => onOptionChange(e)} value="dark"/>
+              <label htmlFor="darkMode"> Lights Out </label>
+            </div>
           </div>
         </div>
       </div>

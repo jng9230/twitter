@@ -46,7 +46,7 @@ const Profile = ({
     <>
     <div className="w-screen h-screen">
       {/* <div className="max-w-screen-2xl flex basis-auto mx-auto gap-3"> */}
-      <div className="max-w-screen-2xl grid grid-cols-4 gap-3 mx-auto">
+      <div className="max-w-screen-xl grid grid-cols-4 gap-3 mx-auto">
         <div className="">
             <Sidebar user={user} showTweetModal={() => setTweetModal(true)}  showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} at="profile"/>
         </div>
@@ -59,9 +59,9 @@ const Profile = ({
           <Timeline allTweets={allTweets}/>
           {/* <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user}/> */}
         </div>
-        <div className="w-full">
-            <Searchbar/>
-            <ReccomendationBox/>
+        <div className="w-full px-2 space-y-3 py-2">
+            {/* <Searchbar/> */}
+            <ReccomendationBox user={user}/>
         </div>
       </div>
     </div>

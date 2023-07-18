@@ -1,5 +1,6 @@
 import { config } from "./config"
 import * as API from "./APITypes"
+import { AiOutlineConsoleSql } from "react-icons/ai";
 
 export const makeTweet = async (user: API.User, text: string) => {
     const res = fetch("/tweet/create", {
@@ -145,6 +146,78 @@ export const getProfile = async (
         .then(data => {
             console.log(data);
             return data as API.Tweet[]
+        })
+    return res
+}
+
+export const searchUsers = async (user:string) => {
+    return [{
+        userID: "12312",
+        username: "fakeuser1",
+        handle: "fakeuser1233",
+        profileImg: ""
+    }] as API.User[]
+}
+
+export const followUser = async (follower: API.User["userID"], followee: API.User["userID"]) => {
+    const res = fetch(`/user/follow`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "follower": follower,
+            "followee": followee,
+        })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return data as {
+                follower: API.UserReturnType
+                followee: API.UserReturnType,
+            }
+        })
+    return res
+}
+
+export const unfollowUser = async (follower: API.User["userID"], followee: API.User["userID"]) => {
+    const res = fetch(`/user/unfollow`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "follower": follower,
+            "followee": followee,
+        })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return data as {
+                follower: API.UserReturnType
+                followee: API.UserReturnType,
+            }
+        })
+    return res
+}
+
+export const getReccs = async (userID:string) => {
+    const res = fetch(`/user/reccs/${userID}`, {
+        method: "GET",
+    })
+        .then(res => res.json())
+        .then((data: API.UserReturnType[]) => {
+            console.log(data)
+            return data.map(d => {
+                return {
+                    userID: d._id,
+                    username: d.username,
+                    handle: d.handle,
+                    profileImg: d.profileImg
+                }
+            }) as API.User[]
         })
     return res
 }
