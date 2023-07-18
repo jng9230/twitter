@@ -2,7 +2,7 @@ import React from 'react'
 import { config } from '../utils/config';
 import { profile } from 'console';
 import { BiSearch } from 'react-icons/bi';
-import { searchUsers } from '../utils/APICalls';
+// import { searchUsers } from '../utils/APICalls';
 import { useState } from 'react';
 import { User } from '../utils/APITypes';
 import { Link } from 'react-router-dom';
@@ -18,10 +18,10 @@ const Searchbar = () => {
         const searchText = formJson.searchText as string;
         console.log(searchText)
         //call backend
-        searchUsers(searchText)
-            .then(d => {
-                setSearchRes(d)
-            })
+        // searchUsers(searchText)
+        //     .then(d => {
+        //         setSearchRes(d)
+        //     })
         //populate with clickable results
     }
 

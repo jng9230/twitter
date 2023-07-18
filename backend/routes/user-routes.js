@@ -4,13 +4,22 @@ const Tweet = require("../models/tweet");
 const config = require("../config")
 const debug = config.DEBUG === "1";
 
-//get user
+//get user from id
 router.get("/id/:id", async (req, res) => {
     if (debug) console.log(`GETTING USER: ${req.params.id}`)
 
     const user = await User.findById(req.params.id)
     return res.json(user)
 })
+
+//get user from handle
+router.get("/handle/:id", async (req, res) => {
+    if (debug) console.log(`GETTING USER: ${req.params.id}`)
+
+    const user = await User.findOne({ handle: req.params.id })
+    return res.json(user)
+})
+
 
 //create user **FOR CREATING USERS IN TESTS**
 router.post("/create", async (req, res) => {
@@ -100,7 +109,6 @@ router.post("/unfollow", async (req, res) => {
         follower: follower
     })
 })
-
 
 
 //generate most popular people for user to follow

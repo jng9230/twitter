@@ -1,12 +1,10 @@
-import { User, UserNetwork } from '../utils/APITypes'
+import { User } from '../utils/APITypes'
 import { config } from '../utils/config'
 
 const ProfileBlock = ({
   user,
-  userNetwork
 }:{
   user: User
-  userNetwork: UserNetwork
 }) => {
   const defaultProfileImg = config.DEFAULT_PROFILE_IMG
 
@@ -26,13 +24,13 @@ const ProfileBlock = ({
           </div>
           <div>
             <span className="mr-1">
-              {userNetwork.following.length}
+              {user.num_following || user.following?.length}
             </span>
             <span className="text-twitter-gray mr-3">
               Following
             </span>
             <span className="mr-1">
-              {userNetwork.followers.length}
+              {user.num_followers || user.followers?.length}
             </span>
             <span className="text-twitter-gray">
               Followers

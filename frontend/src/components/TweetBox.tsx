@@ -97,7 +97,7 @@ const TweetBox = ({
           </div>
         </div>
       :
-        <div className="flex justify-between p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet.tweetID)}>
+        <div className="flex justify-between p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet._id)}>
         <div className="mr-3 relative">
           <Link to={`/${tweet.user.handle}`} className="z-50" onClick={(e) => e.stopPropagation()}>
             <img src={profileImg} alt="" className="w-11 h-11 rounded-full relative top-2"/>

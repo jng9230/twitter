@@ -14,9 +14,9 @@ const Timeline = ({
         allTweets.map(d => {
           let parent;
           if (d.parent){
-            parent = allTweets.filter(d1 => d1.tweetID === d.parent)[0]
+            parent = allTweets.filter(d1 => d1._id === d.parent)[0]
           }
-          return <TweetBox tweet={d} key={d.tweetID} onTimeline={true} parentTweet={parent}/>
+          return <TweetBox tweet={d} key={d._id} onTimeline={true} parentTweet={parent}/>
         })
       }
     </>

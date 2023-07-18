@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BiSolidPear, BiUser, BiLeftArrowAlt } from 'react-icons/bi'
 import { Link, useNavigate } from 'react-router-dom'
-import { User, UserNetwork } from '../utils/APITypes'
+import { User } from '../utils/APITypes'
 import ProfileBlock from './ProfileBlock'
 import Profile from '../routes/Profile'
-
+import { useState } from 'react'
+import { getUserFromHandle, getUserFromID } from '../utils/APICalls'
+import { profile } from 'console'
 const Header = ({
   user,
   numTweets,
@@ -17,15 +19,21 @@ const Header = ({
   handleShowSidebar: () => void
 }) => {
   const headerStyles = "sticky flex items-center p-3 bg-white h-auto top-0 dark:bg-black z-50";
-  const userNetwork:UserNetwork = {
-    followers: [],
-    following: []
-  }
   const navigate = useNavigate();
+  console.log(`HEADER'S PROFILE ID: ${profileID}`)
+
+  const [focusedUser, setFocusedUser] = useState<User>()
+  useEffect(() => {
+    if (!profileID) {return;}
+
+    getUserFromHandle(profileID)
+      .then(d => setFocusedUser(d))
+  }, [profileID])
+
   return (
     <>
       {
-        profileID === user.handle ?
+        profileID && focusedUser ?
           <>
             <header className={headerStyles + " " + "justify-around"}>
               <Link to={"/"} className="absolute left-3" 
@@ -37,14 +45,14 @@ const Header = ({
               </Link>
               <div>
                 <div>
-                  {user.username} 
+                  {focusedUser?.username} 
                 </div>
                 <div className="text-twitter-gray">
                   {numTweets} tweets
                 </div>
               </div>
             </header>
-            <ProfileBlock user={user} userNetwork={userNetwork}/>
+            <ProfileBlock user={focusedUser}/>
           </>
         :
         <header className={headerStyles}>

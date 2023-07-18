@@ -11,12 +11,12 @@ const ReccomendationBox = ({
 
   const [reccs, setReccs] = useState<User[]>();
   useEffect(() => {
-    getReccs(user.userID)
+    getReccs(user._id)
       .then(d => setReccs(d))
   }, [user])
 
   const handleFollow = (idToFollow:string) => {
-    followUser(user.userID, idToFollow)
+    followUser(user._id, idToFollow)
       .then(d => {
         console.log(d)
       })
@@ -30,7 +30,7 @@ const ReccomendationBox = ({
           const profileImg = d.profileImg && d.profileImg !== "" ? d.profileImg
             : config.DEFAULT_PROFILE_IMG
           return (
-            <div className="flex w-full items-center justify-between" key={d.userID}>
+            <div className="flex w-full items-center justify-between" key={d._id}>
               <Link to={`/${d.handle}`} className="flex gap-3">
                 <div>
                   <img src={profileImg} alt="" className="w-11 h-auto rounded-full" />
@@ -41,7 +41,7 @@ const ReccomendationBox = ({
                 </div>
               </Link>
               <div>
-                <button className="text-white bg-black px-3 py-1 rounded-full" onClick={() => handleFollow(d.userID)}>
+                <button className="text-white bg-black px-3 py-1 rounded-full" onClick={() => handleFollow(d._id)}>
                   Follow
                 </button>
               </div>

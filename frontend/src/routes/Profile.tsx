@@ -5,7 +5,7 @@ import Dock from '../components/Dock'
 import { Tweet, User } from '../utils/APITypes'
 import { useParams } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
-import { initTweets as allTweets1 } from '../utils/localTestVars'
+// import { initTweets as allTweets1 } from '../utils/localTestVars'
 import ReccomendationBox from '../components/ReccomendationBox'
 import Searchbar from '../components/Searchbar'
 import { getProfile, getTimeline } from '../utils/APICalls'
@@ -24,6 +24,9 @@ const Profile = ({
 }) => {
   const [allTweets, setAllTweets] = useState<Tweet[]>([])
   const profileID = useParams().profileID;
+  console.log(`PROFILE's profileID: ${profileID}`)
+  console.log(`PROFILE's user:`)
+  console.log(user)
 
   //get the tweets for profile or user (prio. the profile)
   useEffect(() => {
@@ -31,7 +34,7 @@ const Profile = ({
       getProfile(profileID)
         .then(d => setAllTweets(d))
     } else { //no spec. user provided -> timeline
-      getTimeline(user.userID)
+      getTimeline(user._id)
         .then(d => setAllTweets(d))
     }
   }, [user, profileID])

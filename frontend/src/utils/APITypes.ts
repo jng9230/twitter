@@ -25,31 +25,39 @@ export type Tweet = {
     text: string,
     likes: number,
     retweets: number,
-    replies: Tweet["tweetID"][], 
+    replies: Tweet["_id"][], 
     time: Date,
-    tweetID: string,
-    parent?: Tweet["tweetID"]
-}
-
-export type TweetReturnType = Tweet & {
+    parent?: Tweet["_id"]
     _id: string
 }
 
+// export type TweetReturnType = Tweet & {
+//     _id: string
+// }
+
 export type User = {
-    userID: string,
     username: string,
     handle: string,
     profileImg: string,
+    _id: string,
+    following: [],
+    followers: [],
+    num_following: number,
+    num_followers: number
 }
 
-export type UserReturnType = User & {
-    _id: string
-}
+// export type UserReturnType = User & {
+//     _id: string,
+//     following: [],
+//     followers: [],
+//     num_following: number,
+//     num_followers: number
+// }
 
-export type UserNetwork = {
-    followers: User[],
-    following: User[]
-}
+// export type UserNetwork = {
+//     followers: User[],
+//     following: User[]
+// }
 
 export type ValidationErrs = {
     arguments?: number,

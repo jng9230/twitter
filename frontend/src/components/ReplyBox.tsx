@@ -26,8 +26,8 @@ const ReplyBox = ({
       retweets: 0,
       replies: [],
       time: new Date(),
-      tweetID: Math.floor(Math.random() * 100000000000).toString(),
-      parent: parent.tweetID
+      _id: Math.floor(Math.random() * 100000000000).toString(),
+      parent: parent._id
     }
     setText("")
     updateReplies(tweet);
