@@ -50,7 +50,7 @@ const Profile = ({
         <div className="">
             <Sidebar user={user} showTweetModal={() => setTweetModal(true)}  showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} at="profile"/>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-2 border-x-2 profile-main divide-y-2">
           <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>
           { !profileID ?
             <TweetMaker user={user} handleAddTweet={handleAddTweet}/>

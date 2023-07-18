@@ -60,7 +60,7 @@ const Sidebar = ({
 
   return (
     <>
-      <div className="sticky w-auto h-screen bg-white top-0 left-0 p-3 space-y-6 border-r-2 border-gray-100">
+      <div className="sticky w-auto h-screen bg-white top-0 left-0 p-3 space-y-6">
         <div className={sidebarOptionStyles} key="logo">
           <button type="button" onClick={() => closeSidebarThenLink(`/`)}>
             <BiSolidPear size={30} className=""/>

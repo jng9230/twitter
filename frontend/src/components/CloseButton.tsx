@@ -14,6 +14,7 @@ function CloseButton({
         <BiX className={allStyles}
             onClick={onClick}
             data-testid={testID}
+            size={30}
         ></BiX>
     )
 }

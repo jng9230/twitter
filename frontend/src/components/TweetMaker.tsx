@@ -43,7 +43,7 @@ const TweetMaker = ({
                     Tweet
                 </button> */}
             </div>
-            <div className="flex w-full h-auto">
+            <div className="flex w-full h-auto min-h-[75px]">
                 {/* <div>
                     <img src={user.profileImg} alt="profileImg" className="w-8" />
                 </div> */}
