@@ -9,11 +9,15 @@ const API_BASE = config.API_BASE;
 const Sidebar = ({
   showSidebar,
   user,
-  handleHideSidebar
+  handleHideSidebar,
+  showTweetModal,
+  at
 }: {
   showSidebar: boolean,
   user: User,
-  handleHideSidebar: () => void
+  handleHideSidebar: () => void,
+  showTweetModal: () => void,
+  at: string
 }) => {
   //get window width for responsive purposes
   // const windowWidth = useRef(window.innerWidth)
@@ -54,11 +58,9 @@ const Sidebar = ({
     }
   ]
 
-  const [tweetModal, setTweetModal] = useState(false);
-
   return (
     <>
-      <div className="sticky w-auto h-screen bg-white top-0 left-0 p-3 space-y-6">
+      <div className="sticky w-auto h-screen bg-white top-0 left-0 p-3 space-y-6 border-r-2 border-gray-100">
         <div className={sidebarOptionStyles} key="logo">
           <button type="button" onClick={() => closeSidebarThenLink(`/`)}>
             <BiSolidPear size={30} className=""/>
@@ -83,18 +85,22 @@ const Sidebar = ({
             Logout
         </div>
 
-        <button type="button" 
-          className="
-            rounded-full
-            w-3/4
-            py-2
-            text-white
-            bg-twitter-blue
-          "
-          onClick={() => {setTweetModal(true)}}
-        > 
-          Tweet 
-        </button>
+        {
+          at === "profile" ? 
+          <button type="button" 
+            className="
+              rounded-full
+              w-3/4
+              py-2
+              text-white
+              bg-twitter-blue
+            "
+            onClick={showTweetModal}
+          > 
+            Tweet 
+          </button>
+          : <></>
+        }
         
         {/* <BiX onClick={handleHideSidebar} className="lg:hidden" /> */}
         <div className="flex items-center gap-3">

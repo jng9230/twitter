@@ -45,7 +45,7 @@ const Settings = ({
     <>
     <div className="w-screen h-screen grid grid-cols-4 gap-3 dark:bg-black">
       {/* <Header user={user} handleShowSidebar={handleShowSidebar}/> */}
-      <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} />
+      <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} showTweetModal={() => {}} at="settings"/>
       <div className="bg-white dark:bg-black">
         <div className="space-y-3 p-3 h-screen">
           <h1 className="dark:text-white"> Background </h1>

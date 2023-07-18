@@ -10,6 +10,7 @@ import ReccomendationBox from '../components/ReccomendationBox'
 import Searchbar from '../components/Searchbar'
 import { getProfile, getTimeline } from '../utils/APICalls'
 import TweetMaker from '../components/TweetMaker'
+import TweetMakerModal from '../components/modals/TweetMakerModal'
 const Profile = ({
   user,
   showSidebar,
@@ -23,22 +24,13 @@ const Profile = ({
 }) => {
   const [allTweets, setAllTweets] = useState<Tweet[]>([])
   const profileID = useParams().profileID;
-  console.log(`profileID: ${profileID}`)
-  console.log(`userID: ${user.userID}`)
+
   //get the tweets for profile or user (prio. the profile)
   useEffect(() => {
-    // if (profileID) {
-    //   console.log("getting profile")
-    //   getProfile(profileID)
-    //     .then(d => setAllTweets(d))
-    // } else {
-    //   console.log("getting timeline")
-    // }
     if (profileID) { //specific user -> tweets from that user only
       getProfile(profileID)
         .then(d => setAllTweets(d))
-    } else {
-      //no spec. user provided -> timeline
+    } else { //no spec. user provided -> timeline
       getTimeline(user.userID)
         .then(d => setAllTweets(d))
     }
@@ -47,13 +39,16 @@ const Profile = ({
   const handleAddTweet = (tweet: Tweet) => {
     setAllTweets([tweet,...allTweets])
   }
+  
+  const [tweetModal, setTweetModal] = useState(false)
 
   return (
+    <>
     <div className="w-screen h-screen">
       {/* <div className="max-w-screen-2xl flex basis-auto mx-auto gap-3"> */}
       <div className="max-w-screen-2xl grid grid-cols-4 gap-3 mx-auto">
         <div className="">
-            <Sidebar user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar}/>
+            <Sidebar user={user} showTweetModal={() => setTweetModal(true)}  showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} at="profile"/>
         </div>
         <div className="col-span-2">
           <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>
@@ -70,6 +65,10 @@ const Profile = ({
         </div>
       </div>
     </div>
+    {
+      tweetModal && <TweetMakerModal user={user} onClick={() => setTweetModal(false)} handleAddTweet={handleAddTweet}/>
+    }
+    </>
   )
 }
 

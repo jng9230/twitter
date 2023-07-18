@@ -19,16 +19,6 @@ const TweetMaker = ({
     useAutosizeTextArea(textAreaRef.current, text);
 
     const makeAndAddTweet = (text: string) => {
-        //TODO: make API call
-        // const tweet: Tweet = {
-        //     user: user,
-        //     text: text,
-        //     likes: 0,
-        //     retweets: 0,
-        //     replies: new Set<string>(),
-        //     time: new Date(),
-        //     tweetID: Math.floor(Math.random() * 100000000000).toString()
-        // }
         makeTweet(user, text)
             .then(d => {
                 handleAddTweet(d);
@@ -37,21 +27,21 @@ const TweetMaker = ({
             // .finally(() => closeTweetMaker())
     }
     return (
-        <div className="border-2 border-black">
+        <div className="">
             <div className="flex justify-between">
                 {/* <BiLeftArrowAlt onClick={() => closeTweetMaker()} size={30} /> */}
-                <button
+                {/* <button
                     disabled={text === ""}
                     onClick={() => makeAndAddTweet(text)}
                     className="
-            text-white 
-            bg-twitter-blue 
-            p-3 
-            font-bold
-            disabled:opacity-50
-          ">
+                        text-white 
+                        bg-twitter-blue 
+                        p-3 
+                        font-bold
+                        disabled:opacity-50
+                    ">
                     Tweet
-                </button>
+                </button> */}
             </div>
             <div className="flex w-full h-auto">
                 {/* <div>
@@ -73,6 +63,22 @@ const TweetMaker = ({
                         "
                     />
                 </div>
+            </div>
+            <div className="p-3 flex items-end w-full flex-col">
+                <button
+                    disabled={text === ""}
+                    onClick={() => makeAndAddTweet(text)}
+                    className="
+                        text-white 
+                        bg-twitter-blue 
+                        px-4
+                        py-3 
+                        font-bold
+                        disabled:opacity-50
+                        rounded-full
+                    ">
+                    Tweet
+                </button>
             </div>
         </div>
     )

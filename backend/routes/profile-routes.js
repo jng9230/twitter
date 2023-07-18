@@ -30,7 +30,7 @@ router.get("/home/:id", async (req, res) => {
         user.following.map(async (id) => {
             const user1 = await User.find({_id: id})
             const tweets_for_user = await Tweet.find({ user: id })
-                .sort({ time: 1 })
+                .sort({ time: -1 })
                 // .limit(20)
             const tweets_for_user_with_user_attached = tweets_for_user.map(d => {
                 return attach_user(user1, d)
@@ -48,7 +48,7 @@ router.get("/user/:id", async (req, res) => {
     if (debug) console.log(`GETTING TWEETS FOR USER ${req.params.id}`)
     const user = await User.findOne({ handle: req.params.id})
     const tweets = await Tweet.find({ user: user._id })
-        .sort({ time: 1 })
+        .sort({ time: -1 })
         // .limit(20)
     const tweets_with_user_attached = tweets.map(d => {
         return attach_user(user, d)
