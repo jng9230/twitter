@@ -24,7 +24,7 @@ const ReplyBox = ({
       text: text,
       likes: 0,
       retweets: 0,
-      replies: new Set<string>(),
+      replies: [],
       time: new Date(),
       tweetID: Math.floor(Math.random() * 100000000000).toString(),
       parent: parent.tweetID

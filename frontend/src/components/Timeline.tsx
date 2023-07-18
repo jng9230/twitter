@@ -6,6 +6,7 @@ const Timeline = ({
 }:{
   allTweets: Tweet[]
 }) => {
+  console.log(allTweets)
   return (
     // <div className="h-screen overflow-scroll divide-y">
     <>

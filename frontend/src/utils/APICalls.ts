@@ -1,8 +1,31 @@
 import { config } from "./config"
 import * as API from "./APITypes"
 
-export const makeTweet = async (profileID: string, text: string) => {
-
+export const makeTweet = async (user: API.User, text: string) => {
+    const res = fetch("/tweet/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "user": user.userID,
+            "text": text
+        })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return {
+                user: user,
+                text: data.text,
+                likes: 0,
+                retweets: 0,
+                replies: [],
+                time: new Date(data.time),
+                tweetID: data._id,
+            } as API.Tweet
+        })
+    return res
 }
 
 export const checkEmailUnique = async (email:string) => {
@@ -90,15 +113,24 @@ export const getAuthedUser = async () => {
 export const getTimeline = async (
     userID: string
 ) => {
-    console.log(`userID from apiCalls: ${userID}`)
-    if (!userID){ console.log("fucking off"); return []}
+    // if (!userID){ console.log("fucking off"); return []}
     
     // const res = fetch("/auth/login/success")
     const res = fetch(`/timeline/home/${userID}`)
         .then(res => res.json())
         .then(data => {
             console.log(data);
-            return data
+            return data.map((d: API.TweetReturnType) => {
+                return {
+                    user: d.user,
+                    text: d.text,
+                    likes: d.likes,
+                    retweets: d.retweets,
+                    replies: d.replies,
+                    time: new Date(d.time),
+                    tweetID: d._id
+                } as API.Tweet
+            })
         })
     return res
 }
@@ -106,7 +138,6 @@ export const getTimeline = async (
 export const getProfile = async (
     userID: string
 ) => {
-    console.log(userID)
     const res = fetch(`/timeline/user/${userID}`, {
         method: "GET",
     })

@@ -25,10 +25,14 @@ export type Tweet = {
     text: string,
     likes: number,
     retweets: number,
-    replies: Set<Tweet["tweetID"]>, 
+    replies: Tweet["tweetID"][], 
     time: Date,
     tweetID: string,
     parent?: Tweet["tweetID"]
+}
+
+export type TweetReturnType = Tweet & {
+    _id: string
 }
 
 export type User = {

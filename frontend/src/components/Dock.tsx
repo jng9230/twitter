@@ -2,7 +2,6 @@ import React from 'react'
 import { BiHome, BiSearch, BiPencil } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import TweetMaker from './TweetMaker'
 import { Tweet, User } from '../utils/APITypes'
 const Dock = ({
   user,
@@ -37,14 +36,14 @@ const Dock = ({
             </button>
           }
       </div>
-      {
+      {/* {
         showTweetMaker && handleAddTweet && 
           <TweetMaker 
             closeTweetMaker={() => setShowTweetMaker(false)} 
             user={user}
             handleAddTweet={handleAddTweet}
           />
-      }
+      } */}
     </>
   )
 }

@@ -69,7 +69,7 @@ const TweetChain = ({
     initTweets.unshift(t)
     //find and update parent replies
     const parent = initTweets.filter((d) => d.tweetID === t.parent)[0]
-    parent.replies.add(t.tweetID)
+    parent.replies.push(t.tweetID)
     setChildren([t, ...children])
   }
 

@@ -5,6 +5,7 @@ import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
 import { Link, useNavigate, redirect } from 'react-router-dom'
 import { useCallback } from 'react'
+import { config } from '../utils/config'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 // }
@@ -49,6 +50,8 @@ const TweetBox = ({
   //     window.scrollTo(0, 0)
   //   }
   // }, [])
+  const profileImg = tweet.user.profileImg && tweet.user.profileImg !== "" ? tweet.user.profileImg 
+    : config.DEFAULT_PROFILE_IMG
   return (
     <>
     {
@@ -56,7 +59,7 @@ const TweetBox = ({
         <div className="p-2">
           <div className="flex">
             <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
-              <img src={tweet.user.profileImg} alt="" className="w-11 h-11 rounded-full relative top-2" />
+              <img src={profileImg} alt="" className="w-11 h-11 rounded-full relative top-2" />
             </Link>
             <div className="">
               <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
@@ -78,7 +81,7 @@ const TweetBox = ({
             </div>
             <div className="w-full py-2 flex justify-between">
               <div className="flex items-center">
-                {formatNumber(tweet.replies.size)} 
+                {formatNumber(tweet.replies.length)} 
                   <span className="text-twitter-gray ml-1"> Replies</span>
               </div>
               <div className="flex items-center">
@@ -97,7 +100,7 @@ const TweetBox = ({
         <div className="flex justify-between p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet.tweetID)}>
         <div className="mr-3 relative">
           <Link to={`/${tweet.user.handle}`} className="z-50" onClick={(e) => e.stopPropagation()}>
-            <img src={tweet.user.profileImg} alt="" className="w-11 h-11 rounded-full relative top-2"/>
+            <img src={profileImg} alt="" className="w-11 h-11 rounded-full relative top-2"/>
           </Link>
           {
             isParent && 
@@ -114,7 +117,7 @@ const TweetBox = ({
                 @{tweet.user.handle}
               </div>
               <div className="text-twitter-gray w-1/5 truncate">
-                {dateDiffPretty(new Date(), tweet.time)}
+                {dateDiffPretty(new Date(), new Date(tweet.time))}
               </div>
             </div>
           </Link>
@@ -126,7 +129,7 @@ const TweetBox = ({
               onTimeline && parentTweet && 
                 <div className="rounded-lg border-gray-400 flex p-2 cursor-pointer border-[1px]">
                 <div className="mr-3 relative">
-                    <img src={tweet.user.profileImg} alt="" className="w-6 h-6 rounded-full relative top-2" />
+                  <img src={profileImg} alt="" className="w-6 h-6 rounded-full relative top-2" />
                 </div>
                 <div className="w-5/6"> 
                     <Link to={`/${parentTweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
@@ -138,7 +141,7 @@ const TweetBox = ({
                           @{tweet.user.handle}
                         </div>
                         <div className="text-twitter-gray w-1/5 truncate">
-                          {dateDiffPretty(new Date(), tweet.time)}
+                          {dateDiffPretty(new Date(), new Date(tweet.time))}
                         </div>
                       </div>
                     </Link>
@@ -152,7 +155,7 @@ const TweetBox = ({
           <div className="w-full py-2 flex justify-between text-twitter-gray">
             <div className="flex items-center">
               <BiMessageRounded className="inline mr-1" />
-              {formatNumber(tweet.replies.size)}
+              {formatNumber(tweet.replies.length)}
             </div>
             <div className="flex items-center">
               <BiTransferAlt className="inline mr-1" />

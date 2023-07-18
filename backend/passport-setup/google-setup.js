@@ -31,12 +31,13 @@ passportConfig.callbackURL = GOOGLE_REDIRECT_URL
 passportConfig.passReqToCallback = true
 passport.use(new GoogleStrategy(passportConfig,
     async function (request, accessToken, refreshToken, profile, done) {
+        const username = profile.displayName.replace(" ", "")
         User.findOrCreate(
             { email: profile._json.email },
             { 
                 email: profile._json.email,
-                username: profile.displayName, 
-                handle: profile.displayName + parseInt((Math.random() * 1000).toString())
+                username: username,
+                handle: username + parseInt((Math.random() * 1000).toString())
             },
             function (err, user) {
                 return done(err, user);

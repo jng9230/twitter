@@ -9,6 +9,7 @@ import { initTweets as allTweets1 } from '../utils/localTestVars'
 import ReccomendationBox from '../components/ReccomendationBox'
 import Searchbar from '../components/Searchbar'
 import { getProfile, getTimeline } from '../utils/APICalls'
+import TweetMaker from '../components/TweetMaker'
 const Profile = ({
   user,
   showSidebar,
@@ -33,8 +34,14 @@ const Profile = ({
     // } else {
     //   console.log("getting timeline")
     // }
-    getTimeline(user.userID)
-      .then(d => console.log(d))
+    if (profileID) { //specific user -> tweets from that user only
+      getProfile(profileID)
+        .then(d => setAllTweets(d))
+    } else {
+      //no spec. user provided -> timeline
+      getTimeline(user.userID)
+        .then(d => setAllTweets(d))
+    }
   }, [user, profileID])
 
   const handleAddTweet = (tweet: Tweet) => {
@@ -50,7 +57,11 @@ const Profile = ({
         </div>
         <div className="col-span-2">
           <Header user={user} numTweets={allTweets.length} profileID={profileID} handleShowSidebar={handleShowSidebar}/>
-            <Timeline allTweets={allTweets}/>
+          { !profileID ?
+            <TweetMaker user={user} handleAddTweet={handleAddTweet}/>
+            : <></>
+          } 
+          <Timeline allTweets={allTweets}/>
           {/* <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user}/> */}
         </div>
         <div className="w-full">
