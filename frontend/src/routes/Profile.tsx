@@ -24,9 +24,9 @@ const Profile = ({
 }) => {
   const [allTweets, setAllTweets] = useState<Tweet[]>([])
   const profileID = useParams().profileID;
-  console.log(`PROFILE's profileID: ${profileID}`)
-  console.log(`PROFILE's user:`)
-  console.log(user)
+  // console.log(`PROFILE's profileID: ${profileID}`)
+  // console.log(`PROFILE's user:`)
+  // console.log(user)
 
   //get the tweets for profile or user (prio. the profile)
   useEffect(() => {

@@ -20,7 +20,6 @@ const Header = ({
 }) => {
   const headerStyles = "sticky flex items-center p-3 bg-white h-auto top-0 dark:bg-black z-50";
   const navigate = useNavigate();
-  console.log(`HEADER'S PROFILE ID: ${profileID}`)
 
   const [focusedUser, setFocusedUser] = useState<User>()
   useEffect(() => {

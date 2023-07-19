@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import TweetBox from '../components/TweetBox'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 // import { initTweets } from '../utils/localTestVars'
@@ -29,6 +29,7 @@ const TweetChain = ({
   const [children, setChildren] = useState<Tweet[]>()
   const [parents, setParents] = useState<Tweet[]>()
 
+  //get the focusedTweet
   useEffect(() => {
     const getData = async () => {
       if (!focusedTweetID){
@@ -39,28 +40,11 @@ const TweetChain = ({
       try {
         //get focused tweet
         const tweet = await getTweet(focusedTweetID)
+        console.log("focused tweet:")
+        console.log(tweet.text)
         setFocusedTweet(tweet)
-
-        //get replies
-        const replyIDs = tweet.replies;
-        const replies = await Promise.all(
-          replyIDs.map(async (d) => {
-            return await getTweet(d)
-          })
-        )
-        const sortedReplies = reverseChronoSort(replies)
-        setChildren(sortedReplies)
-
-        //get all parent tweets
-        let parentTweets = []
-        let node = focusedTweet
-        while (node && node.parent){
-          let currParent = await getTweet(node.parent)
-          parentTweets.unshift(currParent)
-          node = currParent
-        }
-        setParents(parentTweets)
-
+        console.log("focusedTweet:")
+        console.log(focusedTweet?.text)
       } catch (e) {
         console.error(e)
       }
@@ -68,22 +52,40 @@ const TweetChain = ({
     getData();
   }, [focusedTweetID])
 
-
-  //get the ancestors (parent tweets) of the current tweet
-  // let ancestorNodes = []
-  // let node = focusedTweet
-  // while (node && node.parent){
-  //   let grandparent = initTweets.filter((d) => d.tweetID === node.parent)[0]
-  //   ancestorNodes.unshift(grandparent)
-  //   node = grandparent
-  // }
+  //update parents and children wrt to focusedTweet changes
+  useEffect(() => {
+    const updateOthers = async () => {
+      if (!focusedTweet){ return}
+      try {
+        //get replies
+        const replyIDs = focusedTweet.replies;
+        const replies = await Promise.all(
+          replyIDs.map(async (d) => {
+            return await getTweet(d)
+          })
+        )
+        setChildren(reverseChronoSort(replies))
+  
+        //get all parent tweets
+        let parentTweets = []
+        let node = focusedTweet
+        while (node && node.parent) {
+          let currParent = await getTweet(node.parent)
+          parentTweets.unshift(currParent)
+          node = currParent
+        }
+        console.log("parents: ")
+        console.log(parentTweets)
+        setParents(parentTweets)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    updateOthers();
+  }, [focusedTweet])
 
   // add the reply to the tweet chain whenever a user submits a reply
   const updateReplies = (t: string) => {
-    // initTweets.unshift(t)
-    //find and update parent replies
-    // const parent = initTweets.filter((d) => d.tweetID === t.parent)[0]
-    // parent.replies.push(t.tweetID)
     if (!focusedTweet){ return }
 
     replyToTweet(t, focusedTweet, user)
@@ -96,12 +98,12 @@ const TweetChain = ({
 
   //scroll the focused tweet into view
   const ref = useRef<null | HTMLDivElement>(null)
-  useEffect(() => {
-    if (ref.current){
-      const y = ref.current.getBoundingClientRect().top + -45 + window.scrollY
-      window.scrollTo({top: y})
-    }
-  }, [focusedTweetID])
+  // useEffect(() => {
+  //   if (ref.current){
+  //     const y = ref.current.getBoundingClientRect().top + -45 + window.scrollY
+  //     window.scrollTo({top: y})
+  //   }
+  // }, [focusedTweetID])
 
   const navigate = useNavigate()
 
@@ -159,17 +161,3 @@ const TweetChain = ({
 }
 
 export default TweetChain
-
-
-// import React from 'react'
-
-// const TweetChain = () => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
-
-// export default TweetChain
-

@@ -1,6 +1,5 @@
 import { config } from "./config"
 import * as API from "./APITypes"
-import { AiOutlineConsoleSql } from "react-icons/ai";
 
 export const makeTweet = async (user: API.User, text: string) => {
     const res = fetch("/tweet/create", {
@@ -15,7 +14,7 @@ export const makeTweet = async (user: API.User, text: string) => {
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
             return data as API.Tweet
         })
     return res
@@ -43,7 +42,7 @@ export const createAccount = async (
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
             return data as API.APISuccessReturn
         })
     return res
@@ -65,7 +64,7 @@ export const loginToAccount = async (
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
             return data as API.APISuccessReturn
         })
     return res
@@ -77,7 +76,7 @@ export const getUserFromID = async (
     const res = fetch(`/user/id/${userID}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
             return data as API.User
         })
     return res
@@ -89,7 +88,7 @@ export const getUserFromHandle = async (
     const res = fetch(`/user/handle/${userID}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
             return data as API.User
         })
     return res
@@ -118,13 +117,10 @@ export const getAuthedUser = async () => {
 export const getTimeline = async (
     userID: string
 ) => {
-    // if (!userID){ console.log("fucking off"); return []}
-    
     // const res = fetch("/auth/login/success")
     const res = fetch(`/timeline/home/${userID}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             return data.map((d: API.Tweet) => {
                 return d
             })
@@ -140,7 +136,6 @@ export const getProfile = async (
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             return data as API.Tweet[]
         })
     return res
@@ -168,7 +163,7 @@ export const followUser = async (follower: API.User["_id"], followee: API.User["
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
             return data as {
                 follower: API.User
                 followee: API.User,
@@ -190,7 +185,7 @@ export const unfollowUser = async (follower: API.User["_id"], followee: API.User
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
             return data as {
                 follower: API.User
                 followee: API.User,
@@ -205,7 +200,6 @@ export const getReccs = async (userID:string) => {
     })
         .then(res => res.json())
         .then((data: API.User[]) => {
-            console.log(data)
             return data.map(d => {
                 return d
             }) as API.User[]

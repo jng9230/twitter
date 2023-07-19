@@ -6,6 +6,9 @@ import { formatNumber } from '../utils/formatNumber'
 import { Link, useNavigate, redirect } from 'react-router-dom'
 import { useCallback } from 'react'
 import { config } from '../utils/config'
+import RegularReply from './ReplyRegular'
+import ReplyFocused from './ReplyFocused'
+import Reply from './Reply'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 // }
@@ -36,15 +39,13 @@ const TweetBox = ({
   parentTweet?: Tweet
 }) => {
   const navigate = useNavigate();
-  // const handleTweetClick = useCallback((handle:string, id:string) => {
-  //   navigate(`/${handle}/status/${id}`, { replace: true });
-  // }, [navigate])
   const handleTweetClick = (handle: string, id: string) => {
     return navigate(`/${handle}/status/${id}`);
   }
-  console.log(tweet)
   //parent -> add a vertical line on left to indicate connections
   //focused -> entirely different spacing, full descriptions of icons like likes, replies, etc.
+
+  //scroll focused tweet into view 
   // useEffect(() => {
   //   if (isFocused){
   //     window.scrollTo(0, 0)
@@ -52,123 +53,17 @@ const TweetBox = ({
   // }, [])
   const profileImg = tweet.user.profileImg && tweet.user.profileImg !== "" ? tweet.user.profileImg 
     : config.DEFAULT_PROFILE_IMG
-  console.log(tweet)
   return (
     <>
     {
       isFocused ? 
-        <div className="p-2">
-          <div className="flex">
-            <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
-              <img src={profileImg} alt="" className="w-11 h-11 rounded-full relative top-2" />
-            </Link>
-            <div className="">
-              <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
-                <div className="font-bold truncate">
-                  {tweet.user.username}
-                </div>
-                <div className="text-twitter-gray truncate">
-                  @{tweet.user.handle}
-                </div>
-              </Link>
-            </div>
-          </div>
-          <div className="my-3">
-            {tweet.text}
-          </div>
-          <div className="w-full">
-            <div className="text-twitter-gray">
-              {new Date(tweet.time).toLocaleString()}
-            </div>
-            <div className="w-full py-2 flex justify-between">
-              <div className="flex items-center">
-                {formatNumber(tweet.replies.length)} 
-                  <span className="text-twitter-gray ml-1"> Replies</span>
-              </div>
-              <div className="flex items-center">
-                {formatNumber(tweet.retweets)}
-                <span className="text-twitter-gray ml-1"> Quotes</span>
-              </div>
-              <div className="flex items-center">
-                <BiHeart className="inline mr-1" />
-                {formatNumber(tweet.likes)}
-                <span className="text-twitter-gray ml-1"> Likes</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ReplyFocused tweet={tweet} isParent={isParent} profileImg={profileImg}
+          handleTweetClick={handleTweetClick} parentTweet={parentTweet} 
+        />
       :
-        <div className="flex justify-between p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet._id)}>
-        <div className="mr-3 relative">
-          <Link to={`/${tweet.user.handle}`} className="z-50" onClick={(e) => e.stopPropagation()}>
-            <img src={profileImg} alt="" className="w-11 h-11 rounded-full relative top-2"/>
-          </Link>
-          {
-            isParent && 
-            <div className="absolute h-full w-[2px] inset-x-1/2 bg-gray-200 -z-10"></div>
-          }
-        </div>
-        <div className="w-5/6">
-          <Link to={`/${tweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
-            <div className="flex space-x-2">
-              <div className="font-bold max-w-3/5 truncate">
-                {tweet.user.username} 
-              </div>
-              <div className="text-twitter-gray max-w-1/5 truncate">
-                @{tweet.user.handle}
-              </div>
-              <div className="text-twitter-gray w-1/5 truncate">
-                {dateDiffPretty(new Date(), new Date(tweet.time))}
-              </div>
-            </div>
-          </Link>
-          <div className="space-y-2">
-            <div>
-              {tweet.text}
-            </div>
-            {
-              onTimeline && parentTweet && 
-                <div className="rounded-lg border-gray-400 flex p-2 cursor-pointer border-[1px]">
-                <div className="mr-3 relative">
-                  <img src={profileImg} alt="" className="w-6 h-6 rounded-full relative top-2" />
-                </div>
-                <div className="w-5/6"> 
-                    <Link to={`/${parentTweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
-                      <div className="flex space-x-2">
-                        <div className="font-bold max-w-3/5 truncate">
-                          {tweet.user.username}
-                        </div>
-                        <div className="text-twitter-gray max-w-1/5 truncate">
-                          @{tweet.user.handle}
-                        </div>
-                        <div className="text-twitter-gray w-1/5 truncate">
-                          {dateDiffPretty(new Date(), new Date(tweet.time))}
-                        </div>
-                      </div>
-                    </Link>
-                  <div>
-                    {parentTweet.text}
-                  </div>
-                </div>
-              </div>
-            }
-          </div>
-          <div className="w-full py-2 flex justify-between text-twitter-gray">
-            <div className="flex items-center">
-              <BiMessageRounded className="inline mr-1" />
-              {formatNumber(tweet.replies.length)}
-            </div>
-            <div className="flex items-center">
-              <BiTransferAlt className="inline mr-1" />
-              {formatNumber(tweet.retweets)}
-            </div>
-            <div className="flex items-center">
-              <BiHeart className="inline mr-1"/>
-              {formatNumber(tweet.likes)}
-            </div>
-          </div>
-        </div>
-      </div>
+        <RegularReply tweet={tweet} isParent={isParent} profileImg={profileImg}
+          handleTweetClick={handleTweetClick} parentTweet={parentTweet}
+        />
     }
     </>
   )

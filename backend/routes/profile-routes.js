@@ -21,6 +21,7 @@ router.get("/home/:id", async (req, res) => {
         await Promise.all(
             user.following.map(async (id) => {
                 const user1 = await User.findOne({_id: id})
+                //attach the reply if there is one
                 const tweets_for_user = await Tweet.find({ user: id })
                     .sort({ time: -1 })
                     // .limit(20)
