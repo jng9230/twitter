@@ -21,10 +21,19 @@ router.get("/home/:id", async (req, res) => {
         await Promise.all(
             user.following.map(async (id) => {
                 const user1 = await User.findOne({_id: id})
-                //attach the reply if there is one
+                
                 const tweets_for_user = await Tweet.find({ user: id })
                     .sort({ time: -1 })
                     // .limit(20)
+
+                //attach the parent tweet if there is one
+
+                // const tweets_with_parents = tweets_for_user.map(d => {
+                //     if (d.parent){
+                //         const parent = 
+                //     }
+                // })
+
                 const tweets_for_user_with_user_attached = tweets_for_user.map(d => {
                     return attach_user(user1, d)
                 })

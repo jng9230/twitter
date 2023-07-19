@@ -4,11 +4,12 @@ import { Tweet } from '../utils/APITypes'
 import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
 import { Link, useNavigate, redirect } from 'react-router-dom'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { config } from '../utils/config'
 import RegularReply from './ReplyRegular'
 import ReplyFocused from './ReplyFocused'
 import Reply from './Reply'
+import { getTweet } from '../utils/APICalls'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 // }
@@ -30,13 +31,11 @@ const TweetBox = ({
   isFocused,
   isParent,
   onTimeline,
-  parentTweet
 }: {
   tweet: Tweet,
   isFocused?: boolean,
   isParent?: boolean,
   onTimeline?: boolean,
-  parentTweet?: Tweet
 }) => {
   const navigate = useNavigate();
   const handleTweetClick = (handle: string, id: string) => {
@@ -53,16 +52,29 @@ const TweetBox = ({
   // }, [])
   const profileImg = tweet.user.profileImg && tweet.user.profileImg !== "" ? tweet.user.profileImg 
     : config.DEFAULT_PROFILE_IMG
+  // console.log("main tweet:")
+  // console.log(tweet)
+  // console.log(tweet.text)
+  // console.log("replying to:")
+  // console.log(parentTweet?.text)
+  // let parentTweet;
+  const [parentTweet, setParentTweet] = useState<Tweet>();
+  useEffect(() => {
+    if (tweet.parent){
+      getTweet(tweet.parent)
+        .then(d => setParentTweet(d))
+    }
+  }, [])
   return (
     <>
     {
       isFocused ? 
         <ReplyFocused tweet={tweet} isParent={isParent} profileImg={profileImg}
-          handleTweetClick={handleTweetClick} parentTweet={parentTweet} 
+          handleTweetClick={handleTweetClick} parentTweet={parentTweet} onTimeline={onTimeline}
         />
       :
         <RegularReply tweet={tweet} isParent={isParent} profileImg={profileImg}
-          handleTweetClick={handleTweetClick} parentTweet={parentTweet}
+            handleTweetClick={handleTweetClick} parentTweet={parentTweet} onTimeline={onTimeline}
         />
     }
     </>

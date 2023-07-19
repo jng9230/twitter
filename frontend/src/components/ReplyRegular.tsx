@@ -9,15 +9,16 @@ const ReplyRegular = ({
     isParent,
     profileImg,
     handleTweetClick,
-    parentTweet
-}:{
+    parentTweet,
+    onTimeline
+}: {
     tweet: Tweet
     isParent?: boolean,
     profileImg: string,
     handleTweetClick: (handle: string, tweetID: string) => void,
-    parentTweet?: Tweet
+    parentTweet?: Tweet,
+    onTimeline?: boolean
 }) => {
-    const onTimeline = true;
     return (
     <>
     <div className="flex gap-3 p-2 cursor-pointer relative" onClick={() => handleTweetClick(tweet.user.handle, tweet._id)}>

@@ -74,8 +74,8 @@ const TweetChain = ({
           parentTweets.unshift(currParent)
           node = currParent
         }
-        console.log("parents: ")
-        console.log(parentTweets)
+        // console.log("parents: ")
+        // console.log(parentTweets)
         setParents(parentTweets)
       } catch (e) {
         console.error(e)

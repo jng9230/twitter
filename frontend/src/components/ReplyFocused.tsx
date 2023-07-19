@@ -8,15 +8,16 @@ const ReplyFocused = ({
     isParent,
     profileImg,
     handleTweetClick,
-    parentTweet
+    parentTweet,
+    onTimeline
 }: {
     tweet: Tweet
     isParent?: boolean,
     profileImg: string,
     handleTweetClick: (handle: string, tweetID: string) => void,
-    parentTweet?: Tweet
+    parentTweet?: Tweet,
+    onTimeline?: boolean
 }) => {
-    const onTimeline = true;
   return (
     <>
     <div className="p-2">
