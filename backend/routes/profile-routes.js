@@ -4,23 +4,7 @@ const Tweet = require("../models/tweet");
 const config = require("../config")
 const debug = config.DEBUG === "1"; 
 const reverseChronoSort = require("../utils/reverseChronoSort")
-
-/** Helper function to attach the given `user` to the `tweet` object.
- * Used for frontend to maintain its types and state.
- */
-const attach_user = (user, tweet) => {
-    return {
-        user: user,
-        text: tweet.text,
-        likes: tweet.likes,
-        retweets: tweet.retweets,
-        replies: tweet.replies,
-        tweetID: tweet._id,
-        time: new Date(tweet.time),
-        parent: tweet.parent || ""
-    }
-}
-
+const attach_user = require("../utils/attachUser")
 //generate tweets for homepage (reverse chrono timeline)
 router.get("/home/:id", async (req, res) => {
     if (debug) console.log(`GETTING HOMEPAGE FOR ${req.params.id}`)

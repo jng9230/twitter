@@ -2,13 +2,15 @@ import React from 'react'
 import { Tweet, User } from '../utils/APITypes'
 import { useState, useRef } from 'react'
 import useAutosizeTextArea from '../utils/useAutosizeTextArea'
+import { config } from '../utils/config'
+
 const ReplyBox = ({
   user,
   updateReplies,
   parent
 }:{
   user: User,
-  updateReplies: (t:Tweet) => void,
+  updateReplies: (t:string) => void,
   parent: Tweet
 }) => {
   const [text, setText] = useState("")
@@ -18,23 +20,14 @@ const ReplyBox = ({
   useAutosizeTextArea(textAreaRef.current, text);
 
   const handleAddReply = () => {
-    //TODO: make API call
-    const tweet: Tweet = {
-      user: user,
-      text: text,
-      likes: 0,
-      retweets: 0,
-      replies: [],
-      time: new Date(),
-      _id: Math.floor(Math.random() * 100000000000).toString(),
-      parent: parent._id
-    }
     setText("")
-    updateReplies(tweet);
+    updateReplies(text);
   }
+  const profileImg = user.profileImg && user.profileImg !== "" ? user.profileImg
+    : config.DEFAULT_PROFILE_IMG
   return (
     <div className="flex justify-between p-2">
-      <img src={user.profileImg} alt="" className="w-11 h-11 rounded-full"/>
+      <img src={profileImg} alt="" className="w-11 h-11 rounded-full"/>
       <div className="w-full">
         <textarea name="tweetTextArea" id="tweetTextArea" onChange={e => setText(e.target.value)}
           value={text} placeholder={"Tweet your reply!"}

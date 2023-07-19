@@ -212,3 +212,33 @@ export const getReccs = async (userID:string) => {
         })
     return res
 }
+
+export const getTweet = (tweetID: string) => {
+    const res = fetch(`/tweet/id/${tweetID}`, {
+        method: "GET",
+    })
+        .then(res => res.json())
+        .then((data: API.Tweet) => {
+            return data
+        })
+    return res
+}
+
+export const replyToTweet= (text:string, parent: API.Tweet, user: API.User) => {
+    const res = fetch(`/tweet/reply/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "user": user._id,
+            "text": text,
+            "parent": parent._id
+        })
+    })
+        .then(res => res.json())
+        .then((data: API.Tweet) => {
+            return data
+        })
+    return res
+}

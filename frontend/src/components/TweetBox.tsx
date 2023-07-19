@@ -42,7 +42,7 @@ const TweetBox = ({
   const handleTweetClick = (handle: string, id: string) => {
     return navigate(`/${handle}/status/${id}`);
   }
-
+  console.log(tweet)
   //parent -> add a vertical line on left to indicate connections
   //focused -> entirely different spacing, full descriptions of icons like likes, replies, etc.
   // useEffect(() => {
@@ -52,6 +52,7 @@ const TweetBox = ({
   // }, [])
   const profileImg = tweet.user.profileImg && tweet.user.profileImg !== "" ? tweet.user.profileImg 
     : config.DEFAULT_PROFILE_IMG
+  console.log(tweet)
   return (
     <>
     {

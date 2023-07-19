@@ -5,6 +5,7 @@ const config = require("../config")
 const debug = config.DEBUG === "1"; 
 const reverseChronoSort = require("../utils/reverseChronoSort");
 const hasFields = require("../utils/hasFields");
+const attach_user = require("../utils/attachUser")
 
 //get a tweet
 router.get("/id/:id", async (req, res) => {
@@ -16,7 +17,8 @@ router.get("/id/:id", async (req, res) => {
     
     try {
         const tweet = await Tweet.findById(req.params.id)
-        return res.json(tweet)
+        const user = await User.findById(tweet.user)
+        return res.json(attach_user(user, tweet))
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)
@@ -80,6 +82,9 @@ router.post("/reply", async (req, res) => {
     }
 
     try {
+        const user = await User.findById(req.body.user)
+        if (!user) { throw Error("user not found") }
+
         const reply = new Tweet({
             user: req.body.user,
             text: req.body.text,
@@ -91,7 +96,7 @@ router.post("/reply", async (req, res) => {
             { _id: req.body.parent},
             { $push: {replies: reply._id}}
         )
-        return res.json(reply)
+        return res.json(attach_user(user, reply))
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)
