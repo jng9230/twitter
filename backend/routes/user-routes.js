@@ -48,7 +48,7 @@ router.get("/handle/:id", async (req, res) => {
 router.post("/create", async (req, res) => {
     if (debug) { console.log(`MAKING USER:`); console.log(req.body) }
 
-    if (!hasFields(req.body, ["email", "username", "handle", "profileImg"])){
+    if (!hasFields(req.body, ["email", "username", "handle"])){
         return res.status(400).json("missing fields")
     }
 
@@ -57,11 +57,13 @@ router.post("/create", async (req, res) => {
             email: req.body.email,
             username: req.body.username,
             handle: req.body.handle, 
-            profileImg: req.body.profileImg,
+            profileImg: req.body.profileImg || ""
         })
     
-        user.save()
+        await user.save()
+
         return res.json(user)
+
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)
@@ -130,21 +132,26 @@ router.post("/unfollow", async (req, res) => {
         return res.status(400).json("missing fields")
     }
 
-    const followee = await User.findOneAndUpdate({ _id: req.body.followee }, {
-        $pullAll: {
-            followers: [{ _id: req.body.follower }],
-        }
-    });
-    const follower = await User.findOneAndUpdate({ _id: req.body.follower }, {
-        $pullAll: {
-            following: [{ _id: req.body.followee }],
-        },
-    });
-
-    return res.json({
-        followee: followee,
-        follower: follower
-    })
+    try {
+        const followee = await User.findOneAndUpdate({ _id: req.body.followee }, {
+            $pullAll: {
+                followers: [{ _id: req.body.follower }],
+            }
+        });
+        const follower = await User.findOneAndUpdate({ _id: req.body.follower }, {
+            $pullAll: {
+                following: [{ _id: req.body.followee }],
+            },
+        });
+    
+        return res.json({
+            followee: followee,
+            follower: follower
+        })
+    } catch (e) {
+        console.error(e)
+        return res.status(500).json(e)
+    }
 })
 
 
