@@ -36,7 +36,7 @@ router.get("/home/:id", async (req, res) => {
         let tweets = []
         await Promise.all(
             user.following.map(async (id) => {
-                const user1 = await User.find({_id: id})
+                const user1 = await User.findOne({_id: id})
                 const tweets_for_user = await Tweet.find({ user: id })
                     .sort({ time: -1 })
                     // .limit(20)
