@@ -9,6 +9,8 @@ import Dock from '../components/Dock'
 import { useState } from 'react'
 import { getTweet, replyToTweet } from '../utils/APICalls'
 import { reverseChronoSort } from '../utils/reverseChronoSort'
+import Sidebar from '../components/Sidebar'
+import ReccomendationBox from '../components/ReccomendationBox'
 const TweetChain = ({
   user
 }:{
@@ -111,8 +113,8 @@ const TweetChain = ({
     <>
       <div className="w-screen h-screen">
         <div className="max-w-screen-xl grid grid-cols-4 gap-3 mx-auto">
-          <div>
-
+          <div className="">
+            <Sidebar user={user} showTweetModal={()=>{}} showSidebar={true} handleHideSidebar={() => {}} at="tweetChain" />
           </div>
           <div className="col-span-2">
 
@@ -151,8 +153,9 @@ const TweetChain = ({
               }
             </div>
           </div>
-          <div>
-
+          <div className="w-full px-2 space-y-3 py-2">
+            {/* <Searchbar/> */}
+            <ReccomendationBox user={user} />
           </div>
     </div>
     </div>
