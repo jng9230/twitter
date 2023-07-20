@@ -41,7 +41,7 @@ const LoginModal = ({
     // }, [navigate]);
 
     const [isEmail, setIsEmail] = useState(true)
-    const [failedLogin, setFailedLogin] = useState(false)
+    const [failedLoginReason, setFailedLoginReason] = useState("")
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement; 
@@ -55,7 +55,7 @@ const LoginModal = ({
         setIsEmail(emailValid)
         if (!emailValid) { return; }
         
-        setFailedLogin(false)
+        setFailedLoginReason("")
 
         loginToAccount(email, password)
             .then(d => {
@@ -64,8 +64,12 @@ const LoginModal = ({
                     setUser(d.message)
                     navigate("/", {replace: true})
                 } else {
-                    setFailedLogin(true)
+                    setFailedLoginReason("")
                 }
+            })
+            .catch((e: Error) => {
+                console.log(e)
+                setFailedLoginReason(e.toString())
             })
     }
 
@@ -102,9 +106,9 @@ const LoginModal = ({
                             }
                         </div>
                         {
-                            failedLogin ? 
+                            failedLoginReason !== "" ? 
                             <div className="text-xs text-red-600">
-                                Invalid email and/or password. Please try again.
+                                {failedLoginReason}
                             </div>
                             :
                             <></>

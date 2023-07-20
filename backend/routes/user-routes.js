@@ -44,7 +44,7 @@ router.get("/handle/:id", async (req, res) => {
 })
 
 
-//create user **FOR CREATING USERS IN TESTS**
+//create user **TEST ROUTE ONLY -- DO NOT CALL IN APP**
 router.post("/create", async (req, res) => {
     if (debug) { console.log(`MAKING USER:`); console.log(req.body) }
 
@@ -74,32 +74,33 @@ router.post("/create", async (req, res) => {
 })
 
 //register user
-router.post("/register", async (req, res) => {
-    if (debug) { console.log("REGISTERING"); console.log(req.body) }
+// router.post("/register", async (req, res) => {
+//     if (debug) { console.log("REGISTERING"); console.log(req.body) }
 
-    if (!hasFields(req.body, ["email", "username", "handle"])) {
-        return res.status(400).json("missing fields")
-    }
+//     if (!hasFields(req.body, ["email", "username", "handle"])) {
+//         return res.status(400).json("missing fields")
+//     }
 
-    User.register( new User({
-        email: req.body.email,
-        username: req.body.username,
-        handle: req.body.handle,
-    }),
-        req.body.password,
-        function (err, user){
-            if (err) { return res.json({ success: false, message: err }) } 
+//     User.register( new User({
+//         email: req.body.email,
+//         username: req.body.username,
+//         handle: req.body.handle,
+//     }),
+//         req.body.password,
+//         function (err, user){
+//             if (err) { console.error(err); return res.json({ success: false, message: err }) } 
 
-            req.login(user, (err) => {
-                if (err) { return res.json({ success: false, message: err }) } 
+//             req.login(user, (err) => {
+//                 if (err) { console.error(err); return res.json({ success: false, message: err }) } 
                 
-                return res.json({
-                    success: true,
-                    message: "successfully registered user"
-                })
-            })
-    })
-})
+//                 console.log("bing chilling")
+//                 return res.json({
+//                     success: true,
+//                     message: "successfully registered user"
+//                 })
+//             })
+//     })
+// })
 
 //follow wrt IDs provided in body (NOT user objects)
 router.post("/follow", async (req, res) => {

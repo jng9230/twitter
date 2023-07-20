@@ -37,10 +37,11 @@ const CreateAccountModal = ({
     const [passErrs, setPassErrs] = useState<ValidationErrs[]>([])
     const [nameErrs, setNameErrs] = useState<ValidationErrs[]>([])
     const [isEmail, setIsEmail] = useState(true)
-    const [failedCreation, setFailedCreation] = useState(false)
+    const [creationFailReason, setCreationFailReason] = useState("")
     const navigate = useNavigate();
     const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setCreationFailReason("")
         const form = e.target as HTMLFormElement; 
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
@@ -68,6 +69,8 @@ const CreateAccountModal = ({
             return;
         }
 
+        console.log("sending: ")
+        console.log(email, password, username)
         createAccount(email, password, username)
             .then(d => {
                 if (d.success) {
@@ -75,11 +78,11 @@ const CreateAccountModal = ({
                     setUser(d.message)
                     navigate("/", { replace: true })
                 } else {
-                    setFailedCreation(true)
                 }
             })
-            .catch((e) => {
+            .catch((e: Error) => {
                 console.log(e)
+                setCreationFailReason(e.toString())
             })
 
     }
@@ -149,6 +152,13 @@ const CreateAccountModal = ({
                                     </div>
                                 })
                                 }
+                            </div>
+                            : <></>
+                        }
+                        {
+                            creationFailReason !== "" ?
+                            <div className="text-red-600 text-xs">
+                                {creationFailReason}
                             </div>
                             : <></>
                         }

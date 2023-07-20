@@ -29,6 +29,7 @@ export const createAccount = async (
     password: string,
     username: string
 ) => {
+    console.log(email, password, username)
     const res = fetch("/auth/register", {
         method: "POST",
         headers: {
@@ -41,14 +42,13 @@ export const createAccount = async (
         })
     })  
         .then(res => {
+            console.log(res)
             if (res.status === 200) return res.json()
             if (res.status === 400) throw new Error("Missing fields");
             if (res.status === 409) throw new Error("Email already in use.");
             if (res.status === 500) throw new Error("Internal server error");
         })
-        .then(res => res.json())
         .then(data => {
-            
             return data as API.APISuccessReturn
         })
     return res
@@ -68,9 +68,13 @@ export const loginToAccount = async (
             "password": password,
         })
     })
-        .then(res => res.json())
+        .then(res => {
+            console.log(res)
+            if (res.status === 200) return res.json()
+            if (res.status === 401) throw new Error("Invalid email and/or password");
+            if (res.status === 500) throw new Error("Internal server error");
+        })
         .then(data => {
-            
             return data as API.APISuccessReturn
         })
     return res

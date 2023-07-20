@@ -6,6 +6,7 @@ require("../passport-setup/local-setup")
 const CLIENT_HOME_PAGE_URL = config.CLIENT_HOME_PAGE_URL;
 const debug = config.DEBUG === "1";
 const User = require("../models/user");
+const hasFields = require("../utils/hasFields");
 
 // when login is successful, retrieve user info
 router.get("/login/success",
@@ -76,6 +77,10 @@ router.get('/google/redirect', passport.authenticate("google", {
 router.post("/register", async (req, res) => {
     if (debug) { console.log("REGISTERING"); console.log(req.body) }
 
+    if (!hasFields(req.body, ["email", "username", "password"])) {
+        return res.status(400).json("missing fields")
+    }
+
     User.register(new User({
         email: req.body.email,
         username: req.body.username,
@@ -83,15 +88,15 @@ router.post("/register", async (req, res) => {
     }),
     req.body.password,
     function (err, user) {
-        if (err) { return res.json({ success: false, message: err }) }
+        if (err) { console.error(err); return res.status(409).json({ success: false, message: err }) }
 
         req.login(user, (err) => {
-            if (err) { return res.json({ success: false, message: err }) }
+            if (err) { console.error(err); return res.status(500).json({ success: false, message: err }) }
 
             return res.json({
                 success: true,
                 message: {
-                    userID: user._id,
+                    _id: user._id,
                     username: user.username,
                     handle: user.handle,
                     profileImg: user.profileImg || ""
@@ -105,13 +110,12 @@ router.post("/register", async (req, res) => {
 router.post("/login-local", function (req, res) {
     if (debug){ console.log("LOCAL LOGIN"); console.log(req.body) }
     passport.authenticate("local", function (err, user, info) {
-        if (err) { console.log(err); return res.json({ success: false, message: err.message }) }
+        if (err) { console.log(err); return res.status(500).json({ success: false, message: err.message }) }
 
         req.login(user, (err) => {
-            if (err) { console.log(err); return res.json({ success: false, message: err.message }) }
+            if (err) { console.log(err); return res.status(401).json({ success: false, message: err.message }) }
 
             return res.json({
-                success: true,
                 message: {
                     userID: user._id,
                     username: user.username,

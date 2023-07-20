@@ -24,7 +24,6 @@ const usernameSchema = new passwordValidator()
 usernameSchema
     .is().min(4)
     .is().max(30)
-    .has().not().spaces()
     .has().not().symbols()
 
 export const checkUsername = (username:string) => {
