@@ -8,6 +8,7 @@ import { User } from '../utils/APITypes';
 import { useState, useEffect } from 'react';
 import { user as user1} from "../utils/localTestVars";
 import { getUserFromID, getAuthedUser } from '../utils/APICalls';
+import PageNotFound from './PageNotFound';
 function App() {
   const [user, setUser] = useState<User>(user1)
   //the useEffect below should never allow user1 to be set (reroutes to login)
@@ -40,6 +41,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login setUser={setUser}/>} />
         {/* optional paramter of profile ID */}
+        <Route path='/notfound/' element={<PageNotFound/>} />
         <Route path='/:profileID?' element={<Profile user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar}/>} /> 
         <Route path='/settings' element={<Settings user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar} />} />
         <Route path='/:profileID/status/:tweetID' element={<TweetChain user={user}/>} />

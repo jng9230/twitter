@@ -27,6 +27,9 @@ const TweetChain = ({
   // const [focusedTweet, setFocusedTweet] = useState<Tweet>(() => {
   //   return initTweets.filter((d) => d.tweetID === focusedTweetID)[0];
   // })
+
+  const navigate = useNavigate()
+
   const [focusedTweet, setFocusedTweet] = useState<Tweet>()
   const [children, setChildren] = useState<Tweet[]>()
   const [parents, setParents] = useState<Tweet[]>()
@@ -42,13 +45,12 @@ const TweetChain = ({
       try {
         //get focused tweet
         const tweet = await getTweet(focusedTweetID)
-        console.log("focused tweet:")
-        console.log(tweet.text)
         setFocusedTweet(tweet)
-        console.log("focusedTweet:")
-        console.log(focusedTweet?.text)
+        // console.log("focusedTweet:")
+        // console.log(focusedTweet?.text)
       } catch (e) {
         console.error(e)
+        navigate("/notfound")
       }
     }
     getData();
@@ -106,8 +108,6 @@ const TweetChain = ({
   //     window.scrollTo({top: y})
   //   }
   // }, [focusedTweetID])
-
-  const navigate = useNavigate()
 
   return (
     <>

@@ -119,6 +119,14 @@ export const getTimeline = async (
 ) => {
     // const res = fetch("/auth/login/success")
     const res = fetch(`/timeline/home/${userID}`)
+        .then(res => {
+            if (res.ok) {
+                return res
+            }
+            console.log(res.status)
+            console.log(res)
+            throw new Error("something went wrong")
+        })
         .then(res => res.json())
         .then(data => {
             return data.map((d: API.Tweet) => {
@@ -134,6 +142,14 @@ export const getProfile = async (
     const res = fetch(`/timeline/user/${userID}`, {
         method: "GET",
     })
+        .then(res => {
+            if (res.ok) {
+                return res
+            }
+            console.log(res.status)
+            console.log(res)
+            throw new Error("something went wrong")
+        })
         .then(res => res.json())
         .then(data => {
             return data as API.Tweet[]
@@ -211,6 +227,14 @@ export const getTweet = (tweetID: string) => {
     const res = fetch(`/tweet/id/${tweetID}`, {
         method: "GET",
     })
+        .then(res => {
+            if (res.ok){
+                return res
+            }
+            console.log(res.status)
+            console.log(res)
+            throw new Error("something went wrong")
+        })
         .then(res => res.json())
         .then((data: API.Tweet) => {
             return data

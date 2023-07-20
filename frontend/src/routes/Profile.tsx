@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import Timeline from '../components/Timeline'
 import Dock from '../components/Dock'
 import { Tweet, User } from '../utils/APITypes'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 // import { initTweets as allTweets1 } from '../utils/localTestVars'
 import ReccomendationBox from '../components/ReccomendationBox'
@@ -29,13 +29,20 @@ const Profile = ({
   // console.log(user)
 
   //get the tweets for profile or user (prio. the profile)
+  const navigate = useNavigate()
   useEffect(() => {
     if (profileID) { //specific user -> tweets from that user only
       getProfile(profileID)
         .then(d => setAllTweets(d))
+        .catch(e => {
+          navigate("/notfound")
+        })
     } else { //no spec. user provided -> timeline
       getTimeline(user._id)
         .then(d => setAllTweets(d))
+        .catch(e => {
+          navigate("/notfound")
+        })
     }
   }, [user, profileID])
 
