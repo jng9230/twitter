@@ -36,12 +36,15 @@ const Profile = ({
         .then(d => setAllTweets(d))
         .catch(e => {
           navigate("/notfound")
+          // console.log("fuck1")
         })
     } else { //no spec. user provided -> timeline
       getTimeline(user._id)
-        .then(d => setAllTweets(d))
+        .then(d => {console.log("now it works");setAllTweets(d)})
         .catch(e => {
           navigate("/notfound")
+          // console.log("fuck2")
+          // console.log(user)
         })
     }
   }, [user, profileID])

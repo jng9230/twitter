@@ -13,7 +13,7 @@ const LoginModal = ({
     setUser
 }:{
     closeModal: () => void,
-    setUser: React.Dispatch<React.SetStateAction<User>>
+    setUser: (user1:User) => void
 }) => {
     const inputStyles = `
         focus:outline-none 

@@ -39,7 +39,13 @@ export const createAccount = async (
             "username": username,
             "password": password
         })
-    })
+    })  
+        .then(res => {
+            if (res.status === 200) return res.json()
+            if (res.status === 400) throw new Error("Missing fields");
+            if (res.status === 409) throw new Error("Email already in use.");
+            if (res.status === 500) throw new Error("Internal server error");
+        })
         .then(res => res.json())
         .then(data => {
             
@@ -76,7 +82,6 @@ export const getUserFromID = async (
     const res = fetch(`/user/id/${userID}`)
         .then(res => res.json())
         .then(data => {
-            
             return data as API.User
         })
     return res

@@ -8,7 +8,7 @@ const API_BASE = config.API_BASE;
 const Login = ({
   setUser
 }: {
-  setUser : React.Dispatch<React.SetStateAction<User>>
+  setUser : (t: User) => void
 }) => {
   const handleGoogleLogin = () => {
     window.open(API_BASE + "/auth/google", "_self");

@@ -66,7 +66,10 @@ router.post("/create", async (req, res) => {
 
     } catch (e) {
         console.error(e)
-        return res.status(500).json(e)
+        if (e.keyValue){
+            return res.status(409).json({ reason: Object.keys(e.keyValue) })
+        }
+        return res.status(500)
     }
 })
 

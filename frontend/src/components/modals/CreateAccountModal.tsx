@@ -13,7 +13,7 @@ const CreateAccountModal = ({
     setUser
 }: {
     closeModal: () => void,
-    setUser: React.Dispatch<React.SetStateAction<User>>
+    setUser: (user1: User) => void
 }) => {
     const inputStyles = `
         focus:outline-none 
@@ -78,6 +78,10 @@ const CreateAccountModal = ({
                     setFailedCreation(true)
                 }
             })
+            .catch((e) => {
+                console.log(e)
+            })
+
     }
 
     const [showPass, setShowPass] = useState(false);
