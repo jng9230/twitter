@@ -1,6 +1,6 @@
 
 import { Modal } from "./Modal"
-import { checkEmail, checkPassword, checkUsername } from "../../utils/checkPassword"
+import { checkEmail, checkPassword, checkUsername } from "../../utils/checkAccountFields"
 import { useState } from "react"
 import { ValidationErrs } from "../../utils/APITypes"
 import { checkEmailUnique, createAccount } from "../../utils/APICalls"

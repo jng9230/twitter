@@ -23,7 +23,7 @@ export const checkEmail = (email:string) => {
 const usernameSchema = new passwordValidator()
 usernameSchema
     .is().min(4)
-    .is().max(30)
+    .is().max(20)
     .has().not().symbols()
 
 export const checkUsername = (username:string) => {

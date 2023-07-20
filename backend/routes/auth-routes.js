@@ -84,7 +84,7 @@ router.post("/register", async (req, res) => {
     User.register(new User({
         email: req.body.email,
         username: req.body.username,
-        handle: req.body.username + parseInt((Math.random() * 1000).toString())
+        handle: req.body.username.trim().replace(/ /g, "") + parseInt((Math.random() * 1000).toString())
     }),
     req.body.password,
     function (err, user) {
@@ -117,7 +117,7 @@ router.post("/login-local", function (req, res) {
 
             return res.json({
                 message: {
-                    userID: user._id,
+                    _id: user._id,
                     username: user.username,
                     handle: user.handle,
                     profileImg: user.profileImg || ""

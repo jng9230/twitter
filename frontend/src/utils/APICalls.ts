@@ -37,7 +37,7 @@ export const createAccount = async (
         },
         body: JSON.stringify({
             "email": email,
-            "username": username,
+            "username": username.trim(),
             "password": password
         })
     })  
