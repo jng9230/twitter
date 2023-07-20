@@ -140,7 +140,8 @@ router.post("/unfollow", async (req, res) => {
         const followee = await User.findOneAndUpdate({ _id: req.body.followee }, {
             $pullAll: {
                 followers: [{ _id: req.body.follower }],
-            }
+            },
+            $inc: { num_followers: -1 }
         });
         const follower = await User.findOneAndUpdate({ _id: req.body.follower }, {
             $pullAll: {

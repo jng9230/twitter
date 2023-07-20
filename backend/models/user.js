@@ -32,7 +32,8 @@ const user_schema = new Schema({
         ref: "User"
     },
     num_followers: {
-        type: Number
+        type: Number,
+        default: 0
     },
 })
 
