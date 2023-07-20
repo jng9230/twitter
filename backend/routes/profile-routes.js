@@ -42,6 +42,7 @@ router.get("/home/:id", async (req, res) => {
         )
 
         tweets = reverseChronoSort(tweets)
+        // console.log(tweets)
         return res.json(tweets)
     } catch (e) {
         console.error(e)

@@ -59,13 +59,10 @@ const LoginModal = ({
 
         loginToAccount(email, password)
             .then(d => {
-                if ( d.success ){
                     // setUserID(d.message)
-                    setUser(d.message)
-                    navigate("/", {replace: true})
-                } else {
-                    setFailedLoginReason("")
-                }
+                setUser(d.message)
+                navigate("/", {replace: true})
+                setFailedLoginReason("")
             })
             .catch((e: Error) => {
                 console.log(e)
