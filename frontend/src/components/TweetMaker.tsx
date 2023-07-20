@@ -21,13 +21,19 @@ const TweetMaker = ({
     const makeAndAddTweet = (text: string) => {
         makeTweet(user, text)
             .then(d => {
+                setText("")
                 handleAddTweet(d);
             })
             .catch(e => console.error(e))
             // .finally(() => closeTweetMaker())
     }
+
+    //give a larger area of focus for the textarea to take
+    const focusTextarea = () => {
+        textAreaRef.current && textAreaRef.current.focus()
+    }
     return (
-        <div className="">
+        <div className="" onClick={focusTextarea}>
             <div className="flex justify-between">
                 {/* <BiLeftArrowAlt onClick={() => closeTweetMaker()} size={30} /> */}
                 {/* <button
@@ -64,15 +70,15 @@ const TweetMaker = ({
                     />
                 </div>
             </div>
-            <div className="p-3 flex items-end w-full flex-col">
+            <div className="px-3 pb-3 flex items-end w-full flex-col">
                 <button
                     disabled={text === ""}
-                    onClick={() => makeAndAddTweet(text)}
+                    onClick={(e) => {e.stopPropagation(); makeAndAddTweet(text)}}
                     className="
                         text-white 
                         bg-twitter-blue 
-                        px-4
-                        py-3 
+                        px-3
+                        py-2 
                         font-bold
                         disabled:opacity-50
                         rounded-full

@@ -58,6 +58,9 @@ const TweetBox = ({
   // console.log("replying to:")
   // console.log(parentTweet?.text)
   // let parentTweet;
+
+  //get the parent tweet if there is one
+  // -- used for showing off/chaining a reply to later
   const [parentTweet, setParentTweet] = useState<Tweet>();
   useEffect(() => {
     if (tweet.parent){

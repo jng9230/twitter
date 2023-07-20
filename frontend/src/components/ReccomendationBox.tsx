@@ -41,7 +41,7 @@ const ReccomendationBox = ({
                 </div>
               </Link>
               <div>
-                <button className="text-white bg-black px-3 py-1 rounded-full" onClick={() => handleFollow(d._id)}>
+                <button className="text-white bg-black px-3 py-2 rounded-full" onClick={() => handleFollow(d._id)}>
                   Follow
                 </button>
               </div>

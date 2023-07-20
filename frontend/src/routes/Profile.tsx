@@ -41,6 +41,7 @@ const Profile = ({
 
   const handleAddTweet = (tweet: Tweet) => {
     setAllTweets([tweet,...allTweets])
+    setTweetModal(false)
   }
   
   const [tweetModal, setTweetModal] = useState(false)

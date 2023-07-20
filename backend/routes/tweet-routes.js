@@ -57,16 +57,19 @@ router.post("/create", async (req, res) => {
     if (!hasFields(req.body, ["user", "text"])){
         return res.status(400).json("missing fields")
     }
-
+    
     try {
+        const user = await User.findById(req.body.user);
+        if (!user) {throw new Error("User DNE")}
+        
         const tweet = new Tweet({
             user: req.body.user,
             text: req.body.text,
             time: new Date(),
         })
         await tweet.save()
-    
-        return res.json(tweet)
+        
+        return res.json(attach_user(user, tweet))
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)
