@@ -85,10 +85,10 @@ const ReplyRegular = ({
                     <BiTransferAlt className="inline mr-1" />
                     {formatNumber(tweet.retweets)}
                 </div> */}
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                     <BiHeart className="inline mr-1" />
                     {formatNumber(tweet.likes)}
-                </div>
+                </div> */}
             </div>
         </div>
     </div>

@@ -8,7 +8,6 @@ import { useCallback, useState } from 'react'
 import { config } from '../utils/config'
 import RegularReply from './ReplyRegular'
 import ReplyFocused from './ReplyFocused'
-import Reply from './Reply'
 import { getTweet } from '../utils/APICalls'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
