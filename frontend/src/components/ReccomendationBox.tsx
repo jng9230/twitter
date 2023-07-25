@@ -18,7 +18,9 @@ const ReccomendationBox = ({
   const handleFollow = (idToFollow:string) => {
     followUser(user._id, idToFollow)
       .then(d => {
-        console.log(d)
+        // console.log(d)
+        //remove followed user from recommendations
+        setReccs(reccs?.filter(d => d._id !== idToFollow))
       })
   }
 
