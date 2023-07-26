@@ -29,6 +29,9 @@
     "dotenv": "^16.3.1",
     "http": "^0.0.1-security",
     "jest": "^29.6.1",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }

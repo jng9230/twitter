@@ -15,7 +15,7 @@ const config = {
     GOOGLE_CLIENT_SECRET: secrets.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET,
     GOOGLE_REDIRECT_URL: process.env.GOOGLE_REDIRECT_URL || `http://localhost:${PORT}/auth/google/redirect`,
     COOKIE_KEY: secrets.COOKIE_KEY || process.env.COOKIE_KEY,
-    JWT_KEY: secrets.JWT_KEY || process.env.JWT_KEY,
+    // JWT_KEY: secrets.JWT_KEY || process.env.JWT_KEY,
     PORT: PORT,
     PORT_TEST: 5001,
     CLIENT_HOME_PAGE_URL: process.env.CLIENT_HOME_PAGE_URL,

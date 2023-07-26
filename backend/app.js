@@ -62,11 +62,11 @@ app.use(body_parser.urlencoded({ extended: true }));
 
 
 //render the landing page for prod
-// app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
-// });
-// console.log(__dirname)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
+console.log(__dirname)
 
 module.exports = app
