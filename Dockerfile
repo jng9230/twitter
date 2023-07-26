@@ -1,17 +1,17 @@
-# Stage1: frontend Build
+# Stage1: Build frontend
 FROM node:19 AS frontend-build
 WORKDIR /usr/src
 COPY frontend/ ./frontend/
-RUN cd frontend && npm install && ENVIRONMENT=production npm run build
+RUN cd frontend && npm install && ENVIRONMENT=production.local npm run build
 
-# Stage2: backend Build
+# Stage2: Build backend
 FROM node:19 AS backend-build
 WORKDIR /usr/src
 COPY backend/ ./backend/
-RUN cd backend && npm install && ENVIRONMENT=production npm run build
+RUN cd backend && npm install && ENVIRONMENT=production.local npm run build
 RUN ls
 
-# Stage3: Packagign the app
+# Stage3: Package the app
 FROM node:19
 WORKDIR /root/
 COPY --from=frontend-build /usr/src/frontend/build ./frontend/build

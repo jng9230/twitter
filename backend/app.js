@@ -60,13 +60,14 @@ app.get("/test", (req, res) => {
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({ extended: true }));
 
-
-//render the landing page for prod
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
-});
-console.log(__dirname)
+//serve a static initial page if on prod
+if (process.env.ENVIRONMENT === "production.local" || process.env.ENVIRONMENT === "production.remote") {
+    app.use(express.static(path.join(__dirname, '../frontend/build')));
+    
+    app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+    });
+    // console.log(__dirname)
+}
 
 module.exports = app

@@ -25,8 +25,8 @@ passport.deserializeUser((id, done) => {
 
 
 let passportConfig = {};
-passportConfig.clientID = GOOGLE_CLIENT_ID,
-passportConfig.clientSecret = GOOGLE_CLIENT_SECRET,
+passportConfig.clientID = GOOGLE_CLIENT_ID
+passportConfig.clientSecret = GOOGLE_CLIENT_SECRET
 passportConfig.callbackURL = GOOGLE_REDIRECT_URL
 passportConfig.passReqToCallback = true
 passport.use(new GoogleStrategy(passportConfig,

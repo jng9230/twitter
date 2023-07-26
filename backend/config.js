@@ -2,10 +2,15 @@
  * file to consolidate local development config and production secrets
  */
 // require("dotenv").config({ path: ".env" });
-if (process.env.ENVIRONMENT !== 'production') {
-    require('dotenv').config({ path: ".env" })
-}
+// if (process.env.ENVIRONMENT !== 'production.local' || process.env.ENVIRONMENT !== 'production.remote') {
+//     require('dotenv').config({ path: ".env" })
+// }
 // const secrets = require('@cloudreach/docker-secrets');
+
+// const path = require('path');
+// require('dotenv').config({ path: path.join(__dirname, `.env.${process.env.ENVIRONMENT}`)})
+require('dotenv').config({ path: `.env.${process.env.ENVIRONMENT}` })
+
 const secrets = {}
 const PORT = 5000
 const config = {
