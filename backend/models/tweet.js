@@ -15,6 +15,11 @@ const tweet_schema = new Schema({
         type: Number,
         default: 0
     },
+    liked_by: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "User",
+        default: []
+    },
     retweets: {
         type: Number,
         default: 0

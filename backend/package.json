@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "ENVIRONMENT=development nodemon start.js",
-    "test": "jest",
+    "start-test": "ENVIRONMENT=test nodemon start.js",
+    "test": "ENVIRONMENT=test jest",
     "build": "ENVIRONMENT=$ENVIRONMENT webpack"
   },
   "author": "",

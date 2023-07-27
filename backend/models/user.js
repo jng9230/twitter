@@ -35,6 +35,10 @@ const user_schema = new Schema({
         type: Number,
         default: 0
     },
+    liked_tweets: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Tweet"
+    }
 })
 
 user_schema.plugin(find_or_create);

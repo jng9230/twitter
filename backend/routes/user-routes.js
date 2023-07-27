@@ -185,4 +185,39 @@ router.get("/reccs/:id", async (req, res) => {
 
 //edit handle
 
+//delete user
+router.delete("/id/:id", async (req, res) => {
+    if (debug) console.log(`DELETING ${req.params.id}`)
+
+    if (!req.params.id) {
+        return res.status(400).json("missing id")
+    }
+
+    try {
+        const user = await User.findOneAndDelete({ _id: req.params.id });
+
+        //remove user from following
+        await Promise.all(user.following.map(async (id) => {
+            await User.findOneAndUpdate({ _id: id },{
+                $inc: { num_followers: -1 }
+            })
+        }))
+
+        //remove user's liked tweets
+        await Promise.all(user.liked_tweets.map(async (id) => {
+            await Tweet.findOneAndUpdate({ _id: id }, {
+                $inc: { likes: -1 },
+                $pullAll: {
+                    liked_by: [{ _id: user._id }],
+                },
+            })
+        }))
+
+        return res.json(user)
+    } catch (e) {
+        console.error(e)
+        return res.status(500).json(e)
+    }
+})
+
 module.exports = router

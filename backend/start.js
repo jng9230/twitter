@@ -3,6 +3,7 @@ const PORT = config.PORT || 5000;
 const app = require("./app");
 const mongoose = require('mongoose');
 const URI = config.ATLAS_URI;
+console.log(URI)
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });

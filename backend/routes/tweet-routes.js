@@ -60,6 +60,7 @@ router.post("/create", async (req, res) => {
     
     try {
         const user = await User.findById(req.body.user);
+        console.log(user)
         if (!user) {throw new Error("User DNE")}
         
         const tweet = new Tweet({
@@ -126,6 +127,66 @@ router.delete("/id/:id", async (req, res) => {
             deleted : del_tweet,
             updated_parent : updated_parent
         })
+    } catch (e) {
+        console.error(e)
+        return res.status(500).json(e)
+    }
+})
+
+//like a tweet
+router.post("/like", async (req, res) => {
+    if (debug) { console.log(`LIKING TWEET:`); console.log(req.body) }
+
+    if (!hasFields(req.body, ["user", "tweet"])) {
+        return res.status(400).json("missing fields")
+    }
+
+    try {
+        const user = await User.findOneAndUpdate({ _id: del_tweet.parent }, {
+            $push: {
+                liked_tweets: user._id,
+            }
+        });
+
+        const tweet = await Tweet.findOneAndUpdate({ _id: del_tweet.parent }, {
+            $push: {
+                liked_by: user._id,
+            },
+            $inc: {
+                likes: 1
+            }
+        });
+
+        return res.json(tweet)
+    } catch (e) {
+        console.error(e)
+        return res.status(500).json(e)
+    }
+})
+
+//unlike a tweet
+router.post("/unlike", async (req, res) => {
+    if (debug) { console.log(`UNLIKING TWEET:`); console.log(req.body) }
+
+    if (!hasFields(req.body, ["user", "tweet"])) {
+        return res.status(400).json("missing fields")
+    }
+
+    try {
+        const user = await User.findById(req.body.userID)
+        if (!user) { throw Error("user not found") }
+
+        const tweet = await Tweet.findOneAndUpdate({ _id: del_tweet.parent }, {
+            $pullAll: {
+                liked_by: [{ _id: user._id }]
+            },
+            $inc: {
+                likes: -1
+            }
+        });
+        if (!tweet) { throw Error("tweet not found") }
+
+        return res.json(tweet)
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)
