@@ -59,7 +59,7 @@ router.get("/user/:id", async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({ handle: req.params.id})
+        const user = await User.findOne({ _id: req.params.id})
         const tweets = await Tweet.find({ user: user._id })
             .sort({ time: -1 })
             // .limit(20)
