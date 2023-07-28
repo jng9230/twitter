@@ -364,84 +364,84 @@ describe("tweets", () => {
     })
 })
 
-// describe("profiles/landing pages", () => {
-//     let users = []
-//     const tweets_per_user = 5
-//     const num_users = 4
-//     beforeAll(async () => {
-//         await dropAllCollections();
-//         //make some users
-//         let user_bodies = []
-//         for (let i = 0; i < num_users; i ++){
-//             const user_body1 = {
-//                 email: `${parseInt(Math.random() * 1000)}@gmail.com`,
-//                 username: "itsa me",
-//                 handle: `user${parseInt(Math.random() * 1000)}`
-//             }
-//             user_bodies.push(user_body1)
-//         }
-//         await Promise.all(
-//             user_bodies.map(async (d) => {
-//                 const user = await API.post("/user/create").send(d);
-//                 users.push(user.body);
-//             })
-//         )
+describe("profiles/landing pages", () => {
+    let users = []
+    const tweets_per_user = 5
+    const num_users = 4
+    beforeAll(async () => {
+        await dropAllCollections();
+        //make some users
+        let user_bodies = []
+        for (let i = 0; i < num_users; i ++){
+            const user_body1 = {
+                email: `${parseInt(Math.random() * 1000)}@gmail.com`,
+                username: "itsa me",
+                handle: `user${parseInt(Math.random() * 1000)}`
+            }
+            user_bodies.push(user_body1)
+        }
+        await Promise.all(
+            user_bodies.map(async (d) => {
+                const user = await API.post("/user/create").send(d);
+                users.push(user.body);
+            })
+        )
         
-//         //tweet from each user
-//         await Promise.all(
-//             users.map( async (d) => {
-//                 for (let j = 0; j < tweets_per_user; j ++){
-//                     await API.post("/tweet/create").send({
-//                         user: d._id,
-//                         text: `${d._id} says: testing testing 123`
-//                     })
-//                 }
-//             })
-//         )
+        //tweet from each user
+        await Promise.all(
+            users.map( async (d) => {
+                for (let j = 0; j < tweets_per_user; j ++){
+                    await API.post("/tweet/create").send({
+                        user: d._id,
+                        text: `${d._id} says: testing testing 123`
+                    })
+                }
+            })
+        )
 
-//         //have the first user follow all other users
-//         const others = users.slice(1, users.length)
-//         await Promise.all(
-//             others.map(async d => {
-//                 const follower = users[0]
-//                 const followee = d
-//                 await API.post("/user/follow").send({
-//                     follower: follower._id,
-//                     followee: followee._id
-//                 })
-//             })
-//         )
+        //have the first user follow all other users
+        const others = users.slice(1, users.length)
+        await Promise.all(
+            others.map(async d => {
+                const follower = users[0]
+                const followee = d
+                await API.post("/user/follow").send({
+                    follower: follower._id,
+                    followee: followee._id
+                })
+            })
+        )
 
 
-//     })
+    })
 
-//     it("gets a homepage", async () => {
-//         const res = await API.get(`/timeline/home/${users[0]._id}`)
-//         const home_tweets = res.body;
-//         //check that the number of tweets match
-//         expect(home_tweets.length).toEqual( (num_users - 1) * tweets_per_user)
+    it("gets a homepage", async () => {
+        const res = await API.get(`/timeline/home/${users[0]._id}`)
+        const home_tweets = res.body;
+        //check that the number of tweets match
+        expect(home_tweets.length).toEqual( (num_users - 1) * tweets_per_user)
 
-//         //check that they are ordered wrt date
-//         const first_time = new Date(home_tweets[0].time)
-//         const last_time = new Date(home_tweets[home_tweets.length - 1].time)
-//         expect(last_time.getTime()).toBeLessThan(first_time.getTime())
-//     })
+        //check that they are ordered wrt date
+        const first_time = new Date(home_tweets[0].time)
+        const last_time = new Date(home_tweets[home_tweets.length - 1].time)
+        expect(last_time.getTime()).toBeLessThan(first_time.getTime())
+    })
 
-//     it("gets a profile page", async () => {
-//         const res = await API.get(`/timeline/user/${users[0]._id}`)
-//         const tweets = res.body
+    it("gets a profile page", async () => {
+        const res = await API.get(`/timeline/user/${users[0].handle}`)
+        const tweets = res.body
 
-//         //make sure all the tweets are for the same profile
-//         for (const tweet of tweets){
-//             expect(tweet.user._id).toEqual(users[0]._id)
-//         }
+        //make sure all the tweets are for the same profile
+        for (const tweet of tweets){
+            expect(tweet.user.handle).toEqual(users[0].handle)
+        }
 
-//         //make sure tweets are in reverse chrono order
-//         const first_time = new Date(tweets[0].time)
-//         const last_time = new Date(tweets[tweets.length - 1].time)
-//         expect(last_time.getTime()).toBeLessThan(first_time.getTime())
-//     })
-// })
+        //make sure tweets are in reverse chrono order
+        const first_time = new Date(tweets[0].time)
+        const last_time = new Date(tweets[tweets.length - 1].time)
+        expect(last_time.getTime()).toBeLessThan(first_time.getTime())
+    })
+})
 
 
 afterAll(async () => {

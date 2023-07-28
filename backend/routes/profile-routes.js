@@ -5,6 +5,7 @@ const config = require("../config")
 const debug = config.DEBUG === "1"; 
 const reverseChronoSort = require("../utils/reverseChronoSort")
 const attach_user = require("../utils/attachUser")
+
 //generate tweets for homepage (reverse chrono timeline)
 router.get("/home/:id", async (req, res) => {
     if (debug) console.log(`GETTING HOMEPAGE FOR ${req.params.id}`)
@@ -51,15 +52,15 @@ router.get("/home/:id", async (req, res) => {
 })
 
 //generate tweets for given profile
-router.get("/user/:id", async (req, res) => {
-    if (debug) console.log(`GETTING TWEETS FOR USER ${req.params.id}`)
+router.get("/user/:handle", async (req, res) => {
+    if (debug) console.log(`GETTING TWEETS FOR USER ${req.params.handle}`)
     
-    if (!req.params.id) {
-        return res.status(400).json("missing id")
+    if (!req.params.handle) {
+        return res.status(400).json("missing handle")
     }
 
     try {
-        const user = await User.findOne({ _id: req.params.id})
+        const user = await User.findOne({ handle: req.params.handle})
         const tweets = await Tweet.find({ user: user._id })
             .sort({ time: -1 })
             // .limit(20)

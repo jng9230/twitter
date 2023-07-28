@@ -146,9 +146,9 @@ export const getTimeline = async (
 }
 
 export const getProfile = async (
-    userID: string
+    handle: string
 ) => {
-    const res = fetch(`/timeline/user/${userID}`, {
+    const res = fetch(`/timeline/user/${handle}`, {
         method: "GET",
     })
         .then(res => {

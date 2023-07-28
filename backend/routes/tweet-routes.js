@@ -159,7 +159,6 @@ router.post("/like", async (req, res) => {
         console.log(user)
 
         //have to RE-GET the new tweet b/c above DOESN'T RETURN UPDATED OBJ
-        // WHY THE FUCK
         const tweet_updated = await Tweet.findById(req.body.tweet)
         return res.json(tweet_updated)
     } catch (e) {
