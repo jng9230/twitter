@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { BiMessageRounded, BiTransferAlt, BiHeart } from 'react-icons/bi'
-import { Tweet } from '../utils/APITypes'
+import { Tweet, User } from '../utils/APITypes'
 import { dateDiffPretty } from '../utils/calculateDates'
 import { formatNumber } from '../utils/formatNumber'
 import { Link, useNavigate, redirect } from 'react-router-dom'
@@ -8,7 +8,8 @@ import { useCallback, useState } from 'react'
 import { config } from '../utils/config'
 import RegularReply from './ReplyRegular'
 import ReplyFocused from './ReplyFocused'
-import { getTweet } from '../utils/APICalls'
+import { getTweet, likeTweet } from '../utils/APICalls'
+import { setSourceMapRange } from 'typescript'
 // function randomDate(start: Date, end: Date) {
 //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 // }
@@ -30,11 +31,15 @@ const TweetBox = ({
   isFocused,
   isParent,
   onTimeline,
+  user,
+  setUser
 }: {
   tweet: Tweet,
   isFocused?: boolean,
   isParent?: boolean,
   onTimeline?: boolean,
+  user: User,
+  setUser: (u: User) => void
 }) => {
   const navigate = useNavigate();
   const handleTweetClick = (handle: string, id: string) => {
@@ -67,16 +72,36 @@ const TweetBox = ({
         .then(d => setParentTweet(d))
     }
   }, [])
+
+  const [liked, setLiked] = useState(() => {
+    return user.liked_tweets.includes(tweet._id)
+  })
+  const [disableLiked, setDisableLiked] = useState(false) //avoid abuse by disabling after click
+  const handleLike = async (tweet: Tweet, like: boolean) => {
+    if (disableLiked) { return; }
+    setDisableLiked(true)
+    
+    likeTweet(user, tweet, like)
+      .then(d => {
+          setUser(d.user);
+          setLiked(like);
+      })
+      .catch(e => console.log(e))
+      .finally(() => { setDisableLiked(false); })
+  }
+
   return (
     <>
     {
       isFocused ? 
         <ReplyFocused tweet={tweet} isParent={isParent} profileImg={profileImg}
           handleTweetClick={handleTweetClick} parentTweet={parentTweet} onTimeline={onTimeline}
+          handleLike={handleLike} liked={liked}
         />
       :
         <RegularReply tweet={tweet} isParent={isParent} profileImg={profileImg}
             handleTweetClick={handleTweetClick} parentTweet={parentTweet} onTimeline={onTimeline}
+            handleLike={handleLike} liked={liked}
         />
     }
     </>

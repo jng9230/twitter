@@ -12,9 +12,11 @@ import { reverseChronoSort } from '../utils/reverseChronoSort'
 import Sidebar from '../components/Sidebar'
 import ReccomendationBox from '../components/ReccomendationBox'
 const TweetChain = ({
-  user
+  user,
+  setUser
 }:{
-  user: User
+  user: User,
+  setUser: (u: User) => void
 }) => {
 
   //get the focusedTweet tweet
@@ -134,13 +136,13 @@ const TweetChain = ({
               </span>
             </header>
             {
-              parents?.map((d => <TweetBox tweet={d} isParent={true} key={d._id}/>))
+              parents?.map((d => <TweetBox tweet={d} isParent={true} key={d._id} user={user} setUser={setUser}/>))
             }
             <div className="h-screen overflow-y-scroll">
               <div ref={ref} className="scroll-mt-10">
                 {
                   focusedTweet ?
-                  <TweetBox tweet={focusedTweet} isFocused={true}/> 
+                    <TweetBox tweet={focusedTweet} isFocused={true} user={user} setUser={setUser} /> 
                   : <></>
                 }
               </div>
@@ -149,7 +151,7 @@ const TweetChain = ({
                 <ReplyBox user={user} updateReplies={updateReplies} parent={focusedTweet}/>
               }
               {
-                children?.map(d => <TweetBox tweet={d} key={d._id}/>)
+                children?.map(d => <TweetBox tweet={d} key={d._id} user={user} setUser={setUser} />)
               }
             </div>
           </div>

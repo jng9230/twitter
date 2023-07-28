@@ -199,7 +199,8 @@ router.delete("/id/:id", async (req, res) => {
         //remove user from following
         await Promise.all(user.following.map(async (id) => {
             await User.findOneAndUpdate({ _id: id },{
-                $inc: { num_followers: -1 }
+                $inc: { num_followers: -1 },
+                $pullAll: { followers: [{_id: user._id}]}
             })
         }))
 
@@ -207,9 +208,7 @@ router.delete("/id/:id", async (req, res) => {
         await Promise.all(user.liked_tweets.map(async (id) => {
             await Tweet.findOneAndUpdate({ _id: id }, {
                 $inc: { likes: -1 },
-                $pullAll: {
-                    liked_by: [{ _id: user._id }],
-                },
+                $pullAll: { liked_by: [{ _id: user._id }] },
             })
         }))
 

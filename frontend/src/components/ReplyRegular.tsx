@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { dateDiffPretty } from '../utils/calculateDates'
 import { Tweet } from '../utils/APITypes'
 import { BiHeart, BiTransferAlt, BiMessageRounded } from 'react-icons/bi'
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { formatNumber } from '../utils/formatNumber'
 const ReplyRegular = ({
     tweet,
@@ -10,14 +11,18 @@ const ReplyRegular = ({
     profileImg,
     handleTweetClick,
     parentTweet,
-    onTimeline
+    onTimeline,
+    handleLike,
+    liked
 }: {
     tweet: Tweet
     isParent?: boolean,
     profileImg: string,
     handleTweetClick: (handle: string, tweetID: string) => void,
     parentTweet?: Tweet,
-    onTimeline?: boolean
+    onTimeline?: boolean,
+    handleLike: (t: Tweet, like: boolean) => void,
+    liked: boolean
 }) => {
     return (
     <>
@@ -85,10 +90,18 @@ const ReplyRegular = ({
                     <BiTransferAlt className="inline mr-1" />
                     {formatNumber(tweet.retweets)}
                 </div> */}
-                {/* <div className="flex items-center">
-                    <BiHeart className="inline mr-1" />
-                    {formatNumber(tweet.likes)}
-                </div> */}
+                {
+                    liked ?
+                        <div className="flex items-center" onClick={(e) => {e.stopPropagation(); handleLike(tweet, false)}}>
+                            <AiFillHeart className="inline mr-1 text-red-600" />
+                            {formatNumber(tweet.likes)}
+                        </div>
+                    :
+                        <div className="flex items-center" onClick={(e) => {e.stopPropagation(); handleLike(tweet, true)}}>
+                            <AiOutlineHeart className="inline mr-1 hover:text-red-600" />
+                            {formatNumber(tweet.likes)}
+                        </div>
+                }
             </div>
         </div>
     </div>

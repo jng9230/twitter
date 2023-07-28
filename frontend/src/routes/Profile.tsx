@@ -15,12 +15,14 @@ const Profile = ({
   user,
   showSidebar,
   handleHideSidebar,
-  handleShowSidebar
+  handleShowSidebar,
+  setUser
 }:{
   user: User,
   showSidebar: boolean,
   handleHideSidebar: () => void,
-  handleShowSidebar: () => void
+  handleShowSidebar: () => void,
+  setUser: (u: User) => void
 }) => {
   const [allTweets, setAllTweets] = useState<Tweet[]>([])
   const profileID = useParams().profileID;
@@ -40,7 +42,7 @@ const Profile = ({
         })
     } else { //no spec. user provided -> timeline
       getTimeline(user._id)
-        .then(d => {console.log("now it works");setAllTweets(d)})
+        .then(d => { setAllTweets(d) })
         .catch(e => {
           navigate("/notfound")
           // console.log("fuck2")
@@ -70,7 +72,7 @@ const Profile = ({
             <TweetMaker user={user} handleAddTweet={handleAddTweet}/>
             : <></>
           } 
-          <Timeline allTweets={allTweets}/>
+          <Timeline allTweets={allTweets} user={user} setUser={setUser}/>
           {/* <Dock allTweets={allTweets} handleAddTweet={handleAddTweet} user={user}/> */}
         </div>
         <div className="w-full px-2 space-y-3 py-2">

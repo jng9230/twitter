@@ -232,7 +232,7 @@ export const getReccs = async (userID:string) => {
     return res
 }
 
-export const getTweet = (tweetID: string) => {
+export const getTweet = async (tweetID: string) => {
     const res = fetch(`/tweet/id/${tweetID}`, {
         method: "GET",
     })
@@ -251,7 +251,7 @@ export const getTweet = (tweetID: string) => {
     return res
 }
 
-export const replyToTweet= (text:string, parent: API.Tweet, user: API.User) => {
+export const replyToTweet = async (text:string, parent: API.Tweet, user: API.User) => {
     const res = fetch(`/tweet/reply/`, {
         method: "POST",
         headers: {
@@ -269,3 +269,75 @@ export const replyToTweet= (text:string, parent: API.Tweet, user: API.User) => {
         })
     return res
 }
+
+export const likeTweet = async (user: API.User, tweet: API.Tweet, like: Boolean) => {
+    let res;
+    if (like){
+        res = await fetch("/tweet/like", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "user": user._id,
+                "tweet": tweet._id
+            })
+        })
+            .then(res => {
+                if (res.status === 200) return res.json()
+                if (res.status === 500) throw new Error("Internal server error");
+            })
+            .then(data => {
+                return data as { user: API.User, tweet: API.Tweet }
+            })
+    } else {
+        res = await fetch("/tweet/unlike", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "user": user._id,
+                "tweet": tweet._id
+            })
+        })
+            .then(res => {
+                if (res.status === 200) return res.json()
+                if (res.status === 500) throw new Error("Internal server error");
+            })
+            .then(data => {
+                return data as { user: API.User, tweet: API.Tweet }
+            })
+    }
+
+    return res
+}
+
+/**
+ * export const loginToAccount = async (
+    email: string,
+    password: string
+) => {
+    const res = fetch("/auth/login-local", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "username": email,
+            "password": password,
+        })
+    })
+        .then(res => {
+            console.log(res)
+            if (res.status === 200) return res.json()
+            if (res.status === 401) throw new Error("Invalid email and/or password");
+            if (res.status === 500) throw new Error("Internal server error");
+        })
+        .then(data => {
+            return data as API.APISuccessReturn
+        })
+    return res
+}
+ * 
+ */

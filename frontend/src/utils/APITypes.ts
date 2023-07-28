@@ -28,7 +28,8 @@ export type Tweet = {
     replies: Tweet["_id"][], 
     time: Date,
     parent?: Tweet["_id"]
-    _id: string
+    _id: string,
+    liked_by: User["_id"]
 }
 
 // export type TweetReturnType = Tweet & {
@@ -43,9 +44,9 @@ export type User = {
     following: [],
     followers: [],
     num_following: number,
-    num_followers: number
+    num_followers: number,
+    liked_tweets: Tweet["_id"][]
 }
-
 // export type UserReturnType = User & {
 //     _id: string,
 //     following: [],

@@ -1,11 +1,15 @@
 import React from 'react'
 import TweetBox from './TweetBox'
-import { Tweet } from '../utils/APITypes'
+import { Tweet, User } from '../utils/APITypes'
 import { getTweet } from '../utils/APICalls'
 const Timeline = ({
-  allTweets
+  allTweets,
+  user,
+  setUser
 }:{
-  allTweets: Tweet[]
+  allTweets: Tweet[],
+  user: User,
+  setUser: (u: User) => void
 }) => {
 
   return (
@@ -21,7 +25,7 @@ const Timeline = ({
           //   //     parent = d
           //   //   })
           //   }
-            return <TweetBox tweet={d} key={d._id} onTimeline={true}/>
+            return <TweetBox tweet={d} key={d._id} onTimeline={true} user={user} setUser={setUser}/>
         })
       }
     </>

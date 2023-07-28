@@ -160,7 +160,11 @@ router.post("/like", async (req, res) => {
 
         //have to RE-GET the new tweet b/c above DOESN'T RETURN UPDATED OBJ
         const tweet_updated = await Tweet.findById(req.body.tweet)
-        return res.json(tweet_updated)
+        const user_updated = await User.findById(req.body.user)
+        return res.json({
+            user: user_updated,
+            tweet: tweet_updated
+        })
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)
@@ -193,8 +197,12 @@ router.post("/unlike", async (req, res) => {
         );
         if (!tweet) { throw Error("tweet not found") }
         
-        const updated_tweet = await Tweet.findById(req.body.tweet)
-        return res.json(updated_tweet)
+        const tweet_updated = await Tweet.findById(req.body.tweet)
+        const user_updated = await User.findById(req.body.user)
+        return res.json({
+            user: user_updated,
+            tweet: tweet_updated
+        })
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)

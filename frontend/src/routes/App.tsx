@@ -45,9 +45,17 @@ function App() {
         <Route path='/login' element={<Login setUser={handleUpdateUser}/>} />
         {/* optional paramter of profile ID */}
         <Route path='/notfound/' element={<PageNotFound/>} />
-        <Route path='/:profileID?' element={<Profile user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar}/>} /> 
-        <Route path='/settings' element={<Settings user={user} showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar} />} />
-        <Route path='/:profileID/status/:tweetID' element={<TweetChain user={user}/>} />
+        <Route path='/:profileID?' element={<Profile user={user} 
+            showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar}
+              setUser={handleUpdateUser}
+            />
+          } 
+        /> 
+        <Route path='/settings' element={<Settings user={user} 
+            showSidebar={showSidebar} handleHideSidebar={handleHideSidebar} handleShowSidebar={handleShowSidebar} 
+            />} 
+          />
+        <Route path='/:profileID/status/:tweetID' element={<TweetChain user={user} setUser={handleUpdateUser}/>} />
       </Routes>
     : 
       <Routes>

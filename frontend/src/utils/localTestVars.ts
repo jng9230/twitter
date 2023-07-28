@@ -7,7 +7,8 @@ export const user: User = {
     followers: [],
     following: [],
     num_followers: 0,
-    num_following: 0    
+    num_following: 0,
+    liked_tweets: []
 }
 
 // const chain5:Tweet = {
