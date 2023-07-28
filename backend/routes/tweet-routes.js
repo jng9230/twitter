@@ -142,22 +142,26 @@ router.post("/like", async (req, res) => {
     }
 
     try {
-        const user = await User.findOneAndUpdate({ _id: del_tweet.parent }, {
-            $push: {
-                liked_tweets: user._id,
+        const tweet = await Tweet.findOneAndUpdate(
+            { _id: req.body.tweet },
+            {
+                $push: { liked_by: req.body.user },
+                $inc: { likes: 1 }
             }
-        });
+        );
+        console.log("liked tweet:")
+        console.log(tweet)
+        const user = await User.findOneAndUpdate(
+            { _id: req.body.user },
+            { $push: { liked_tweets: req.body.tweet } }
+        );
+        console.log("liked by:")
+        console.log(user)
 
-        const tweet = await Tweet.findOneAndUpdate({ _id: del_tweet.parent }, {
-            $push: {
-                liked_by: user._id,
-            },
-            $inc: {
-                likes: 1
-            }
-        });
-
-        return res.json(tweet)
+        //have to RE-GET the new tweet b/c above DOESN'T RETURN UPDATED OBJ
+        // WHY THE FUCK
+        const tweet_updated = await Tweet.findById(req.body.tweet)
+        return res.json(tweet_updated)
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)
@@ -173,20 +177,25 @@ router.post("/unlike", async (req, res) => {
     }
 
     try {
-        const user = await User.findById(req.body.userID)
+        const user = await User.findOneAndUpdate(
+            { _id: req.body.user },
+            {
+                $pullAll: { liked_tweets: [{ _id: req.body.tweet }] }
+            }
+        )
         if (!user) { throw Error("user not found") }
 
-        const tweet = await Tweet.findOneAndUpdate({ _id: del_tweet.parent }, {
-            $pullAll: {
-                liked_by: [{ _id: user._id }]
-            },
-            $inc: {
-                likes: -1
+        const tweet = await Tweet.findOneAndUpdate(
+            { _id: req.body.tweet  }, 
+            {
+                $pullAll: { liked_by: [{ _id: req.body.user }] },
+                $inc: { likes: -1}
             }
-        });
+        );
         if (!tweet) { throw Error("tweet not found") }
-
-        return res.json(tweet)
+        
+        const updated_tweet = await Tweet.findById(req.body.tweet)
+        return res.json(updated_tweet)
     } catch (e) {
         console.error(e)
         return res.status(500).json(e)

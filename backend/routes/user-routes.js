@@ -185,7 +185,7 @@ router.get("/reccs/:id", async (req, res) => {
 
 //edit handle
 
-//delete user
+//delete user -- was made to del. spec. users for deploy, but can just drop entire DB
 router.delete("/id/:id", async (req, res) => {
     if (debug) console.log(`DELETING ${req.params.id}`)
 

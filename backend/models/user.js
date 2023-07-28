@@ -37,7 +37,8 @@ const user_schema = new Schema({
     },
     liked_tweets: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: "Tweet"
+        ref: "Tweet",
+        default: []
     }
 })
 
