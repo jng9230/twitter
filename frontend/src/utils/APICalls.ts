@@ -312,32 +312,3 @@ export const likeTweet = async (user: API.User, tweet: API.Tweet, like: Boolean)
 
     return res
 }
-
-/**
- * export const loginToAccount = async (
-    email: string,
-    password: string
-) => {
-    const res = fetch("/auth/login-local", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "username": email,
-            "password": password,
-        })
-    })
-        .then(res => {
-            console.log(res)
-            if (res.status === 200) return res.json()
-            if (res.status === 401) throw new Error("Invalid email and/or password");
-            if (res.status === 500) throw new Error("Internal server error");
-        })
-        .then(data => {
-            return data as API.APISuccessReturn
-        })
-    return res
-}
- * 
- */
