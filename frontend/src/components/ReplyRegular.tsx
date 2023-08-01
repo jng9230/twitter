@@ -64,10 +64,10 @@ const ReplyRegular = ({
                             <Link to={`/${parentTweet.user.handle}`} onClick={(e) => e.stopPropagation()}>
                                 <div className="flex space-x-2">
                                     <div className="font-bold max-w-3/5 truncate">
-                                        {tweet.user.username}
+                                        {parentTweet.user.username}
                                     </div>
                                     <div className="text-twitter-gray max-w-1/5 truncate">
-                                        @{tweet.user.handle}
+                                        @{parentTweet.user.handle}
                                     </div>
                                     <div className="text-twitter-gray w-1/5 truncate">
                                         {dateDiffPretty(new Date(), new Date(tweet.time))}
