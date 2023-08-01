@@ -57,11 +57,6 @@ const ReplyFocused = ({
                     {formatNumber(tweet.retweets)}
                     <span className="text-twitter-gray ml-1"> Quotes</span>
                 </div> */}
-                <div className="flex items-center" onClick={() => handleLike(tweet, true)}>
-                    <BiHeart className="inline mr-1" />
-                    {formatNumber(tweet.likes)}
-                    <span className="text-twitter-gray ml-1"> Likes</span>
-                </div>
                 {
                     liked ? 
                         <div className="flex items-center" onClick={(e) => {e.stopPropagation(); handleLike(tweet, false)}}>

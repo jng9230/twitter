@@ -17,14 +17,6 @@ const Timeline = ({
     <>
       {
         allTweets.map(d => {
-          // let parent;
-          // if (d.parent){
-          //   // parent = allTweets.filter(d1 => d1._id === d.parent)[0]
-          //   // getTweet(d.parent)
-          //   //   .then(d => {
-          //   //     parent = d
-          //   //   })
-          //   }
             return <TweetBox tweet={d} key={d._id} onTimeline={true} user={user} setUser={setUser}/>
         })
       }
