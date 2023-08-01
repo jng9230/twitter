@@ -11,7 +11,7 @@ Twitter clone made with the MERN stack.
 - login with Google, or email/pass.
 ![login](./imgs/login.png?raw=true "login")
 - profile page
-![profile](./imgs/profile.png?raw=true "profile")
+![profile](./imgs/profile1.png?raw=true "profile")
 - timeline for followed users and recommendations on who to follow
 ![timeline](./imgs/timeline.png?raw=true "timeline")
 - make tweets
